@@ -6,6 +6,9 @@ public class Day008_Student {
 
 	public static void main(String[] args) {
 
+		// 사용자의 점수 입력값을 배열에 저장하여 원하는 값을 출력
+		// 다만 학생수가 먼저 입력되지 않으면 작동하지 않도록 한다.
+		
 		Scanner scan = new Scanner(System.in);
 
 		int[] scores = null;
@@ -85,11 +88,8 @@ public class Day008_Student {
 				run = false;
 				break;
 			}
+			
 		}
-		
-		
-		
-		
 		
 	}
 

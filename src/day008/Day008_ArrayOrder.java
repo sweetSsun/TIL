@@ -6,6 +6,8 @@ public class Day008_ArrayOrder {
 
 	public static void main(String[] args) {
 
+		// 카페 주문 코드를 배열을 이용하여 작성
+
 		Scanner scan = new Scanner(System.in);
 		
 		int orderConfirm;

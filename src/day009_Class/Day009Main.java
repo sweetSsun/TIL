@@ -4,8 +4,6 @@ public class Day009Main {
 
 	public static void main(String[] args) {
 
-		int num = 10;
-		
 		Day009 day = new Day009();
 		day.printOne();
 		day.plus(60, 26);

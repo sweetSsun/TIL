@@ -1,4 +1,4 @@
-package day009_Class;
+package day009_1;
 
 public class Day009 {
 	

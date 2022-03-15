@@ -4,7 +4,6 @@ public class PhoneMain {
 
 	public static void main(String[] args) {
 
-		Phone ph1 = new Phone();
 		
 		int num;
 //		System.out.println(num);
@@ -13,10 +12,11 @@ public class PhoneMain {
 		System.out.println(num);
 		
 		System.out.println("===ph1===");
+		Phone ph1 = new Phone();
 		System.out.println(ph1.model);
 		// 필드는 클래스에서 값을 넣지 않고 선언만 해두어도 자리가 만들어져있음.
 		ph1.model = "갤럭시";
-		ph1.price = 1000000;;
+		ph1.price = 1000000;
 		ph1.company = "삼성";
 		System.out.println(ph1.model);
 		System.out.println(ph1.price);

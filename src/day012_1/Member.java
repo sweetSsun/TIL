@@ -33,4 +33,8 @@ public class Member {
 		this.memail = memail;
 	}
 	
+	public void showInfo() {
+		System.out.println("[아이디]" + mid + " [비밀번호]" + mpw + " [이름]" + mname + " [이메일]" + memail);
+	}
+	
 }

@@ -56,9 +56,16 @@ public class Practice_PhoneBookMain {
 						}
 					}
 				}
-				if (index > -1) {
+				if (index > -1) { // 전화번호 수정 기능 입력하기
 					System.out.println(pbList[index].getName());
 					System.out.println(pbList[index].getTel());
+					System.out.print("수정하시겠습니까? >> 1.예 2.아니오");
+					int modify = scan.nextInt();
+					if(modify == 1) {
+						System.out.print("수정할 전화번호를 입력 >> ");
+						String tel = scan.next();
+						pbList[index].setTel(tel);
+					}
 				} else {
 					System.out.println("찾을 수 없습니다.");
 				}

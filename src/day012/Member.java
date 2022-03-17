@@ -1,4 +1,4 @@
-package day012_1;
+package day012;
 
 public class Member {
 

@@ -5,11 +5,9 @@ public class MemberMain {
 	public static void main(String[] args) {
 
 		MemberManager manager = new MemberManager();
-		
-		Member[] mbList = new Member[2];
 		boolean run = true;
-
 		String loginId = ""; // 로그인 처리가 되었음을 확인할 변수
+		
 
 		while (run) {
 			manager.showMenu(loginId);
@@ -24,15 +22,15 @@ public class MemberMain {
 			case 1:
 				if (loginId.equals("")) { // 로그인 안된 상태
 					// 회원가입 기능 호출
-					mbList = manager.memberJoin(mbList);
+					manager.memberJoin(loginId);
 
 				} else if (loginId.equals("admin")) { // 관리자모드로 모든 회원의 정보 출력
 					// 전체 회원정보 출력 기능 호출
-					manager.memberList(mbList);
+					manager.memberList(loginId);
 				
 				} else { // 로그인 된 해당 회원의 정보 출력
 					// 회원정보 출력 기능 호출
-					manager.myInfo(mbList, loginId);
+					manager.myInfo(loginId);
 					
 				}
 				break;
@@ -40,7 +38,7 @@ public class MemberMain {
 			case 2:
 				if(loginId.equals("")) {
 					// 로그인 기능 호출
-					loginId = manager.login(mbList, loginId);
+					loginId = manager.login(loginId);
 					
 				} else {
 					// 로그아웃 기능 호출
@@ -54,7 +52,7 @@ public class MemberMain {
 					System.out.println("로그인되지 않았습니다.");
 				} else {
 					// 정보수정 기능 호출
-					mbList = manager.changeInfo(mbList);
+					manager.changeInfo();
 					
 				}
 				break;

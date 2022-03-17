@@ -5,9 +5,11 @@ import java.util.Scanner;
 public class MemberManager {
 
 	Scanner scan = new Scanner(System.in);
+	
+	Member[] mbList = new Member[5]; // 객체를 담을 배열
+	int count = 0; // mbList 배열의 인덱스 값을 변경할 변수
+	int index = -1; // 로그인 처리된 아이디의 인덱스 값을 저장할 변수
 
-	
-	
 	// 숫자 입력 기능
 	public int userIntInput() {
 		return scan.nextInt();
@@ -35,11 +37,8 @@ public class MemberManager {
 		System.out.print("메뉴 선택 >> ");
 	}
 	
-	
-	int count = 0; // mbList 배열의 인덱스 값을 변경할 변수
-	
 	// 회원가입 기능
-	public Member[] memberJoin(Member[] mbList) {		
+	public void memberJoin(String loginId) {		
 		// 아이디~이메일 회원정보를 입력 받고
 		// mbList 배열에 저장
 		Member mb = new Member();
@@ -92,12 +91,10 @@ public class MemberManager {
 		} else {
 			System.out.println("더이상 회원가입이 불가능합니다.");
 		}
-		
-		return mbList;
 	}
 	
 	// 관리자모드 전체 회원정보 출력 기능
-	public void memberList(Member[] mbList) {
+	public void memberList(String loginId) {
 		for (int i = 0; i < mbList.length; i++) {
 			if (mbList[i] != null) {
 				System.out.println("\n[" + (i + 1) + "번 회원의 정보]");
@@ -106,10 +103,8 @@ public class MemberManager {
 		}
 	}
 	
-	int index = -1; // 로그인 처리된 아이디의 인덱스 값을 저장할 변수
-	
 	// 회원정보 출력 기능
-	public void myInfo(Member[] mbList, String loginId) {
+	public void myInfo(String loginId) {
 		System.out.println("[" + loginId + "님의 정보]");
 //		loginId로 출력
 //		for (int i = 0; i < mbList.length; i++ ) {
@@ -128,7 +123,7 @@ public class MemberManager {
 	}
 	
 	// 로그인 기능
-	public String login(Member[] mbList, String loginId) {
+	public String login(String loginId) {
 		// 아이디, 비밀번호를 입력받고 memberList 확인
 		// 일치하는 회원정보가 있으면 '로그인 되었습니다.'
 		// 없으면 '아이디 또는 비밀번호가 일치하지 않습니다.'
@@ -156,7 +151,6 @@ public class MemberManager {
 				System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");
 			}
 		}
-		
 		return loginId;
 	}
 	
@@ -169,7 +163,7 @@ public class MemberManager {
 	}
 	
 	// 정보수정 기능
-	public Member[] changeInfo(Member[] mbList) {
+	public void changeInfo() {
 		System.out.println("[정보수정]");
 		boolean check = true; // 재확인한 비밀번호와 일치하는지 확인하기 위한 변수
 		while(check) {
@@ -188,6 +182,5 @@ public class MemberManager {
 				System.out.println("비밀번호가 일치하지 않습니다.");
 			}
 		}
-		return mbList;
 	}
 }

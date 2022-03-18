@@ -30,9 +30,9 @@ public class MemberManager {
 			System.out.println("1.전체회원 | 2.로그아웃 | 0.종료");
 			System.out.println("==========================");
 		} else { // 로그인 된 상태에서의 메뉴 출력
-			System.out.println("\n==================================");
-			System.out.println("1.내 정보 | 2.로그아웃 | 3.정보수정 | 0.종료");
-			System.out.println("====================================");
+			System.out.println("\n================================================");
+			System.out.println("1.내 정보 | 2.로그아웃 | 3.정보수정 | 4.회원탈퇴 | 0.종료");
+			System.out.println("================================================");
 		}
 		System.out.print("메뉴 선택 >> ");
 	}
@@ -42,55 +42,60 @@ public class MemberManager {
 		// 아이디~이메일 회원정보를 입력 받고
 		// mbList 배열에 저장
 		Member mb = new Member();
-		if (count < mbList.length) {
-			System.out.println("[회원가입]");
-			
-			boolean overlap = true; // 중복 아이디 확인을 위한 변수
-			while (overlap) {
-				System.out.print("아이디 >> ");
-				String id = userStringInput();
-				for (int i = 0; i < mbList.length; i++) {
-					if (mbList[i] != null) {
-						if (id.equals(mbList[i].getMid())) {
-							System.out.println("중복된 아이디입니다.");
+		boolean full = true;
+		System.out.println("[회원가입]");
+		
+		for (int i = 0; i < mbList.length; i++) {
+			if(mbList[i] == null) {
+				boolean overlap = true; // 중복 아이디 확인을 위한 변수
+				while (overlap) {
+					System.out.print("아이디 >> ");
+					String id = userStringInput();
+					for (int j = 0; j < mbList.length; j++) {
+						if (mbList[j] != null) {
+							if (id.equals(mbList[j].getMid())) {
+								System.out.println("중복된 아이디입니다.");
+								break;
+							}
+						} else {
+							System.out.println("가입 가능한 아이디입니다.");
+							overlap = false;
+							mb.setMid(id);
 							break;
 						}
-					} else {
-						System.out.println("가입 가능한 아이디입니다.");
-						overlap = false;
-						mb.setMid(id);
-						break;
 					}
 				}
-			}
-			
-			boolean check = true; // 비밀번호 재확인을 위한 변수
-			while (check) {
-				System.out.print("비밀번호 >> ");
-				String pw = userStringInput();
-				// 가입시 비밀번호 재확인
-				System.out.print("비밀번호 재확인 >> ");
-				String rpw = userStringInput();
-				if (pw.equals(rpw)) {
-					mb.setMpw(pw);
-					System.out.print("이름 >> ");
-					String name = userStringInput();
-					mb.setMname(name);
-					System.out.print("이메일 >> ");
-					String mail = userStringInput();
-					mb.setMemail(mail);
-					mbList[count] = mb;
-					System.out.println("회원가입 되었습니다.");
-					count++;
-					check = false;
-				} else {
-					System.out.println("비밀번호가 틀렸습니다.");
-					System.out.println("비밀번호를 다시 입력해주십시오.");
+				boolean check = true; // 비밀번호 재확인을 위한 변수
+				while (check) {
+					System.out.print("비밀번호 >> ");
+					String pw = userStringInput();
+					// 가입시 비밀번호 재확인
+					System.out.print("비밀번호 재확인 >> ");
+					String rpw = userStringInput();
+					if (pw.equals(rpw)) {
+						mb.setMpw(pw);
+						System.out.print("이름 >> ");
+						String name = userStringInput();
+						mb.setMname(name);
+						System.out.print("이메일 >> ");
+						String mail = userStringInput();
+						mb.setMemail(mail);
+						mbList[i] = mb;
+						System.out.println("회원가입 되었습니다.");
+						check = false;
+					} else {
+						System.out.println("비밀번호가 틀렸습니다.");
+						System.out.println("비밀번호를 다시 입력해주십시오.");
+					}
 				}
+				full = false;
+				break;
 			}
-		} else {
+		}
+		if (full) {
 			System.out.println("더이상 회원가입이 불가능합니다.");
 		}
+		
 	}
 	
 	// 관리자모드 전체 회원정보 출력 기능
@@ -190,5 +195,26 @@ public class MemberManager {
 				}
 			}
 		}
+	}
+	
+	// 회원탈퇴 기능
+	public String withdrawMember(String loginId) {
+		System.out.println("[회원탈퇴]");
+		for(int i = 0; i < mbList.length; i++) {
+			if(mbList[i] != null) {
+				if(mbList[i].getMid().equals(loginId)) {
+					System.out.println(mbList[i].getMname()+"님, 회원탈퇴 하시겠습니까? >> 1.예 | 2.아니오");
+					int menuSel = scan.nextInt();
+					if(menuSel==1) {
+						mbList[i] = null;
+						System.out.println("탈퇴되었습니다.");
+						loginId="";
+					} else {
+						System.out.println("취소되었습니다.");
+					}
+				}
+			}
+		}
+		return loginId;
 	}
 }

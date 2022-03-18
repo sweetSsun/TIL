@@ -53,7 +53,14 @@ public class MemberMain {
 				} else {
 					// 정보수정 기능 호출
 					manager.memberModify(loginId);
-					
+				}
+				break;
+				
+			case 4:
+				if(loginId.equals("")) {
+					System.out.println("로그인되지 않았습니다.");
+				} else {
+				loginId = manager.withdrawMember(loginId);
 				}
 				break;
 			}

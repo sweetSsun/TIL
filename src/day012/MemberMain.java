@@ -22,11 +22,11 @@ public class MemberMain {
 			case 1:
 				if (loginId.equals("")) { // 로그인 안된 상태
 					// 회원가입 기능 호출
-					manager.memberJoin(loginId);
+					manager.memberJoin();
 
-				} else if (loginId.equals("admin")) { // 관리자모드로 모든 회원의 정보 출력
+				} else if (loginId.equals("admin")) { // 관리자 로그인 상태
 					// 전체 회원정보 출력 기능 호출
-					manager.memberList(loginId);
+					manager.memberList();
 				
 				} else { // 로그인 된 해당 회원의 정보 출력
 					// 회원정보 출력 기능 호출
@@ -42,7 +42,7 @@ public class MemberMain {
 					
 				} else {
 					// 로그아웃 기능 호출
-					loginId = manager.logout(loginId);
+					loginId = manager.logout();
 				
 				}
 				break;
@@ -52,7 +52,7 @@ public class MemberMain {
 					System.out.println("로그인되지 않았습니다.");
 				} else {
 					// 정보수정 기능 호출
-					manager.changeInfo();
+					manager.memberModify(loginId);
 					
 				}
 				break;

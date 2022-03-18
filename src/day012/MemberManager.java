@@ -8,7 +8,7 @@ public class MemberManager {
 	
 	Member[] mbList = new Member[5]; // 객체를 담을 배열
 	int count = 0; // mbList 배열의 인덱스 값을 변경할 변수
-	int index = -1; // 로그인 처리된 아이디의 인덱스 값을 저장할 변수
+//	int index = -1; // 로그인 처리된 아이디의 인덱스 값을 저장할 변수
 
 	// 숫자 입력 기능
 	public int userIntInput() {
@@ -38,7 +38,7 @@ public class MemberManager {
 	}
 	
 	// 회원가입 기능
-	public void memberJoin(String loginId) {		
+	public void memberJoin() {		
 		// 아이디~이메일 회원정보를 입력 받고
 		// mbList 배열에 저장
 		Member mb = new Member();
@@ -94,7 +94,7 @@ public class MemberManager {
 	}
 	
 	// 관리자모드 전체 회원정보 출력 기능
-	public void memberList(String loginId) {
+	public void memberList() {
 		for (int i = 0; i < mbList.length; i++) {
 			if (mbList[i] != null) {
 				System.out.println("\n[" + (i + 1) + "번 회원의 정보]");
@@ -107,19 +107,19 @@ public class MemberManager {
 	public void myInfo(String loginId) {
 		System.out.println("[" + loginId + "님의 정보]");
 //		loginId로 출력
-//		for (int i = 0; i < mbList.length; i++ ) {
-//			if(mbList[i] != null) {
-//				if(mbList[i].getMid().equals(loginId)) {
-//					System.out.println("이름 : " + mbList[i].getMname());
-//					System.out.println("이메일 : " + mbList[i].getMemail());
-//					
-//				}
-//			}
-//		}			
+		for (int i = 0; i < mbList.length; i++ ) {
+			if(mbList[i] != null) {
+				if(mbList[i].getMid().equals(loginId)) {
+					System.out.println("이름 : " + mbList[i].getMname());
+					System.out.println("이메일 : " + mbList[i].getMemail());
+					
+				}
+			}
+		}			
 
 //		index로 출력(DB를 사용하게 될 경우 로그인 된 해당 객체를 받아오게 되기 때문에 index에 더 가까움)
-		System.out.println("이름 : " + mbList[index].getMname());
-		System.out.println("이메일 : " + mbList[index].getMemail());
+//		System.out.println("이름 : " + mbList[index].getMname());
+//		System.out.println("이메일 : " + mbList[index].getMemail());
 	}
 	
 	// 로그인 기능
@@ -140,13 +140,15 @@ public class MemberManager {
 			for (int i = 0; i < mbList.length; i++) {
 				if (mbList[i] != null) {
 					if (id.equals(mbList[i].getMid()) && pw.equals(mbList[i].getMpw())) {
-						index = i;
+//						index = i;
+						loginId = mbList[i].getMid();
+						
 					}
 				}
 			}
-			if (index > -1) { // 인덱스값이 변경되었다는건 일치하는 회원정보를 찾았다는 것
+			if (loginId != "") { // 인덱스값이 변경되었다는건 일치하는 회원정보를 찾았다는 것
 				System.out.println("로그인 되었습니다.");
-				loginId = mbList[index].getMid();
+//				loginId = mbList[index].getMid();
 			} else { // 인덱스값이 -1이라면 일치하는 회원정보를 찾지 못한 것
 				System.out.println("아이디 또는 비밀번호가 일치하지 않습니다.");
 			}
@@ -155,15 +157,14 @@ public class MemberManager {
 	}
 	
 	// 로그아웃 기능
-	public String logout(String loginId) {
-		loginId = ""; // 로그아웃된 상태로 변경
-		index = -1; // 로그아웃과 동시에 index값도 다시 -1로 초기화
+	public String logout() {
+//		index = -1; // 로그아웃과 동시에 index값도 다시 -1로 초기화
 		System.out.println("로그아웃 되었습니다.");
-		return loginId;
+		return "";
 	}
 	
 	// 정보수정 기능
-	public void changeInfo() {
+	public void memberModify(String loginId) {
 		System.out.println("[정보수정]");
 		boolean check = true; // 재확인한 비밀번호와 일치하는지 확인하기 위한 변수
 		while(check) {
@@ -171,15 +172,22 @@ public class MemberManager {
 			String newPw = userStringInput();
 			System.out.print("변경할 비밀번호 재확인 >> ");
 			String rNewPw = userStringInput();
-			if (newPw.equals(rNewPw)) {
-				mbList[index].setMpw(newPw);
-				System.out.print("변경할 이메일 >> ");
-				String newEmail = userStringInput();
-				mbList[index].setMemail(newEmail);
-				System.out.println("정보가 수정되었습니다.");
-				check = false;
-			} else {
-				System.out.println("비밀번호가 일치하지 않습니다.");
+			for (int i = 0; i < mbList.length; i++) {
+				if (mbList[i] != null) {
+					if (mbList[i].getMid().equals(loginId)) {
+//							index = i;
+						if (newPw.equals(rNewPw)) {
+							mbList[i].setMpw(newPw);
+							System.out.print("변경할 이메일 >> ");
+							String newEmail = userStringInput();
+							mbList[i].setMemail(newEmail);
+							System.out.println("정보가 수정되었습니다.");
+							check = false;
+						} else {
+							System.out.println("비밀번호가 일치하지 않습니다.");
+						}
+					}
+				}
 			}
 		}
 	}

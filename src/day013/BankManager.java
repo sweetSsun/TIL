@@ -35,6 +35,7 @@ public class BankManager {
 		String inputAccountNumber = scan.next();
 		System.out.print("초기입금액 >> ");
 		int inputBalance = scan.nextInt();
+		
 		newAccount.setClientName(inputClientName);
 		newAccount.setAccountNumber(inputAccountNumber);
 		newAccount.setBalance(inputBalance);
@@ -46,27 +47,50 @@ public class BankManager {
 		}
 		System.out.println("신규 계좌가 생성되었습니다.");
 	}
+
+	// 계좌확인 메소드
+	public int searchAccount(String menu) {
+		int index = -1;
+		System.out.print(menu + "할 계좌번호 >> ");
+		accountNumber = scan.next();
+		for(int i = 0; i < clientList.length; i++) {
+			if(clientList[i] != null) {
+				if(clientList[i].getAccountNumber().equals(accountNumber) ) {
+					index = i;
+				}
+			}
+		}
+		return index;
+	}
 	
 	// 입금 기능
 	public void depositAccount() {
 		check = true;
 		System.out.println("[입금]");
-		System.out.print("입금할 계좌번호 >> ");
-		accountNumber = scan.next();
-		for(int i = 0; i < clientList.length; i++) {
-			if(clientList[i] != null) {
-				if(clientList[i].getAccountNumber().equals(accountNumber) ) {
-					System.out.print("입금할 금액 >> ");
-					int deposit = scan.nextInt();
-					int balance = clientList[i].getBalance() + deposit; // 잔액 증가
-					clientList[i].setBalance(balance);
-					System.out.println("입금되었습니다.");
-					System.out.println("잔액은 " + clientList[i].getBalance() + "입니다.");
-					check = false;
-				} 
-			}
-		}
-		if(check) {
+//		System.out.print("입금할 계좌번호 >> ");
+//		accountNumber = scan.next();
+//		for(int i = 0; i < clientList.length; i++) {
+//			if(clientList[i] != null) {
+//				if(clientList[i].getAccountNumber().equals(accountNumber) ) {
+//					System.out.print("입금할 금액 >> ");
+//					int deposit = scan.nextInt();
+//					int balance = clientList[i].getBalance() + deposit; // 잔액 증가
+//					clientList[i].setBalance(balance);
+//					System.out.println("입금되었습니다.");
+//					System.out.println("잔액은 " + clientList[i].getBalance() + "입니다.");
+//					check = false;
+//				} 
+//			}
+//		}
+		int index = searchAccount("입금"); // 계좌확인 메소드 호출
+		if(index > -1) {
+			System.out.print("입금할 금액 >> ");
+			int deposit = scan.nextInt();
+			int balance = clientList[index].getBalance() + deposit; // 잔액 증가
+			clientList[index].setBalance(balance);
+			System.out.println("입금되었습니다.");
+			System.out.println("잔액은 " + clientList[index].getBalance() + "입니다.");
+		} else {
 			System.out.println("없는 계좌번호입니다.");
 		}
 	}
@@ -75,26 +99,19 @@ public class BankManager {
 	public void withdrowAccount() {
 		check = true;
 		System.out.println("[출금]");
-		System.out.print("출금할 계좌번호 >> ");
-		accountNumber = scan.next();
-		for (int i = 0; i < clientList.length; i++) {
-			if (clientList[i] != null) {
-				if (clientList[i].getAccountNumber().equals(accountNumber)) {
-					System.out.print("출금할 금액 >> ");
-					int withdrow = scan.nextInt();
-					if (clientList[i].getBalance() >= withdrow) {
-						int balance = clientList[i].getBalance() - withdrow; // 잔액 차감
-						clientList[i].setBalance(balance);
-						System.out.println("출금되었습니다.");
-					} else {
-						System.out.println("잔액이 부족합니다.");
-					}
-					System.out.println("잔액은 " + clientList[i].getBalance() + "입니다.");
-					check = false;
-				}
+		int index = searchAccount("출금"); // 계좌확인 메소드 호출
+		if(index > -1) {
+			System.out.print("출금할 금액 >> ");
+			int withdrow = scan.nextInt();
+			if (clientList[index].getBalance() >= withdrow) {
+				int balance = clientList[index].getBalance() - withdrow; // 잔액 차감
+				clientList[index].setBalance(balance);
+				System.out.println("출금되었습니다.");
+			} else {
+				System.out.println("잔액이 부족합니다.");
 			}
-		}
-		if(check) {
+			System.out.println("잔액은 " + clientList[index].getBalance() + "입니다.");
+		} else {
 			System.out.println("없는 계좌번호입니다.");
 		}
 	}
@@ -103,17 +120,11 @@ public class BankManager {
 	public void balanceCheck() {
 		check = true;
 		System.out.println("[잔액]");
-		System.out.print("잔액조회할 계좌번호 >> ");
-		accountNumber = scan.next();
-		for (int i = 0; i < clientList.length; i++) {
-			if (clientList[i] != null) {
-				if (clientList[i].getAccountNumber().equals(accountNumber)) {
-					System.out.println("현재 잔액은 " + clientList[i].getBalance() + "원 입니다.");
-					check = false;
-				}
-			}
-		}
-		if (check) {
+		int index = searchAccount("잔액조회"); // 계좌확인 메소드 호출
+		
+		if (index > -1) {
+			System.out.println("현재 잔액은 " + clientList[index].getBalance() + "원 입니다.");
+		} else {
 			System.out.println("없는 계좌번호입니다.");
 		}
 	}

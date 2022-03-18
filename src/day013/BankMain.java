@@ -41,7 +41,7 @@ public class BankMain {
 				
 			case 5:
 				// 이체 기능 메소드 호출
-				manager.transfer();
+				manager.transferAccount();
 				break;
 				
 			case 6:

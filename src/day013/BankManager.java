@@ -11,8 +11,6 @@ public class BankManager {
 	
 	private int clientNumber = 1; // 고객번호 변경 변수
 	private int count = 0; // 배열의 인덱스값 변경 변수
-	private String accountNumber; // 입력받을 계좌번호
-	boolean check; // 해당 계좌번호가 있었는지 확인할 변수
 	
 	// 메뉴 출력 기능
 	public void showMenu() {
@@ -52,7 +50,7 @@ public class BankManager {
 	public int searchAccount(String menu) {
 		int index = -1;
 		System.out.print(menu + "할 계좌번호 >> ");
-		accountNumber = scan.next();
+		String accountNumber = scan.next();
 		for(int i = 0; i < clientList.length; i++) {
 			if(clientList[i] != null) {
 				if(clientList[i].getAccountNumber().equals(accountNumber) ) {
@@ -65,7 +63,6 @@ public class BankManager {
 	
 	// 입금 기능
 	public void depositAccount() {
-		check = true;
 		System.out.println("[입금]");
 //		System.out.print("입금할 계좌번호 >> ");
 //		accountNumber = scan.next();
@@ -89,7 +86,7 @@ public class BankManager {
 			int balance = clientList[index].getBalance() + deposit; // 잔액 증가
 			clientList[index].setBalance(balance);
 			System.out.println("입금되었습니다.");
-			System.out.println("잔액은 " + clientList[index].getBalance() + "입니다.");
+			System.out.println("잔액은 " + clientList[index].getBalance() + "원 입니다.");
 		} else {
 			System.out.println("없는 계좌번호입니다.");
 		}
@@ -97,20 +94,19 @@ public class BankManager {
 	
 	// 출금 기능
 	public void withdrowAccount() {
-		check = true;
 		System.out.println("[출금]");
 		int index = searchAccount("출금"); // 계좌확인 메소드 호출
 		if(index > -1) {
 			System.out.print("출금할 금액 >> ");
-			int withdrow = scan.nextInt();
-			if (clientList[index].getBalance() >= withdrow) {
-				int balance = clientList[index].getBalance() - withdrow; // 잔액 차감
+			int withdraw = scan.nextInt();
+			if (clientList[index].getBalance() >= withdraw) { // 출금계좌 잔액 확인
+				int balance = clientList[index].getBalance() - withdraw; // 잔액 차감
 				clientList[index].setBalance(balance);
 				System.out.println("출금되었습니다.");
 			} else {
 				System.out.println("잔액이 부족합니다.");
 			}
-			System.out.println("잔액은 " + clientList[index].getBalance() + "입니다.");
+			System.out.println("잔액은 " + clientList[index].getBalance() + "원 입니다.");
 		} else {
 			System.out.println("없는 계좌번호입니다.");
 		}
@@ -118,7 +114,6 @@ public class BankManager {
 	
 	// 잔액조회 기능
 	public void balanceCheck() {
-		check = true;
 		System.out.println("[잔액]");
 		int index = searchAccount("잔액조회"); // 계좌확인 메소드 호출
 		
@@ -130,37 +125,32 @@ public class BankManager {
 	}
 	
 	// 이체 기능
-	public void transfer() {
-		check = true;
+	public void transferAccount() {
 		System.out.println("[이체]");
-		System.out.print("본인 계좌번호 >> ");
-		accountNumber = scan.next();
-		System.out.print("입금받을 계좌번호 >> ");
-		String dipositAccountNumber = scan.next();
-		for (int i = 0; i < clientList.length; i++) {
-			for(int j = 0; j < clientList.length; j++) {
-				if (clientList[i] != null && clientList[j] != null ) {
-					if (clientList[i].getAccountNumber().equals(accountNumber) 
-						&& clientList[j].getAccountNumber().equals(dipositAccountNumber)) {
-						System.out.print("입금할 금액 >> ");
-						int money = scan.nextInt();
-						if (clientList[i].getBalance() >= money) {
-							int withrowBalance = clientList[i].getBalance() - money; // 이체금액 차감
-							int depositBalance = clientList[j].getBalance() + money; // 이체금액 증가
-							clientList[i].setBalance(withrowBalance);
-							clientList[j].setBalance(depositBalance);
-							System.out.println("이체되었습니다.");
-						} else {
-							System.out.println("잔액이 부족합니다.");
-						}
-						System.out.println("잔액은 " + clientList[i].getBalance() + "입니다.");
-						check = false;
-					}
+		int sendIndex = searchAccount("계좌이체");
+		if (sendIndex > -1) {
+			int receiveIndex = searchAccount("입금");
+			if (receiveIndex > -1) {
+				System.out.print("이체할 금액 >> ");
+				int money = scan.nextInt();
+				if(clientList[sendIndex].getBalance() >= money) {
+					int sendBalance = clientList[sendIndex].getBalance() - money; // 출금처리
+					clientList[sendIndex].setBalance(sendBalance);
+					int receiveBalance = clientList[receiveIndex].getBalance() + money; // 입금처리
+					clientList[receiveIndex].setBalance(receiveBalance);
+					System.out.println("보내는 계좌 : " + clientList[sendIndex].getAccountNumber());
+					System.out.println("받는 계좌 : " + clientList[receiveIndex].getAccountNumber());
+					System.out.println("이체 금액 : " + money);
+					System.out.println("이체되었습니다.");
+				} else {
+					System.out.println("잔액이 부족합니다.");
 				}
+				System.out.println("잔액은 " + clientList[sendIndex].getBalance() + "원 입니다.");
+			} else {
+				System.out.println("입금받을 계좌번호가 잘못되었습니다.");
 			}
-		}
-		if (check) {
-			System.out.println("없는 계좌번호입니다.");
+		} else {
+			System.out.println("출금할 계좌번호가 잘못되었습니다.");
 		}
 	}
 	

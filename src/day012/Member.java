@@ -36,5 +36,15 @@ public class Member {
 	public void showInfo() {
 		System.out.println("[아이디]" + mid + " [비밀번호]" + mpw + " [이름]" + mname + " [이메일]" + memail);
 	}
+	public Member(String mid, String mpw, String mname, String memail) {
+		super();
+		this.mid = mid;
+		this.mpw = mpw;
+		this.mname = mname;
+		this.memail = memail;
+	}
+	public Member() {
+		
+	}
 	
 }

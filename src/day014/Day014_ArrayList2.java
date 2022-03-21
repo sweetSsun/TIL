@@ -3,6 +3,8 @@ package day014;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import day012.Member;
+
 public class Day014_ArrayList2 {
 
 	public static void main(String[] args) {
@@ -42,12 +44,12 @@ public class Day014_ArrayList2 {
 		member.setMemail("BB@BB");
 		memberList.add(member);
 		
-//		for ( int i = 0; i < memberList.size(); i++ ) {
-//			System.out.println( memberList.get(i).getMid() );
-//			System.out.println( memberList.get(i).getMpw() );
-//			System.out.println( memberList.get(i).getMname() );
-//			System.out.println( memberList.get(i).getMemail() );
-//		}
+		for ( int i = 0; i < memberList.size(); i++ ) {
+			System.out.println( memberList.get(i).getMid() );
+			System.out.println( memberList.get(i).getMpw() );
+			System.out.println( memberList.get(i).getMname() );
+			System.out.println( memberList.get(i).getMemail() );
+		}
 		
 		
 		System.out.println( memberList.get(0).getMid() );

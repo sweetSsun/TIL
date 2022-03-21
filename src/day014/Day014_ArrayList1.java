@@ -40,7 +40,7 @@ public class Day014_ArrayList1 {
 		nameList2.add("PYTHON");
 		nameList2.add("ORACLE");
 		nameList2.add("HTML");
-		nameList2.add("SERVLET");
+		nameList2.add("HTML");
 		System.out.println("nameList2.size() = " + nameList2.size());
 		System.out.println(nameList2.get(0));
 		System.out.println(nameList2.get(1));

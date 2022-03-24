@@ -8,7 +8,7 @@ public class BankManager_ArrayList {
 	Scanner scan = new Scanner(System.in);
 	
 	// 등록된 계좌목록
-	private BankInfo[] clientList = new BankInfo[100];
+//	private BankInfo[] clientList = new BankInfo[100];
 	private ArrayList<BankInfo> clientArrayList = new ArrayList<BankInfo>();
 	
 	private int clientNumber = 1; // 고객번호 변경 변수

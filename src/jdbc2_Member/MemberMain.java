@@ -14,15 +14,19 @@ public class MemberMain {
 			
 			switch(menuSel) {
 			case 1:
-				// 회원가입 메소드 호출
-//				manager.memberJoin();
 				manager.selectMenuOne();
 				break;
 				
 			case 2:
-				// 로그인 메소드 호출
-//				manager.memberLogin();
 				manager.selectMenuTwo();
+				break;
+				
+			case 3:
+				manager.updateMemberInfo();
+				break;
+				
+			case 4:
+				manager.deleteMember();
 				break;
 			
 			case 0:

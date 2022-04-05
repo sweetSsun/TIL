@@ -11,6 +11,7 @@ public class MemberDao {
 	
 	Connection con = null;
 	PreparedStatement pstmt = null;
+	ResultSet rs = null;
 	
 	public static Connection getConnection() throws Exception{
 		Class.forName("oracle.jdbc.OracleDriver");
@@ -29,7 +30,7 @@ public class MemberDao {
 		}
 	}
 
-	// 회원가입(insert)
+	// 회원가입(INSERT)
 	public int memberJoin(Member mb) {
 		int joinResult = 0;
 		String sql = "INSERT INTO MEMBER(MID, MPW, MNAME, MEMAIL) VALUES (?,?,?,?)";
@@ -45,21 +46,18 @@ public class MemberDao {
 		}
 		return joinResult;
 	}
-
-	// 로그인(select)
-	public ArrayList<Member> memberLogin(String loginId, String loginPw) {
-		ArrayList<Member> mbList = new ArrayList<Member>();		
-		String sql = "SELECT * FROM MEMBER WHERE MID = ? AND MPW = ?";
+	
+	// 전체 회원정보 조회(SELECT *)
+	public ArrayList<Member> memberInfo() {
+		String sql = "SELECT * FROM MEMBER";
+		ArrayList<Member> mbList = new ArrayList<Member>();
 		
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, loginId);
-			pstmt.setString(2, loginPw);
-			ResultSet rs = pstmt.executeQuery();			
+			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Member mb = new Member();
 				mb.setMid(rs.getString("MID"));
-				mb.setMpw(rs.getString("MPW"));
 				mb.setMname(rs.getString("MNAME"));
 				mb.setMemail(rs.getString("MEMAIL"));
 				mbList.add(mb);
@@ -69,6 +67,84 @@ public class MemberDao {
 		}
 		return mbList;
 	}
+	
+	// 내정보 조회(SELECT *)
+	public Member myInfo(String loginId) {
+		String sql = "SELECT * FROM MEMBER WHERE MID = ?";
+		Member mb = new Member();
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loginId);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				mb.setMid(rs.getString(1));
+				mb.setMpw(rs.getString(2));
+				mb.setMname(rs.getString(3));
+				mb.setMemail(rs.getString(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mb;
+	}
+
+	// 로그인(SELECT MID)	
+	public String memberLogin(String loginId, String loginPw) {
+		String sql = "SELECT MID FROM MEMBER WHERE MID = ? AND MPW = ?";
+		String mid = null;
+
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loginId);
+			pstmt.setString(2, loginPw);
+			rs = pstmt.executeQuery();	
+			if(rs.next()) {
+				mid = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mid;
+	}
+	
+	
+
+	
+	// 이메일 수정 (UPDATE)
+	public int updateMemail(String loginId, String mpw, String newEmail) {
+		int updateResult = 0;
+		String sql = "UPDATE MEMBER SET MEMAIL = ? WHERE MID = ? AND MPW = ?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setNString(2, loginId);
+			pstmt.setString(3, mpw);
+			pstmt.setString(1, newEmail);
+			updateResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return updateResult;
+	}
+
+	// 회원탈퇴(DELETE)
+	public int deleteMember(String loginId, String mpw) {
+		int deleteResult = 0;
+		String sql = "DELETE FROM MEMBER WHERE MID = ? AND MPW = ?";
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loginId);
+			pstmt.setString(2, mpw);
+			deleteResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return deleteResult;
+	}
+
+	
 	
 	
 	

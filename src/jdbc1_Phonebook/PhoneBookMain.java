@@ -1,4 +1,4 @@
-package jdbc_Phonebook;
+package jdbc1_Phonebook;
 
 public class PhoneBookMain {
 

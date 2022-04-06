@@ -18,29 +18,29 @@ public class BankMain {
 				break;
 				
 			case 2: //입금
+				manager.deposit();
 				break;
 				
 			case 3: //출금
+				manager.withdraw();
 				break;
 				
 			case 4: //조회
+				manager.checkBalance();
 				break;
 				
 			case 5: //이체
+				manager.transferAccount();
 				break;
 				
 			case 6: //고객리스트
+				manager.clientList();
 				break;
 				
 			case 0: //종료
 				run = false;
 				break;
-				
 			}
 		}
-			
-		
-		
 	}
-
 }

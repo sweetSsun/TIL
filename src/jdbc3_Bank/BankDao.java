@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class BankDao {
 	
@@ -80,7 +81,76 @@ public class BankDao {
 		return insertResult;
 	}
 
+	// 고객리스트 출력 기능
+	public ArrayList<BankInfo> selectClientList() {
+		String sql = "SELECT * FROM BANKINFO ORDER BY CLIENTNUMBER";
+		ArrayList<BankInfo> clientList = new ArrayList<BankInfo>();
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BankInfo client = new BankInfo();
+				client.setClientNumber(rs.getInt("CLIENTNUMBER"));
+				client.setClientName(rs.getString("CLIENTNAME"));
+				client.setAccountNumber(rs.getString("ACCOUNTNUMBER"));
+				client.setBalance(rs.getInt("BALANCE"));
+				clientList.add(client);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return clientList;
+	}
 
+	// 계좌번호 유무 확인 기능
+	public BankInfo checkAccount(String accountNumber) {
+		String sql = "SELECT * FROM BANKINFO WHERE ACCOUNTNUMBER = ?";
+		BankInfo client = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, accountNumber);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				client = new BankInfo();
+				client.setClientNumber(rs.getInt(1));
+				client.setClientName(rs.getString(2));
+				client.setAccountNumber(rs.getString(3));
+				client.setBalance(rs.getInt(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return client;
+	}
 
+	// 입금 기능
+	public int updateDeposit(BankInfo client, int deposit) {
+		String sql = "UPDATE BANKINFO SET BALANCE = ? WHERE ACCOUNTNUMBER = ?";
+		int depositResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, client.getBalance() + deposit);
+			pstmt.setString(2, client.getAccountNumber());
+			depositResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return depositResult;
+	}
+
+	// 출금 기능
+	public int updateWithdraw(BankInfo client, int withdraw) {
+		String sql = "UPDATE BANKINFO SET BALANCE = ? WHERE ACCOUNTNUMBER = ?";
+		int withdrawResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, client.getBalance() - withdraw);
+			pstmt.setString(2, client.getAccountNumber());
+			withdrawResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return withdrawResult;
+	}
 
 }

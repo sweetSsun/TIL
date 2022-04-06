@@ -142,25 +142,29 @@ public class BankManager {
 	public void transferAccount() {
 		System.out.println("[이체]");
 		System.out.print("이체할 계좌번호 >> ");
-		String sendAccount = scan.next();
-		BankInfo sendClient = bdao.checkAccount(sendAccount);
-		System.out.print("이체받을 계좌번호 >> ");
-		String receiveAccount = scan.next();
-		BankInfo receiveClient = bdao.checkAccount(receiveAccount);
-		if (sendClient != null && receiveClient != null) {
-			System.out.print("이체할 금액 >> ");
-			int money = scan.nextInt();
-			int balance = sendClient.getBalance();
-			if (balance >= money ) {
-				int sendResult = bdao.updateWithdraw(sendClient, money);
-				int receiveResult = bdao.updateDeposit(receiveClient, money);
-				balance = balance - money;
-				System.out.println("이체되었습니다.");
-			} else {
-				System.out.println("잔액이 부족합니다");
+		String accountNumber = scan.next();
+		BankInfo sendClient = bdao.checkAccount(accountNumber);
+		if (sendClient != null) {
+			System.out.print("이체받을 계좌번호 >> ");
+			accountNumber = scan.next();
+			BankInfo receiveClient = bdao.checkAccount(accountNumber);
+			if (receiveClient != null) {
+				System.out.print("이체할 금액 >> ");
+				int money = scan.nextInt();
+				int balance = sendClient.getBalance();
+				if (balance >= money ) { //이체금액과 잔액 비교
+					bdao.updateWithdraw(sendClient, money);
+					bdao.updateDeposit(receiveClient, money);
+					balance = balance - money;
+					System.out.println("이체되었습니다.");
+				} else {
+					System.out.println("잔액이 부족합니다");
+				}
+				System.out.println("현재 잔액은 " + balance + "원 입니다.");
+			} else { // 받는 계좌번호가 없음
+				System.out.print("없는 계좌번호입니다.");
 			}
-			System.out.println("현재 잔액은 " + balance + "원 입니다.");
-		} else {
+		} else { // 보내는 계좌번호가 없음
 			System.out.print("없는 계좌번호입니다.");
 		}
 	}

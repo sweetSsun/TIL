@@ -152,5 +152,28 @@ public class BankDao {
 		}
 		return withdrawResult;
 	}
+	
+	// 입출금 기능을 합친 것 (입금 check1, 출금 check0)
+	public int update(BankInfo client, int money, int check) {
+		String sql1 = "UPDATE BANKINFO SET BALANCE = BALANCE + ? WHERE ACCOUNTNUMBER = ?";
+		String sql2 = "UPDATE BANKINFO SET BALANCE = BALANCE - ? WHERE ACCOUNTNUMBER = ?";
+		int updateResult = 0;
+		try {
+			if (check == 1) {
+				pstmt = con.prepareStatement(sql1);
+				pstmt.setInt(1, money);
+				pstmt.setString(2, client.getAccountNumber());
+				updateResult = pstmt.executeUpdate();
+			} else {
+				pstmt = con.prepareStatement(sql2);
+				pstmt.setInt(1, money);
+				pstmt.setString(2, client.getAccountNumber());
+				updateResult = pstmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return updateResult;
+	}
 
 }

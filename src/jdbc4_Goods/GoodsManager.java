@@ -18,7 +18,7 @@ public class GoodsManager {
 		5. 고객관리
 		 */
 		System.out.println("\n===========================================================");
-		System.out.println("1.상품등록 | 2.상품목록 | 3.상품수정 | 4.상품삭제 | 5.고객관리 | 0.종료");
+		System.out.println("1.상품등록 | 2.상품목록 | 3.상품수정 | 4.판매관리 | 5.고객관리 | 0.종료");
 		System.out.println("===========================================================");
 		System.out.print("메뉴선택 >> ");
 	}
@@ -41,7 +41,7 @@ public class GoodsManager {
 		int gamount = scan.nextInt();
 		
 		// Goods 테이블의 gtyp 컬럼의 데이터 목록에서 선택
-		ArrayList<String> gtypeList = gdao.selectGtypeList();
+		ArrayList<String> gtypeList = gdao.getGtypeList();
 		System.out.println("상품 종류 목록");
 		for(int i = 0; i < gtypeList.size(); i++ ) {
 			System.out.println("[" + i + "]" + gtypeList.get(i) + " ");
@@ -82,15 +82,104 @@ public class GoodsManager {
 		[상품번호] [상품이름] [상품가격] [상품수량] [상품종류]
 		 */
 		System.out.println("[상품목록]");
-		ArrayList<Goods> goodsList = gdao.selectGoodsList();
+		ArrayList<Goods> goodsList = gdao.getGoodsList();
 		for (int i = 0; i < goodsList.size(); i++) {
 			System.out.print("[상품번호] " + goodsList.get(i).getGnum());
 			System.out.print(" [상품이름] " + goodsList.get(i).getGname());
 			System.out.print(" [상품가격] " + goodsList.get(i).getGprice());
 			System.out.print(" [상품수량] " + goodsList.get(i).getGamount());
-			System.out.println(" [상품종류] " + goodsList.get(i).getGtype());
+			System.out.print(" [상품종류] " + goodsList.get(i).getGtype());
+			System.out.println(" [판매상태] " + goodsList.get(i).getGstate());
 		}
 	}
+	
+	public void modifyGoods() {
+		/*
+	 	 상품 수정
+	 	 1.수정할 상품 조회
+	 	 2.세부 메뉴 출력 >> 1.가격수정 | 2.재고수정
+		 */
+		System.out.println("[상품수정]");
+		ArrayList<Goods> goodsList = gdao.getGoodsList();
+		for (int i = 0; i < goodsList.size(); i++) { // 상품목록 출력
+			System.out.println("[" + goodsList.get(i).getGnum() + "]" + goodsList.get(i).getGname());
+		}
+		System.out.print("수정할 상품번호 선택 >> ");
+		int gnum = scan.nextInt();
+		
+		Goods goods = gdao.selectGoods(gnum); //상품 상세정보 조회
+		if (goods != null) {
+			System.out.println("[" + goods.getGnum() + "]" + goods.getGname());
+			System.out.println("가격 : " + goods.getGprice() + ", 수량 : " + goods.getGamount()); 
+			System.out.print("1.가격수정 | 2.재고수정 >> ");
+			int menuSel = scan.nextInt();
+			switch (menuSel) {
+			case 1:
+				System.out.print("수정할 가격 >> ");
+				int modifyPrice = scan.nextInt();
+				goods.setGprice(modifyPrice);
+				break;
+			case 2:
+				System.out.print("수정할 수량 >> ");
+				int modifyAmount = scan.nextInt();
+				goods.setGamount(modifyAmount);
+				break;
+			default :
+				System.out.println("잘못 선택하였습니다.");
+				return;
+			}
+			int modifyResult = gdao.updateGoodsInfo(goods);
+			if(modifyResult > 0) {
+				System.out.println("수정되었습니다.");
+			} else {
+				System.out.println("상품 수정에 실패했습니다.");
+			}
+		} else {
+			System.out.println("없는 상품 번호입니다.");
+		}
+	}
+
+	public void modifyGstate() {
+		/*
+		 상품상태 변경 판매/중지
+		 1. 변경할 상품 조회
+		 2. 변경할 상품 선택 > 자동 변경
+		 */
+		System.out.println("[판매관리]");
+		ArrayList<Goods> goodsList = gdao.getGoodsList();
+		for (int i = 0; i < goodsList.size(); i++) { // 상품목록 출력
+			System.out.print("[" + goodsList.get(i).getGnum() + "]" + goodsList.get(i).getGname()
+					+ "  ");
+			if (goodsList.get(i).getGstate() == 1) {
+				System.out.println("[상태]판매가능");
+			} else {
+				System.out.println("[상태]판매중지");
+			}
+		}		
+		System.out.print("판매상태 변경할 상품선택 >> ");
+		int gnum = scan.nextInt();
+		Goods goods = gdao.selectGoods(gnum);
+		if (goods != null) {
+			int stateResult = gdao.modifyGstate(goods.getGnum(), goods.getGstate());
+			if (stateResult > 0) {
+				System.out.print(goods.getGname() + "의 판매상태가 ");
+				if(goods.getGstate() == 1) {
+					System.out.println("판매중지로 변경되었습니다.");
+				} else {
+					System.out.println("판매가능으로 변경되었습니다.");
+				}
+			} else {
+				System.out.println("상태 변경에 실패했습니다.");
+			}
+		} else {
+			System.out.println("없는 상품 번호입니다.");
+		}
+	}
+	
+	
+	
+	
+	
 	
 	
 	

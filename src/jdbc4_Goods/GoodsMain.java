@@ -22,9 +22,11 @@ public class GoodsMain {
 				break;
 				
 			case 3: //상품수정
+				manager.modifyGoods();
 				break;
 				
 			case 4: //상품삭제
+				manager.modifyGstate();
 				break;
 				
 			case 5: //고객관리

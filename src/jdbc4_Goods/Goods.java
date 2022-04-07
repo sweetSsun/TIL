@@ -14,7 +14,14 @@ public class Goods {
 	private int gprice;		//상품가격
 	private int gamount;	//상품수량
 	private String gtype;	//상품종류
+	private int gstate;		//상품상태 1:판매가능, 0:판매중지
 	
+	public int getGstate() {
+		return gstate;
+	}
+	public void setGstate(int gstate) {
+		this.gstate = gstate;
+	}
 	public int getGnum() {
 		return gnum;
 	}

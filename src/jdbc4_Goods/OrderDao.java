@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class OrderDao {
 	
@@ -69,29 +70,121 @@ public class OrderDao {
 
 	// 내정보 기능
 	public Members getMyInfo(String loginId) {
-		String sql = "SELECT * FROM MEMBERS WHERE MID = ?";
-		Members memberInfo = null;
+		String sql = "SELECT MID, MNAME, TO_CHAR(MBIRTH,'YYYY/MM/DD'), MGENDER, MTEL, MADDR"
+				+ " FROM MEMBERS WHERE MID = ?";
+		Members member = null;
 		
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, loginId);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				memberInfo = new Members();
-				memberInfo.setMid(rs.getString(1));
-				memberInfo.setMname(rs.getString("MNAME"));
-				memberInfo.setMbirth(rs.getString("MBIRTH"));
-				memberInfo.setMgender(rs.getString("MGENDER"));
-				memberInfo.setMtel(rs.getString("MTEL"));
-				memberInfo.setMaddr(rs.getString("MADDR"));
+				member = new Members();
+				member.setMid(rs.getString(1));
+				member.setMname(rs.getString("MNAME"));
+				member.setMbirth(rs.getString("TO_CHAR(MBIRTH,'YYYY/MM/DD')"));
+				member.setMgender(rs.getString("MGENDER"));
+				member.setMtel(rs.getString("MTEL"));
+				member.setMaddr(rs.getString("MADDR"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return memberInfo;
+		return member;
+	}
+	
+	// 판매중인 상품 목록 SELECT
+	public ArrayList<Goods> saleGoodsList() {
+		String sql = "SELECT GNUM, GNAME FROM GOODS"
+				+ " WHERE GSTATE = 1 AND GAMOUNT > 0 ORDER BY GNUM";
+		ArrayList<Goods> goodsList = new ArrayList<Goods>();
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Goods goodInfo = new Goods();
+				goodInfo.setGnum(rs.getInt(1));
+				goodInfo.setGname(rs.getString(2));
+				goodsList.add(goodInfo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return goodsList;
 	}
 
+	// 주문코드 자동생성
+	public String getMaxOdnum() {
+		String sql = "SELECT NVL( MAX(ODCODE), 'OD000' ) FROM ORDERINFO";
+		String maxOdcode = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				maxOdcode = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maxOdcode;
+	}
+	
+	// 주문정보 ORDERINFO에 INSERT
+	public int insertOrderInfo(OrderInfo odInfo) {
+		String sql = "INSERT INTO ORDERINFO(ODCODE, ODGNUM, ODAMOUNT, ODMID, ODDATE)"
+				+ "VALUES (?,?,?,?,SYSDATE)";
+		int insertResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, odInfo.getOdcode());
+			pstmt.setInt(2, odInfo.getOdgnum());
+			pstmt.setInt(3, odInfo.getOdamount());
+			pstmt.setString(4, odInfo.getOdmid());
+			insertResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return insertResult;
+	}
 
+	// 로그인 된 아이디로 주문내역 확인
+	public ArrayList<OrderInfo> getMyOrderList(String loginId) {
+		String sql = "SELECT * FROM ORDERINFO WHERE ODMID = ?";
+		ArrayList<OrderInfo> odList = new ArrayList<OrderInfo>();
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loginId);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				OrderInfo order = new OrderInfo();
+				order.setOdcode(rs.getString(1));
+				order.setOdgnum(rs.getInt(2));
+				order.setOdamount(rs.getInt(3));
+				order.setOdmid(rs.getString(4));
+				order.setOddate(rs.getString(5));
+				odList.add(order);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return odList;
+	}
+
+	// 상품 재고 수정
+	public int updateGoodsAmount(OrderInfo odInfo) {
+		String sql = "UPDATE GOODS SET GAMOUNT = GAMOUNT - ? WHERE GNUM =?";
+		int updateResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, odInfo.getOdamount());
+			pstmt.setInt(2, odInfo.getOdgnum());
+			updateResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return updateResult;
+	}
+	
 	
 	
 

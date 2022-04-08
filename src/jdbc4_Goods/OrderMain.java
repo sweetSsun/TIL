@@ -29,6 +29,21 @@ public class OrderMain {
 				}
 				break;
 				
+			case 3:
+				if (manager.loginId.equals("")) {
+					
+				} else {
+					manager.goodsOrder();
+				}
+				break;
+				
+			case 4:
+				if (manager.loginId.equals("")) {
+					
+				} else {
+					manager.orderList();
+				}
+				break;
 				
 			case 0:
 				run = false;

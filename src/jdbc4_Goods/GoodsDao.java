@@ -172,6 +172,7 @@ public class GoodsDao {
 		return updateResult;
 	}
 
+	// 상품상태 변경
 	public int modifyGstate(int gnum, int gstate) {
 		String sql = "UPDATE GOODS SET GSTATE = ? WHERE GNUM = ?";
 		int updateResult = 0;

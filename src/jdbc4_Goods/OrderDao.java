@@ -12,7 +12,7 @@ public class OrderDao {
 	public static Connection getConnection() throws Exception{
 		Class.forName("oracle.jdbc.OracleDriver");
 		Connection con = DriverManager.getConnection
-				("jdbc:oracle:thin:@//localhost:1521/xe","KJS2","1111"); 
+				("jdbc:oracle:thin:@//121.65.47.77:7777/xe","KJS_ORDER","1111"); 
 		return con;
 	}
 	
@@ -146,30 +146,7 @@ public class OrderDao {
 		}		
 		return insertResult;
 	}
-
-	// 로그인 된 아이디로 주문내역 확인
-	public ArrayList<OrderInfo> getMyOrderList(String loginId) {
-		String sql = "SELECT * FROM ORDERINFO WHERE ODMID = ?";
-		ArrayList<OrderInfo> odList = new ArrayList<OrderInfo>();
-		try {
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, loginId);
-			rs = pstmt.executeQuery();
-			while(rs.next()) {
-				OrderInfo order = new OrderInfo();
-				order.setOdcode(rs.getString(1));
-				order.setOdgnum(rs.getInt(2));
-				order.setOdamount(rs.getInt(3));
-				order.setOdmid(rs.getString(4));
-				order.setOddate(rs.getString(5));
-				odList.add(order);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return odList;
-	}
-
+	
 	// 상품 재고 수정
 	public int updateGoodsAmount(OrderInfo odInfo) {
 		String sql = "UPDATE GOODS SET GAMOUNT = GAMOUNT - ? WHERE GNUM =?";
@@ -185,6 +162,34 @@ public class OrderDao {
 		return updateResult;
 	}
 	
+	// 로그인 된 아이디로 주문내역 확인
+	public ArrayList<MyOrder> getMyOrderList(String loginId) {
+		String sql = "SELECT O.ODCODE, G.GNAME, G.GPRICE, O.ODAMOUNT, TO_CHAR(O.ODDATE,'YY/MM/DD HH24:MI')"
+				+ " FROM ORDERINFO O, GOODS G"
+				+ " WHERE O.ODGNUM = G.GNUM AND O.ODMID = ?";
+		ArrayList<MyOrder> myOdList = new ArrayList<MyOrder>();
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loginId);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MyOrder myOd = new MyOrder();
+				myOd.setOdcode(rs.getString(1));
+				myOd.setGname(rs.getString(2));
+				myOd.setGprice(rs.getInt(3));
+				myOd.setOdamount(rs.getInt(4));
+				myOd.setOddate(rs.getString(5));
+				myOdList.add(myOd);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return myOdList;
+	}
+	
+
+
 	
 	
 

@@ -125,24 +125,30 @@ public class OrderManager {
 		ArrayList<Goods> goodsList = new ArrayList<Goods>();
 		goodsList = oddao.saleGoodsList(); // 판매중인 상품 목록 조회
 		System.out.println("상품 목록");
+		
+		if(goodsList.size() < 0) { // 상품목록이 없을 때는 주문 코드가 실행되지 않고 끝내기
+			System.out.println("판매 중인 상품이 없습니다.");
+			return;
+		}
+		
 		for (int i = 0; i < goodsList.size(); i++) {
 			System.out.println("[" + goodsList.get(i).getGnum() + "]" + goodsList.get(i).getGname());
 		}
 		System.out.print("상품번호 선택 >> ");
 		int selGnum = scan.nextInt();
-		for(int i = 0; i < goodsList.size(); i++) {  
-			if (goodsList.get(i).getGnum() == selGnum) { //출력된 상품번호 중에서 선택해야 진행
+		for (int i = 0; i < goodsList.size(); i++) {
+			if (goodsList.get(i).getGnum() == selGnum) { // 출력된 상품번호 중에서 선택해야 진행
 				Goods goodInfo = gdao.selectGoods(selGnum);
 				System.out.print("[" + goodInfo.getGnum() + "]" + goodInfo.getGname() + " ");
 				System.out.print(goodInfo.getGprice() + "원");
 				System.out.println(" [현재 재고" + goodInfo.getGamount() + "개]");
 				System.out.print("주문하시겠습니까? (1.예 | 2.아니오) >> ");
 				int orderConfirm = scan.nextInt();
-				if(orderConfirm == 1) { // 주문
+				if (orderConfirm == 1) { // 주문
 					System.out.print("주문수량 >> ");
 					int orderAmount = scan.nextInt();
-					if (goodInfo.getGamount() >= orderAmount) { //주문수량과 재고 비교
-						//주문코드 자동생성
+					if (goodInfo.getGamount() >= orderAmount) { // 주문수량과 재고 비교
+						// 주문코드 자동생성
 						String maxOdcode = oddao.getMaxOdnum();
 						maxOdcode = maxOdcode.substring(2);
 						String odcode = "OD";
@@ -154,7 +160,7 @@ public class OrderManager {
 						} else {
 							odcode = odcode + codeNum;
 						}
-						//ORDERINFO 테이블에 주문정보 저장
+						// ORDERINFO 테이블에 주문정보 저장
 						OrderInfo odInfo = new OrderInfo();
 						odInfo.setOdcode(odcode);
 						odInfo.setOdgnum(selGnum);
@@ -162,7 +168,7 @@ public class OrderManager {
 						odInfo.setOdmid(loginId);
 						int insertResult = oddao.insertOrderInfo(odInfo);
 						if (insertResult > 0) {
-							//GOODS 테이블에 상품수량 수정
+							// GOODS 테이블에 상품수량 수정
 							oddao.updateGoodsAmount(odInfo);
 							System.out.println(goodInfo.getGname() + ", " + orderAmount + "개 주문되었습니다.");
 							System.out.println("총 가격은 " + (goodInfo.getGprice() * orderAmount) + "원 입니다.");
@@ -172,7 +178,7 @@ public class OrderManager {
 					} else {
 						System.out.println("재고가 부족합니다.");
 					}
-				} else { //주문취소
+				} else { // 주문취소
 					System.out.println("주문이 취소되었습니다.");
 				}
 			}
@@ -182,18 +188,27 @@ public class OrderManager {
 	//상품주문 내역
 	public void orderList() {
 		System.out.println("[주문내역]");
-		ArrayList<OrderInfo> odList = oddao.getMyOrderList(loginId);
-		if(odList.size() > 0) {
-			for (int i = 0; i < odList.size(); i++) {
-				System.out.print("주문코드:" + odList.get(i).getOdcode());
-				System.out.print("  상품번호:" + odList.get(i).getOdgnum());
-				System.out.print("  주문수량:" + odList.get(i).getOdamount());
-				System.out.println("  주문일:" + odList.get(i).getOddate());
-			}
+		ArrayList<MyOrder> myOdList = oddao.getMyOrderList(loginId);
+		if(myOdList.size() <= 0) {
+			System.out.println("주문내역이 없습니다.");
 		} else {
-			System.out.println("주문정보가 없습니다.");
+			for (int i = 0; i < myOdList.size(); i++) {
+				System.out.print("[" + i + "]");
+				System.out.print(" [주문코드]" + myOdList.get(i).getOdcode());
+				System.out.print(" [상품명]" + myOdList.get(i).getGname());
+				System.out.print(" [상품가격]" + myOdList.get(i).getGprice());
+				System.out.print(" [주문수량]" + myOdList.get(i).getOdamount());
+				System.out.println(" [주문일]" + myOdList.get(i).getOddate());
+			}
+			// 주문취소
+			System.out.print("선택 >> ");
+			int menuSel = scan.nextInt();
+			
+			System.out.println("선택한 주문코드 : " + myOdList.get(menuSel).getOdcode());
 		}
 	}
+	
+	
 	
 
 	

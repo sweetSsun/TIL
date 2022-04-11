@@ -17,9 +17,9 @@ public class GoodsManager {
 		4. 상품삭제
 		5. 고객관리
 		 */
-		System.out.println("\n===========================================================");
-		System.out.println("1.상품등록 | 2.상품목록 | 3.상품수정 | 4.판매관리 | 5.고객관리 | 0.종료");
-		System.out.println("===========================================================");
+		System.out.println("\n=====================================================================");
+		System.out.println("1.상품등록 | 2.상품목록 | 3.상품수정 | 4.판매관리 | 5.고객관리1 | 6.고객관리2 | 0.종료");
+		System.out.println("=====================================================================");
 		System.out.print("메뉴선택 >> ");
 	}
 
@@ -40,7 +40,7 @@ public class GoodsManager {
 		System.out.print("상품수량 >> ");
 		int gamount = scan.nextInt();
 		
-		// Goods 테이블의 gtyp 컬럼의 데이터 목록에서 선택
+		// Goods 테이블의 gtype 컬럼의 데이터 목록에서 선택
 		ArrayList<String> gtypeList = gdao.getGtypeList();
 		System.out.println("상품 종류 목록");
 		for(int i = 0; i < gtypeList.size(); i++ ) {
@@ -176,6 +176,37 @@ public class GoodsManager {
 		}
 	}
 	
+	/*
+	 아이디 : AAA, 비밀번호 : 1111, 이름 : aaa.... 주문수 : 1, 주문총액 : 1300000원
+	 */
+	public void memberList1() {
+		/*
+		 고객관리1 (간단한 쿼리문, 복잡한 코드)
+		 1. Members 테이블에서 회원정보를 조회 - ArrayList<Memebers> memberList
+		 
+		 */
+		System.out.println("[고객관리1]");
+		ArrayList<Members> memberList = gdao.getMembers();
+		for (int i = 0; i < memberList.size(); i++) {
+			// memberList 조회
+			System.out.print("[아이디]" + memberList.get(i).getMid());
+			System.out.print(" [비밀번호]" + memberList.get(i).getMpw());
+			System.out.print(" [이름]" + memberList.get(i).getMname());
+			System.out.print(" [생년월일]" + memberList.get(i).getMbirth());
+			System.out.print(" [성별]" + memberList.get(i).getMgender());
+			System.out.print(" [전화번호]" + memberList.get(i).getMtel());
+			System.out.print(" [주소]" + memberList.get(i).getMaddr());
+			
+			String mid = memberList.get(i).getMid();
+			// 주문정보 조회
+			int odcount = gdao.getOrderCount(mid);
+			System.out.print(" [주문수]" + odcount);
+			int totalPrice = gdao.getTotalPrice(mid);
+			System.out.println(" [주문총액]" + totalPrice);
+		}
+	}
+	
+	// 최적화를 위해서는 복잡한 쿼리문으로 DB에 한번만 접근하는게 좋음
 	
 	
 	

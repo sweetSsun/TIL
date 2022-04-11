@@ -148,14 +148,22 @@ public class OrderDao {
 	}
 	
 	// 상품 재고 수정
-	public int updateGoodsAmount(OrderInfo odInfo) {
-		String sql = "UPDATE GOODS SET GAMOUNT = GAMOUNT - ? WHERE GNUM =?";
+	public int updateGoodsAmount(int gnum, int orderAmount, String Operation) {
+		String minusSql = "UPDATE GOODS SET GAMOUNT = GAMOUNT - ? WHERE GNUM =?";
+		String plusSql = "UPDATE GOODS SET GAMOUNT = GAMOUNT + ? WHERE GNUM =?";
 		int updateResult = 0;
 		try {
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, odInfo.getOdamount());
-			pstmt.setInt(2, odInfo.getOdgnum());
-			updateResult = pstmt.executeUpdate();
+			if(Operation.equals("minus")) {
+				pstmt = con.prepareStatement(minusSql);
+				pstmt.setInt(1, orderAmount);
+				pstmt.setInt(2, gnum);
+				updateResult = pstmt.executeUpdate();
+			} else {
+				pstmt = con.prepareStatement(plusSql);
+				pstmt.setInt(1, orderAmount);
+				pstmt.setInt(2, gnum);
+				updateResult = pstmt.executeUpdate();
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		
@@ -184,13 +192,45 @@ public class OrderDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		return myOdList;
 	}
 	
-
-
+	// 주문취소
+	public int deleteOrderList(String odcode) {
+		String sql = "DELETE ORDERINFO WHERE ODCODE = ?"; 
+		int deleteResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, odcode);
+			deleteResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return deleteResult;
+	}
 	
-	
+	// 주문번호 찾기
+	public OrderInfo getOrderInfo(String odcode) {
+		String sql = "SELECT ODGNUM, ODAMOUNT FROM ORDERINFO WHERE ODCODE = ?";
+		OrderInfo odInfo = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, odcode);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				odInfo = new OrderInfo();
+				odInfo.setOdgnum(rs.getInt(1));
+				odInfo.setOdamount(rs.getInt(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return odInfo;
+	}
+
+//	String totalSql = "SELECT SUM(O.ODAMOUNT*G.GPRICE), COUNT(*)"
+//			+ " FROM ORDERINFO O, GOODS G"
+//			+ " WHERE O.ODGNUM = G.GNUM AND O.ODMID = ?"
+//			+ " GROUP BY O.ODAMOUNT, G.GPRICE";
 
 }

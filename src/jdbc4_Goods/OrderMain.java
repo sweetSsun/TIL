@@ -38,10 +38,14 @@ public class OrderMain {
 				break;
 				
 			case 4:
+				manager.orderList();
+				break;
+				
+			case 5:
 				if (manager.loginId.equals("")) {
 					
 				} else {
-					manager.orderList();
+					manager.orderCancel();
 				}
 				break;
 				

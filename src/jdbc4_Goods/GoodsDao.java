@@ -192,6 +192,67 @@ public class GoodsDao {
 		return updateResult;
 	}
 
+	// 고객정보 리스트
+	public ArrayList<Members> getMembers() {
+		String sql = "SELECT MID, MPW, MNAME, TO_CHAR(MBIRTH,'YYYY/MM/DD'),"
+				+ " MGENDER, MTEL, MADDR FROM MEMBERS";
+		ArrayList<Members> memberList = new ArrayList<Members>();
+		Members member = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				member = new Members();
+				member.setMid(rs.getNString(1));
+				member.setMpw(rs.getNString(2));
+				member.setMname(rs.getNString(3));
+				member.setMbirth(rs.getNString(4));
+				member.setMgender(rs.getNString(5));
+				member.setMtel(rs.getNString(6));
+				member.setMaddr(rs.getNString(7));
+				memberList.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return memberList;
+	}
+
+	// 해당 고객의 주문수
+	public int getOrderCount(String mid) {
+		String sql = "SELECT COUNT(*) FROM ORDERINFO WHERE ODMID = ?";
+		int odcount = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				odcount = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return odcount;
+	}
+
+	// 해당 고객의 주문총액
+	public int getTotalPrice(String mid) {
+		String sql = "SELECT NVL( SUM(O.ODAMOUNT * G.GPRICE),0 ) FROM ORDERINFO O, GOODS G"
+				+ " WHERE O.ODGNUM = G.GNUM AND ODMID = ?";
+		int totalPrice = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				totalPrice = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return totalPrice;
+	}
+
 	
 	
 

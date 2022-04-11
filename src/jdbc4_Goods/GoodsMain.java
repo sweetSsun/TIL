@@ -29,7 +29,11 @@ public class GoodsMain {
 				manager.modifyGstate();
 				break;
 				
-			case 5: //고객관리
+			case 5: //고객관리1
+				manager.memberList1();
+				break;
+				
+			case 6: //고객관리2
 				break;
 				
 			case 0: //종료

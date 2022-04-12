@@ -8,11 +8,36 @@ public class RreservationMain {
 		boolean run = true;
 		
 		while(run) {
+			manager.showMenu();
 			int menuSel = manager.scan.nextInt();
 			
 			switch(menuSel) {
+			case 1:
+				if (manager.loginId.equals("")) {
+					manager.memberJoin();
+				} else {
+					manager.moviesList();
+				}
+				break;
+				
+			case 2:
+				if (manager.loginId.equals("")) {
+					manager.memberLogin();
+				} else {
+					manager.theatersList();
+				}
+				break;
+			
+			case 6:
+				manager.searchMovie();
+				break;
+			
 			case 0:
-				run = false;
+				if (manager.loginId.equals("")) {
+					run = false;
+				} else {
+					manager.memberLogout();
+				}
 				break;
 			}
 		}

@@ -181,9 +181,11 @@ public class GoodsManager {
 	 */
 	public void memberList1() {
 		/*
-		 고객관리1 (간단한 쿼리문, 복잡한 코드)
+		 고객관리1 (간단한 쿼리문 x3, 복잡한 코드)
 		 1. Members 테이블에서 회원정보를 조회 - ArrayList<Memebers> memberList
-		 
+		 2. memberList에 담긴 mid를 이용하여 주문수 조회
+		 3. memberList에 담긴 mid를 이용하여 주문총액 조회
+		 4. for문을 통해 모두 출력
 		 */
 		System.out.println("[고객관리1]");
 		ArrayList<Members> memberList = gdao.getMembers();
@@ -207,7 +209,24 @@ public class GoodsManager {
 	}
 	
 	// 최적화를 위해서는 복잡한 쿼리문으로 DB에 한번만 접근하는게 좋음
-	
+	public void memberList2() {
+		/*
+		 고객관리2 (복잡한 쿼리문 x1, 간단한 코드)
+		 */
+		System.out.println("[고객관리2]");
+		ArrayList<Members> memberList = gdao.getMembers2();
+		for (int i = 0; i < memberList.size(); i++) {
+			System.out.print("[아이디]" + memberList.get(i).getMid());
+			System.out.print(" [비밀번호]" + memberList.get(i).getMpw());
+			System.out.print(" [이름]" + memberList.get(i).getMname());
+			System.out.print(" [생년월일]" + memberList.get(i).getMbirth());
+			System.out.print(" [성별]" + memberList.get(i).getMgender());
+			System.out.print(" [전화번호]" + memberList.get(i).getMtel());
+			System.out.print(" [주소]" + memberList.get(i).getMaddr());
+			System.out.print(" [주문수]" + memberList.get(i).getOdcount());
+			System.out.println(" [주문총액]" + memberList.get(i).getTotalPrice());
+		}
+	}
 	
 	
 	

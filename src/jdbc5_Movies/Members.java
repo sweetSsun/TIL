@@ -1,4 +1,4 @@
-package jdbc4_Goods;
+package jdbc5_Movies;
 
 public class Members {
 
@@ -9,24 +9,6 @@ public class Members {
 	private String mgender; //성별
 	private String mtel;	//전화번호
 	private String maddr;	//주소
-	
-	private int odcount;	//주문수
-	private int totalPrice; //주문총액
-	
-	
-	public int getOdcount() {
-		return odcount;
-	}
-	public void setOdcount(int odcount) {
-		this.odcount = odcount;
-	}
-	public int getTotalPrice() {
-		return totalPrice;
-	}
-	public void setTotalPrice(int totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-	
 	
 	public String getMid() {
 		return mid;
@@ -70,5 +52,6 @@ public class Members {
 	public void setMaddr(String maddr) {
 		this.maddr = maddr;
 	}
+	
 	
 }

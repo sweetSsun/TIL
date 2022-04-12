@@ -253,6 +253,39 @@ public class GoodsDao {
 		return totalPrice;
 	}
 
+	// 고객정보 리스트 + 주문수 + 주문총액
+	public ArrayList<Members> getMembers2() {
+		String sql = "SELECT M.*, NVL(ODG.ODCOUNT,0) AS ODCOUNT, NVL(ODG.TOTALPRICE,0) AS TOTALPRICE"
+				+ " FROM MEMBERS M LEFT OUTER JOIN"
+				+ "    (SELECT OD.ODMID, SUM((G.GPRICE*OD.ODAMOUNT)) AS TOTALPRICE, COUNT(*) AS ODCOUNT"
+				+ "    FROM ORDERINFO OD, GOODS G"
+				+ "    WHERE OD.ODGNUM = G.GNUM"
+				+ "    GROUP BY ODMID) ODG"
+				+ " ON M.MID = ODG.ODMID"
+				+ " ORDER BY NVL(ODG.TOTALPRICE,0) DESC";
+		ArrayList<Members> memberList = new ArrayList<Members>();
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Members member = new Members();
+				member.setMid(rs.getString(1));
+				member.setMpw(rs.getString(2));
+				member.setMname(rs.getString(3));
+				member.setMbirth(rs.getString(4));
+				member.setMgender(rs.getString(5));
+				member.setMtel(rs.getString(6));
+				member.setMaddr(rs.getString(7));
+				member.setOdcount(rs.getInt(8));
+				member.setTotalPrice(rs.getInt(9));
+				memberList.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return memberList;
+	}
+
 	
 	
 

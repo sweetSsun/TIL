@@ -34,6 +34,7 @@ public class GoodsMain {
 				break;
 				
 			case 6: //고객관리2
+				manager.memberList2();
 				break;
 				
 			case 0: //종료

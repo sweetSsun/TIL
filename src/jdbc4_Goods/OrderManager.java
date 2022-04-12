@@ -219,8 +219,7 @@ public class OrderManager {
 			 * 주문 취소처리
 			 *  1. ORDERINFO 테이블에서 해당 주문정보를 삭제 (DELETE문)
 			 *   - ODCODE
-			 *  2. GOODS 테이블에서 취소된
-			 * 상품의 재고를 수정 (UPDATE문)
+			 *  2. GOODS 테이블에서 취소된 상품의 재고를 수정 (UPDATE문)
 			 *  - GNUM, ODAMOUNT
 			 */
 			System.out.print("선택 >> ");
@@ -235,7 +234,7 @@ public class OrderManager {
 				// ORDERINFO 테이블에서 삭제
 				int deleteResult = oddao.deleteOrderList(odcode);
 				// GOODS 테이블 재고 수정 (값을 미리 저장해놨기 때문에 DELETE가 먼저 이루어져도 OK)
-				int updateResult = oddao.updateGoodsAmount(odGnum, -odAmount, "minus");
+				int updateResult = oddao.updateGoodsAmount(odGnum, odAmount, "plus");
 				if (updateResult > 0 && deleteResult > 0) {
 					System.out.println("주문이 취소처리 되었습니다.");
 				} else {

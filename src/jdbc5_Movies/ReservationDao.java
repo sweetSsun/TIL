@@ -88,8 +88,13 @@ public class ReservationDao {
 
 	// 영화목록
 	public ArrayList<Movies> getMoviesList() {
-		String sql = "SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,"
-				+ "TO_CHAR(MVOPEN,'YYYY/MM/DD') FROM MOVIES";
+		String sql = "SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,TO_CHAR(MVOPEN,'YYYY/MM/DD'), NVL(SALERATE,0) "
+				+ "FROM MOVIES M LEFT OUTER JOIN "
+				+ "		(SELECT SCMVCODE, (COUNT(SCMVCODE)/(SELECT COUNT(*) FROM RESERVATION))*100 AS SALERATE FROM SCHEDULES "
+				+ "		WHERE (SCROOM, SCDATE, SCTHCODE) IN (SELECT RESCROOM, RESCDATE, RESCTHCODE FROM RESERVATION) "
+				+ "		GROUP BY SCMVCODE)RE "
+				+ "ON M.MVCODE = RE.SCMVCODE "
+				+ "ORDER BY NVL(SALERATE,0) DESC";
 		ArrayList<Movies> mvList = new ArrayList<Movies>();
 		Movies movie = null;
 		try {
@@ -105,6 +110,7 @@ public class ReservationDao {
 				movie.setMvage(rs.getInt(6));
 				movie.setMvtime(rs.getInt(7));
 				movie.setMvopen(rs.getString(8));
+				movie.setReservationRate(rs.getDouble(9));
 				mvList.add(movie);
 			}
 		} catch (SQLException e) {
@@ -225,7 +231,7 @@ public class ReservationDao {
 				+ "WHERE SCTHCODE = ? AND SCMVCODE = ? "
 				+ "GROUP BY TO_CHAR(SCDATE,'YY/MM/DD') "
 				+ "ORDER BY TO_CHAR(SCDATE,'YY/MM/DD')";
-		ArrayList<Schedules> scdayList = new ArrayList<Schedules>();
+		ArrayList<Schedules> scdateList = new ArrayList<Schedules>();
 		Schedules date = null;
 		
 		try {
@@ -236,12 +242,12 @@ public class ReservationDao {
 			while(rs.next()) {
 				date = new Schedules();
 				date.setScdate(rs.getString(1));
-				scdayList.add(date);
+				scdateList.add(date);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return scdayList;
+		return scdateList;
 	}
 
 	// 해당 영화 상영관, 상영시간
@@ -304,14 +310,50 @@ public class ReservationDao {
 		return insertResult;
 	}
 
+	// 예매 내역 확인
+	public ArrayList<Reservation> getMyRreservation(String loginId) {
+		String sql = "SELECT RE.RECODE, MV.MVNAME, TH.THNAME, SC.SCROOM, SC.SCDATE, RE.REAMOUNT"
+				+ " FROM RESERVATION RE, MOVIES MV, THEATERS TH, SCHEDULES SC"
+				+ " WHERE REMID = ?"
+				+ " AND RE.RESCTHCODE = SC.SCTHCODE AND RE.RESCROOM = SC.SCROOM AND RE.RESCDATE = SC.SCDATE"
+				+ " AND SC.SCMVCODE = MV.MVCODE AND SC.SCTHCODE = TH.THCODE";
+		ArrayList<Reservation> myReList = new ArrayList<Reservation>();
+		Reservation myRe = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loginId);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				myRe = new Reservation();
+				myRe.setRecode(rs.getString(1));
+				myRe.setMvname(rs.getString(2));
+				myRe.setThname(rs.getString(3));
+				myRe.setRescroom(rs.getString(4));
+				myRe.setRescdate(rs.getString(5));
+				myRe.setReamount(rs.getInt(6));
+				myReList.add(myRe);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return myReList;
+	}
 
-	
+	// 예매 취소
+	public int cancelReservation(String cancelRecode) {
+		String sql = "DELETE FROM RESERVATION WHERE RECODE = ?";
+		int deleteResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, cancelRecode);
+			deleteResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return deleteResult;
+	}
 
-		
-	
-	
-	
-	
-	
 	
 }
+
+

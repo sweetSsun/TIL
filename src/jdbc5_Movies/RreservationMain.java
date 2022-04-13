@@ -18,8 +18,7 @@ public class RreservationMain {
 				} else {
 					manager.moviesList();
 				}
-				break;
-				
+				break;				
 			case 2:
 				if (manager.loginId.equals("")) {
 					manager.memberLogin();
@@ -30,10 +29,15 @@ public class RreservationMain {
 			case 3:
 				manager.reservationMovie();
 				break;
+			case 4:
+				manager.myReservation();
+				break;
+			case 5:
+				manager.cancelReservation();
+				break;
 			case 6:
 				manager.searchMovie();
-				break;
-			
+				break;			
 			case 0:
 				if (manager.loginId.equals("")) {
 					run = false;

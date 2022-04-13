@@ -17,6 +17,24 @@ public class Reservation {
 	private String rescdate;
 	private int reamount;
 	
+	private String mvname;
+	private String thname;
+	
+	
+	public String getMvname() {
+		return mvname;
+	}
+	public void setMvname(String mvname) {
+		this.mvname = mvname;
+	}
+	public String getThname() {
+		return thname;
+	}
+	public void setThname(String thname) {
+		this.thname = thname;
+	}
+	
+	
 	public String getRecode() {
 		return recode;
 	}

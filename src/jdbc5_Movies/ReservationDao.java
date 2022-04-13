@@ -145,7 +145,7 @@ public class ReservationDao {
 		String sql3 = "SELECT * FROM MOVIES WHERE MVNAME LIKE '%'||?||'%'";
 		// sql3 DB전송 >> SELECT * FROM MOVIES WHERE MVNAME LIKE '%모비%' >> 정상작동
 		
-		/* mvname2 = "%" + mvname1 + "%" */
+		/* mvname2 = "%" + "모비" + "%" */
 		mvname = "%" + mvname + "%";
 		String sql4 = "SELECT * FROM MOVEIS WHERE MVNAME LIKE ?";
 		// sql4 DB전송 >> SELECT * FROM MOVIES WHERE MVNAME LIKE '%모비%' >> 정상작동
@@ -173,6 +173,137 @@ public class ReservationDao {
 		}		
 		return searchList;
 	}
+
+	// 상영 중 영화목록
+	public ArrayList<Movies> getScmvList() {
+		String sql = "SELECT MVCODE, MVNAME, MVAGE FROM MOVIES "
+				+ "WHERE MVCODE IN (SELECT SCMVCODE FROM SCHEDULES)";
+		ArrayList<Movies> scmvList = new ArrayList<Movies>();
+		Movies scmovie = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				scmovie = new Movies();
+				scmovie.setMvcode(rs.getString(1));
+				scmovie.setMvname(rs.getString(2));
+				scmovie.setMvage(rs.getInt(3));
+				scmvList.add(scmovie);
+			}
+					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return scmvList;
+	}
+
+	// 상영 영화관 목록
+	public ArrayList<Theaters> getScthList(String mvcode) {
+		String sql = "SELECT THCODE, THNAME FROM THEATERS "
+				+ "WHERE THCODE IN (SELECT SCTHCODE FROM SCHEDULES WHERE SCMVCODE = ?)";
+		ArrayList<Theaters> scthList = new ArrayList<Theaters>();
+		Theaters theater = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, mvcode);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				theater = new Theaters();
+				theater.setThcode(rs.getString(1));
+				theater.setThname(rs.getString(2));
+				scthList.add(theater);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return scthList;
+	}
+	
+	// 해당 영화 상영일
+	public ArrayList<Schedules> getScdate(String mvcode, String thcode) {
+		String sql = "SELECT TO_CHAR(SCDATE,'YY/MM/DD') FROM SCHEDULES "
+				+ "WHERE SCTHCODE = ? AND SCMVCODE = ? "
+				+ "GROUP BY TO_CHAR(SCDATE,'YY/MM/DD') "
+				+ "ORDER BY TO_CHAR(SCDATE,'YY/MM/DD')";
+		ArrayList<Schedules> scdayList = new ArrayList<Schedules>();
+		Schedules date = null;
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, thcode);
+			pstmt.setString(2, mvcode);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				date = new Schedules();
+				date.setScdate(rs.getString(1));
+				scdayList.add(date);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return scdayList;
+	}
+
+	// 해당 영화 상영관, 상영시간
+	public ArrayList<Schedules> getSctime(String mvcode, String thcode, String date) {
+		String sql = "SELECT SCROOM, TO_CHAR(SCDATE, 'HH24:MI') FROM SCHEDULES "
+				+ "WHERE SCTHCODE = ? AND SCMVCODE = ? AND TO_CHAR(SCDATE,'YY/MM/DD') = ?";
+		ArrayList<Schedules> sctimeList = new ArrayList<Schedules>();
+		Schedules time = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, thcode);
+			pstmt.setString(2, mvcode);
+			pstmt.setString(3, date);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				time = new Schedules();
+				time.setScroom(rs.getString(1));
+				time.setScdate(rs.getString(2));
+				sctimeList.add(time);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return sctimeList;
+	}
+
+	// 예매코드 불러오기
+	public String getMaxRecode() {
+		String sql = "SELECT NVL(MAX(RECODE),'RE00') FROM RESERVATION";
+		String maxRecode = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				maxRecode = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return maxRecode;
+	}
+
+	// Reservation 테이블 INSERT
+	public int insertReservaiton(Reservation reservation) {
+		String sql = "INSERT INTO RESERVATION VALUES(?,?,?,?,TO_DATE(?,'YY/MM/DD HH24:MI'),?)";
+		int insertResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, reservation.getRecode());
+			pstmt.setString(2, reservation.getRemid());
+			pstmt.setString(3, reservation.getRescthcode());
+			pstmt.setString(4, reservation.getRescroom());
+			pstmt.setString(5, reservation.getRescdate());
+			pstmt.setInt(6, reservation.getReamount());
+			insertResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return insertResult;
+	}
+
 
 	
 

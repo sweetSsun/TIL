@@ -27,7 +27,9 @@ public class RreservationMain {
 					manager.theatersList();
 				}
 				break;
-			
+			case 3:
+				manager.reservationMovie();
+				break;
 			case 6:
 				manager.searchMovie();
 				break;

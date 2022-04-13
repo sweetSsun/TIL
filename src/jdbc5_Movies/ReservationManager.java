@@ -168,9 +168,149 @@ public class ReservationManager {
 			
 		}
 	}
+
+	// 영화 예매
+	public void reservationMovie() {
+		/*
+		 Reservation 테이블 - Insert
+		 예매코드 : 'RE01'~ 자동생성
+		 예매자 아이디 : loginId
+		 극장코드, 상영관, 날짜 및 시간 : 사용자 선택
+		 예매 인원 : scan 사용자입력
+		 */
+		System.out.println("[예매]");
+		// 영화 선택
+		String mvcode = selectMovie();
+		if (mvcode == null) {
+			return;
+		}
+		// 극장 선택
+		String thcode = selectTheater(mvcode);
+		if (thcode == null) {
+			return;
+		}
+		// 날짜, 시간, 상영관 선택
+		Schedules sc = selectDate(mvcode, thcode);
+		if (sc == null) {
+			return;
+		}
+		// 예매 인원
+		System.out.print("예매 인원 >> ");
+		int reamount = scan.nextInt();
+		// 예매코드 자동생성
+		String maxRecode = rdao.getMaxRecode();
+		String recode = "RE";
+		int recodeNum = Integer.parseInt(maxRecode.substring(2)) + 1;
+		if (recodeNum < 10) {
+			recode = recode + "0" + recodeNum;
+		} else {
+			recode = recode + recodeNum;
+		}
+		Reservation reservation = new Reservation();
+		reservation.setRecode(recode);
+		reservation.setRemid(loginId);
+		reservation.setRescthcode(thcode);
+		reservation.setRescroom(sc.getScroom());
+		reservation.setRescdate(sc.getScdate());
+		reservation.setReamount(reamount);
+		// Reservation 테이블에 예매정보 INSERT
+		int insertResult = rdao.insertReservaiton(reservation);
+		if (insertResult > 0) {
+			System.out.println("[선택한 예매정보]");
+			System.out.println(reservation.getRecode() + " " + reservation.getRemid() + " "
+						+ reservation.getRescthcode() + " " + reservation.getRescroom() + " "
+						+ reservation.getRescdate() + " " + reservation.getReamount() + "명");
+			System.out.println("예매가 완료되었습니다.");
+		} else {
+			System.out.println("예매에 실패했습니다.");
+		}
+		
+	}
 	
+	private String selectMovie() {
+		// 영화목록 출력
+		System.out.println("[영화목록]");
+		ArrayList<Movies> scmvList = rdao.getScmvList();
+		for (int i = 0; i < scmvList.size(); i++) {
+			System.out.print("[" + i + "]");
+			System.out.println(scmvList.get(i).getMvname() + ", " + scmvList.get(i).getMvage() + "세 이상");
+		}
+		System.out.print("영화 선택 >> ");
+		int mvSel = scan.nextInt();
+		String mvcode = null; // 선택한 영화코드를 저장할 변수
+		if (mvSel >= 0 && mvSel < scmvList.size()) {
+			System.out.println("[선택한 영화]" + scmvList.get(mvSel).getMvname());
+			mvcode = scmvList.get(mvSel).getMvcode(); // 선택한 영화코드 저장
+		} else {
+			System.out.println("잘못 선택하였습니다.");
+		}
+		return mvcode;
+	}
 	
+	private String selectTheater(String mvcode) {
+		// 상영극장 출력
+		
+		String thcode = null; // 선택한 극장코드를 저장할 변수
+		ArrayList<Theaters> scthList = rdao.getScthList(mvcode);
+		while(true) {
+			System.out.println("[극장목록]");
+			for (int i = 0; i < scthList.size(); i++) {
+				System.out.print("[" + i + "]");
+				System.out.println(scthList.get(i).getThname());
+			}
+			System.out.print("극장 선택 >> ");
+			int thSel = scan.nextInt();
+			if (thSel >= 0 && thSel < scthList.size()) {
+				System.out.println("[선택한 극장]" + scthList.get(thSel).getThname());
+				thcode = scthList.get(thSel).getThcode(); // 선택한 극장코드 저장
+				break;
+			} else {
+				System.out.println("잘못 선택하였습니다.");
+			}
+			
+		}
+		return thcode;
+	}
 	
+	private Schedules selectDate(String mvcode, String thcode) {
+		// 상영일 출력
+		Schedules sc = null;
+		System.out.println("[상영일]");
+		ArrayList<Schedules> scdayList = rdao.getScdate(mvcode, thcode);
+		for (int i = 0; i < scdayList.size(); i++) {
+			System.out.print("[" + i + "]");
+			System.out.println(scdayList.get(i).getScdate());
+		}
+		System.out.print("상영일 선택 >> ");
+		int dateSel = scan.nextInt();
+		if (dateSel >= 0 && dateSel < scdayList.size()) {
+			// 상영관, 상영시간 출력
+			System.out.println("[상영시간]");
+			ArrayList<Schedules> sctimeList = rdao.getSctime(mvcode, thcode, scdayList.get(dateSel).getScdate());
+			for (int i = 0; i < sctimeList.size(); i++) {
+				System.out.print("[" + i + "]");
+				System.out.println(sctimeList.get(i).getScroom() + " " + sctimeList.get(i).getScdate());
+			}
+			System.out.print("상영 시간 선택 >> ");
+			int timeSel = scan.nextInt();
+			if (timeSel >= 0 && timeSel < sctimeList.size()) {
+				System.out.print("[상영일]" + scdayList.get(dateSel).getScdate());
+				System.out.print(" [상영관]" + sctimeList.get(timeSel).getScroom());
+				System.out.println(" [시간]" + sctimeList.get(timeSel).getScdate());
+				String scdate = scdayList.get(dateSel).getScdate() + " " + sctimeList.get(timeSel).getScdate();
+				String scroom = sctimeList.get(timeSel).getScroom();
+				sc = new Schedules();	// 선택한 날짜 및 시간, 상영관을 저장할 객체
+				sc.setScdate(scdate);	// 날짜 및 시간 저장
+				sc.setScroom(scroom);	// 상영관 저장
+			} else {
+				System.out.println("잘못 선택하였습니다.");
+			}
+		}
+		else {
+			System.out.println("잘못 선택하였습니다.");
+		}
+		return sc;
+	}
 	
 	
 	

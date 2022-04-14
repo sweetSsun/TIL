@@ -273,13 +273,39 @@ public class ReservationManager {
 	public void myReservation() {
 		System.out.println("[예매내역]");
 		ArrayList<Reservation> myReList = rdao.getMyRreservation(loginId);
-		for (int i = 0; i < myReList.size(); i++) {
-			System.out.println(myReList.get(i).getRecode() + " "
-							+ myReList.get(i).getMvname() + " "
-							+ myReList.get(i).getThname() + " "
-							+ myReList.get(i).getRescroom() + " "
-							+ myReList.get(i).getRescdate() + " "
-							+ myReList.get(i).getReamount() + "명");
+		if (myReList.size() == 0) {
+			System.out.println("예매내역이 없습니다.");
+		} else {
+			for (int i = 0; i < myReList.size(); i++) {
+				System.out.println("[" + i + "] " 
+								+ myReList.get(i).getMvname() + ", "
+								+ myReList.get(i).getThname() + ", "
+								+ myReList.get(i).getRescroom() + ", "
+								+ myReList.get(i).getRescdate() + ", "
+								+ myReList.get(i).getReamount() + "명");
+			}
+			System.out.print("추천할 영화 >> ");
+			int mvSel = scan.nextInt();
+			if (mvSel >= 0 && mvSel < myReList.size() ) {
+				int checkResult = rdao.checkRecommend(myReList.get(mvSel).getRecode());
+				if (checkResult > 0) {
+					System.out.println("이미 추천한 영화입니다.");
+				} else {
+					System.out.println(myReList.get(mvSel).getMvname());
+					System.out.print("선택한 영화를 추천하시겠습니까? (1.예 | 2.아니오) >> ");
+					int recommendConfirm = scan.nextInt();
+					if (recommendConfirm == 1) {
+						Recommend recommend = new Recommend();
+						recommend.setRcrecode(myReList.get(mvSel).getRecode());
+						recommend.setRcmvcode(rdao.getMvcode(myReList.get(mvSel).getRecode(), loginId));
+						recommend.setRcmid(loginId);
+						int insertResult = rdao.insertRecommend(recommend);
+						if (insertResult > 0) {
+							System.out.println("추천되었습니다.");
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -287,26 +313,38 @@ public class ReservationManager {
 	public void cancelReservation() {
 		System.out.println("[예매취소]");
 		ArrayList<Reservation> myReList = rdao.getMyRreservation(loginId);
-		for (int i = 0; i < myReList.size(); i++) {
-			System.out.println( "[" + i + "]"
-							+ myReList.get(i).getRecode() + " "
-							+ myReList.get(i).getMvname() + " "
-							+ myReList.get(i).getThname() + " "
-							+ myReList.get(i).getRescroom() + " "
-							+ myReList.get(i).getRescdate() + " "
-							+ myReList.get(i).getReamount() + "명");
-		}
-		System.out.print("취소할 예매번호 >> ");
-		int cancelSel = scan.nextInt();
-		String cancelRecode = myReList.get(cancelSel).getRecode();
-		int deleteResult = rdao.cancelReservation(cancelRecode);
-		if(deleteResult > 0) {
-			System.out.println("예매 취소되었습니다.");
+		if (myReList.size() == 0) {
+			System.out.println("예매내역이 없습니다.");
 		} else {
-			System.out.println("예매 취소에 실패하였습니다.");
+			for (int i = 0; i < myReList.size(); i++) {
+				System.out.println( "[" + i + "] "
+								+ myReList.get(i).getMvname() + ", "
+								+ myReList.get(i).getThname() + ", "
+								+ myReList.get(i).getRescroom() + ", "
+								+ myReList.get(i).getRescdate() + ", "
+								+ myReList.get(i).getReamount() + "명");
+			}
+			System.out.print("취소할 예매번호 >> ");
+			int cancelSel = scan.nextInt();
+			if (cancelSel >= 0 && cancelSel < myReList.size()) {
+				System.out.println( "[" + cancelSel + "] "
+						+ myReList.get(cancelSel).getMvname() + ", "
+						+ myReList.get(cancelSel).getThname() + ", "
+						+ myReList.get(cancelSel).getRescroom() + ", "
+						+ myReList.get(cancelSel).getRescdate() + ", "
+						+ myReList.get(cancelSel).getReamount() + "명");
+				System.out.print("선택한 예매를 취소하시겠습니까? (1.예 | 2.아니오) >> ");
+				int cancelConfirm = scan.nextInt();
+				if (cancelConfirm == 1) {
+					String cancelRecode = myReList.get(cancelSel).getRecode();
+					int deleteResult = rdao.cancelReservation(cancelRecode);
+					if (deleteResult > 0) {
+						System.out.println("예매가 취소되었습니다.");
+					}
+				}
+			}
 		}
-	}
-	
+	}	
 	
 	/* Reservation Movie에 필요한 Method */
 	private String selectMovie() {

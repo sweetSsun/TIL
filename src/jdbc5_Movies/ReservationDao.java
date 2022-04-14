@@ -372,6 +372,63 @@ public class ReservationDao {
 		}
 		return myReList;
 	}
+	
+	// 추천 영화 코드 불러오기
+	public String getMvcode(String recode, String remid) {
+		String sql = "SELECT SCMVCODE"
+				+ " FROM SCHEDULES"
+				+ " WHERE (SCTHCODE, SCROOM, SCDATE)"
+				+ "    IN (SELECT RESCTHCODE, RESCROOM, RESCDATE"
+				+ "    FROM RESERVATION"
+				+ "    WHERE RECODE = ? AND REMID = ?)";
+		String mvcode = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, recode);
+			pstmt.setString(2, remid);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				mvcode = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mvcode;
+	}
+	
+	// 추천했던 영화인지 확인
+	public int checkRecommend(String recode) {
+		String sql = "SELECT * FROM RECOMMEND WHERE RCRECODE = ?";
+		int selectResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, recode);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				selectResult++;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return selectResult;
+	}
+	
+	
+	// Recommend 테이블에 영화 추천 INSERT
+	public int insertRecommend(Recommend recommend) {
+		String sql = "INSERT INTO RECOMMEND(RCRECODE, RCMVCODE, RCMID) VALUES(?,?,?)";
+		int insertResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, recommend.getRcrecode());
+			pstmt.setString(2, recommend.getRcmvcode());
+			pstmt.setString(3, recommend.getRcmid());
+			insertResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return insertResult;
+	}
 
 	// 예매 취소
 	public int cancelReservation(String cancelRecode) {

@@ -103,6 +103,50 @@ public class ReservationManager {
 		// 포스터(생략), 영화이름, 예매율(나중), 개봉일
 		// 출력 결과 : [인덱스] 영화이름, 개봉일
 		System.out.println("[영화]");
+		ArrayList<Movies> mvList = rdao.getMoviesList2();
+		int totalCount = 0;
+		for (int i = 0; i < mvList.size(); i++) {
+			// 각 영화의 예매횟수 (count)를 모두 더하여 총 예매횟수 저장
+			totalCount = totalCount + mvList.get(i).getReservationCount();
+		}
+		for (int i = 0; i < mvList.size(); i++) {
+			// 소수점 없애고 int로 바꾼 예매율
+			int reRate = (int) ((double) mvList.get(i).getReservationCount() / totalCount * 100 ) ;
+			/* 소수점을 반올림한 예매율 */
+			double reRate2 =(double) mvList.get(i).getReservationCount() / totalCount * 100 ; //27.272727
+			double result =  Math.round(reRate2); //27.0
+			/* 소수점 첫째자리까지 나타나는 예매율 */
+			double result2 =  Math.round(reRate2*10)/10; //27.2
+			/* 소수점 둘째자리까지 나타나는 예매율 */
+			double result3 =  Math.round(reRate2*100)/100; //27.27
+			
+			mvList.get(i).setReservationRate(reRate);
+			// split : 매개변수를 기준으로 분리 (모두 같은 형식이어야 for문으로 돌릴 수 있음)
+			String mvopen = mvList.get(i).getMvopen(); // "2022/03/30"
+			String[] mvopen_split = mvopen.split("/"); // [0]="2022", [1]="03", [2]="30"
+			
+			System.out.print("[" + (i+1) + "]");
+			System.out.print(mvList.get(i).getMvname());
+			System.out.print(" [개봉일]" + mvopen_split[0] + "년" + mvopen_split[1] + "월" + mvopen_split[2] + "일");
+			System.out.println(" [예매율]" + reRate + "%");
+		}
+		System.out.print("선택 >> ");
+		int menuSel = scan.nextInt();
+		int mvNum = menuSel - 1;
+		if (mvNum >= 0 && mvNum < mvList.size()) {
+			System.out.println(mvList.get(mvNum).getMvname());
+			System.out.print("[감독]" + mvList.get(mvNum).getMvpd());
+			System.out.print(" [배우]" + mvList.get(mvNum).getMvactor());
+			System.out.print(" [장르]" + mvList.get(mvNum).getMvgenre());
+			System.out.print(" [등급]" + mvList.get(mvNum).getMvage() + "세 이상, " + mvList.get(mvNum).getMvtime() + "분");
+			System.out.print(" [개봉일]" + mvList.get(mvNum).getMvopen());
+			System.out.println("  [예매율]" + mvList.get(mvNum).getReservationRate() + "%");
+		} else {
+			System.out.println("잘못 선택하였습니다.");
+		}
+		
+		// 아래는 쿼리문 하나로 예매율까지 받아와서 실행한 코드
+		/*
 		ArrayList<Movies> mvList = rdao.getMoviesList();
 		for(int i = 0; i < mvList.size(); i++) {
 			// split : 매개변수를 기준으로 분리 (모두 같은 형식이어야 for문으로 돌릴 수 있음)
@@ -119,7 +163,6 @@ public class ReservationManager {
 		int menuSel = scan.nextInt();
 		int mvNum = menuSel - 1;
 		if (mvNum >= 0 && mvNum < mvList.size()) {
-//			System.out.println("[영화코드]" + mvList.get(mvNum).getMvcode());
 			System.out.println(mvList.get(mvNum).getMvname());
 			System.out.print("[감독]" + mvList.get(mvNum).getMvpd());
 			System.out.print(" [배우]" + mvList.get(mvNum).getMvactor());
@@ -130,6 +173,7 @@ public class ReservationManager {
 		} else {
 			System.out.println("잘못 선택하였습니다.");
 		}
+		*/
 	}
 	
 	// 극장 목록
@@ -150,8 +194,6 @@ public class ReservationManager {
 		} else {
 			System.out.println("잘못 선택하였습니다.");
 		}
-				
-		
 	}
 
 	// 영화 검색
@@ -167,7 +209,6 @@ public class ReservationManager {
 			System.out.print(" [장르]" + mvList.get(i).getMvgenre());
 			System.out.print(" [등급]" + mvList.get(i).getMvage() + "세 이상, " + mvList.get(i).getMvtime() + "분");
 			System.out.println(" [개봉일]" + mvList.get(i).getMvopen());
-			
 		}
 	}
 

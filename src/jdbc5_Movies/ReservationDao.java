@@ -86,7 +86,7 @@ public class ReservationDao {
 		return loginId;
 	}
 
-	// 영화목록
+	// 예매율과 Movie테이블 JOIN하여 영화목록 출력
 	public ArrayList<Movies> getMoviesList() {
 		String sql = "SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,TO_CHAR(MVOPEN,'YYYY/MM/DD'), NVL(SALERATE,0) "
 				+ "FROM MOVIES M LEFT OUTER JOIN "
@@ -111,6 +111,40 @@ public class ReservationDao {
 				movie.setMvtime(rs.getInt(7));
 				movie.setMvopen(rs.getString(8));
 				movie.setReservationRate(rs.getDouble(9));
+				mvList.add(movie);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return mvList;
+	}
+	
+	// 예매횟수와 Movie테이블 JOIN하여 영화목록 출력
+	public ArrayList<Movies> getMoviesList2() {
+		String sql = "SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,TO_CHAR(MVOPEN,'YYYY/MM/DD') AS MVOPEN, NVL(COUNT,0) AS RECOUNT"
+				+ " FROM MOVIES M LEFT OUTER JOIN"
+				+ "    (SELECT SCMVCODE, COUNT(SCMVCODE) AS COUNT"
+				+ "    FROM SCHEDULES"
+				+ "    WHERE (SCROOM, SCDATE, SCTHCODE) IN (SELECT RESCROOM, RESCDATE, RESCTHCODE FROM RESERVATION)"
+				+ "    GROUP BY SCMVCODE)RE"
+				+ " ON M.MVCODE = RE.SCMVCODE"
+				+ " ORDER BY NVL(COUNT,0) DESC";
+		ArrayList<Movies> mvList = new ArrayList<Movies>();
+		Movies movie = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				movie = new Movies();
+				movie.setMvcode(rs.getString(1));
+				movie.setMvname(rs.getString(2));
+				movie.setMvpd(rs.getString(3));
+				movie.setMvactor(rs.getString(4));
+				movie.setMvgenre(rs.getString(5));
+				movie.setMvage(rs.getInt(6));
+				movie.setMvtime(rs.getInt(7));
+				movie.setMvopen(rs.getString(8));
+				movie.setReservationCount(rs.getInt(9));
 				mvList.add(movie);
 			}
 		} catch (SQLException e) {

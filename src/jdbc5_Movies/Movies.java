@@ -10,8 +10,15 @@ public class Movies {
 	private int mvage;		//연령
 	private int mvtime;		//시간
 	private String mvopen;	//개봉일
+	private int reservationCount;	//예매횟수
 	private double reservationRate; //예매율
 	
+	public int getReservationCount() {
+		return reservationCount;
+	}
+	public void setReservationCount(int reservationCount) {
+		this.reservationCount = reservationCount;
+	}
 	
 	public double getReservationRate() {
 		return reservationRate;

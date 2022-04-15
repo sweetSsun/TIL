@@ -411,15 +411,15 @@ public class ReservationDao {
 	}
 	
 	// 추천했던 영화인지 확인
-	public int checkRecommend(String rcrecode) {
+	public String checkRecommend(String rcrecode) {
 		String sql = "SELECT * FROM RECOMMEND WHERE RCRECODE = ?";
-		int selectResult = 0;
+		String selectResult = null;
 		try {
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, rcrecode);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
-				selectResult++;
+				selectResult = rs.getString(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -288,12 +288,9 @@ public class ReservationManager {
 								+ myReList.get(i).getRescdate() + ", "
 								+ myReList.get(i).getReamount() + "명");
 				// 추천유무 출력
-				int checkResult = rdao.checkRecommend(myReList.get(i).getRecode());
-				/* reservation 클래스에 rccheck라는 변수를 새로 선언하여
-				 * myReList.get(i).setRccheck() 값을 입력해주어도 됨
-				 * 이렇게 진행하면 변수에 추천유무가 담기기 때문에 아래에서 checkRecommend 메소드를 다시 안써도 진행 가능
-				 */
-				if (checkResult > 0) {
+				String checkResult = rdao.checkRecommend(myReList.get(i).getRecode());
+				myReList.get(i).setRccheck(checkResult); // ArrayList에 추천유무를 확인하는 rccheck 변수 저장
+				if (myReList.get(i).getRccheck() != null) {
 					System.out.print(" [추천]");
 				}
 			}
@@ -304,8 +301,7 @@ public class ReservationManager {
 				System.out.println("[" + myReList.get(mvSel).getMvname() + "]");
 				String recode = myReList.get(mvSel).getRecode();
 				// 추천하려고 선택한 영화가 RECOMMEND 테이블에 없는 예매코드인지 확인
-				int checkResult = rdao.checkRecommend(recode);
-				if (checkResult > 0) { // SELECT 결과 추천한 예매코드임을 확인
+				if (myReList.get(mvSel).getRccheck() != null) { // 객체 필드에 담긴 값을 통해 추천유무 확인
 					System.out.println("이미 추천한 예매정보입니다.");
 					System.out.print("추천을 취소하시겠습니까? (1.예 | 2.아니오) >> ");
 					int recommendConfirm = scan.nextInt();

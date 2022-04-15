@@ -20,7 +20,14 @@ public class Reservation {
 	private String mvname;
 	private String thname;
 	private String mvcode;
+	private String rccheck;
 	
+	public String getRccheck() {
+		return rccheck;
+	}
+	public void setRccheck(String rccheck) {
+		this.rccheck = rccheck;
+	}
 	public String getMvcode() {
 		return mvcode;
 	}

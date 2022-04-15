@@ -121,14 +121,13 @@ public class ReservationDao {
 	
 	// 예매횟수와 Movie테이블 JOIN하여 영화목록 출력
 	public ArrayList<Movies> getMoviesList2() {
-		String sql = "SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,TO_CHAR(MVOPEN,'YYYY/MM/DD') AS MVOPEN, NVL(COUNT,0) AS RECOUNT"
-				+ " FROM MOVIES M LEFT OUTER JOIN"
-				+ "    (SELECT SCMVCODE, COUNT(SCMVCODE) AS COUNT"
-				+ "    FROM SCHEDULES"
-				+ "    WHERE (SCROOM, SCDATE, SCTHCODE) IN (SELECT RESCROOM, RESCDATE, RESCTHCODE FROM RESERVATION)"
-				+ "    GROUP BY SCMVCODE)RE"
-				+ " ON M.MVCODE = RE.SCMVCODE"
-				+ " ORDER BY NVL(COUNT,0) DESC";
+		String sql = "SELECT mvcode,mvname,mvpd,mvactor,mvgenre,mvage,mvtime,TO_CHAR(mvopen,'YYYY/MM/DD'), NVL(recount,0),NVL(rccount, 0)"
+				+ " FROM movies mv LEFT OUTER JOIN (SELECT scmvcode, COUNT(sc.scmvcode) AS recount,  COUNT(rcrecode) AS rccount"
+				+ "                          FROM schedules sc, reservation re LEFT OUTER JOIN recommend rc"
+				+ "                                         ON  rc.rcrecode = re.recode"
+				+ "                          WHERE sc.scroom = re.rescroom AND sc.scdate = re.rescdate AND sc.scthcode = re.rescthcode"
+				+ "                          GROUP BY sc.scmvcode) resc"
+				+ "				ON resc.scmvcode = mv.mvcode";
 		ArrayList<Movies> mvList = new ArrayList<Movies>();
 		Movies movie = null;
 		try {
@@ -145,6 +144,7 @@ public class ReservationDao {
 				movie.setMvtime(rs.getInt(7));
 				movie.setMvopen(rs.getString(8));
 				movie.setReservationCount(rs.getInt(9));
+				movie.setRecommendCount(rs.getInt(10));
 				mvList.add(movie);
 			}
 		} catch (SQLException e) {
@@ -186,14 +186,24 @@ public class ReservationDao {
 		// sql3 DB전송 >> SELECT * FROM MOVIES WHERE MVNAME LIKE '%모비%' >> 정상작동
 		
 		/* mvname2 = "%" + "모비" + "%" */
-		mvname = "%" + mvname + "%";
+//		mvname = "%" + mvname + "%";
 		String sql4 = "SELECT * FROM MOVEIS WHERE MVNAME LIKE ?";
 		// sql4 DB전송 >> SELECT * FROM MOVIES WHERE MVNAME LIKE '%모비%' >> 정상작동
 
+		
+		// 예매율과 예매횟수도 받아오는 sql문
+		String sql = "SELECT mvcode,mvname,mvpd,mvactor,mvgenre,mvage,mvtime,TO_CHAR(mvopen,'YYYY/MM/DD'), NVL(recount,0),NVL(rccount, 0)"
+				+ " FROM movies mv LEFT OUTER JOIN (SELECT scmvcode, COUNT(sc.scmvcode) AS recount, COUNT(rcrecode) AS rccount"
+				+ "                          FROM schedules sc, reservation re LEFT OUTER JOIN recommend rc"
+				+ "                                         ON  rc.rcrecode = re.recode"
+				+ "                          WHERE sc.scroom = re.rescroom AND sc.scdate = re.rescdate AND sc.scthcode = re.rescthcode"
+				+ "                          GROUP BY sc.scmvcode) resc"
+				+ " ON resc.scmvcode = mv.mvcode"
+				+ " WHERE MVNAME LIKE '%'||?||'%'";
 		ArrayList<Movies> searchList = new ArrayList<Movies>();
 		Movies movie = null;
 		try {
-			pstmt = con.prepareStatement(sql3);
+			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, mvname);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -206,6 +216,8 @@ public class ReservationDao {
 				movie.setMvage(rs.getInt(6));
 				movie.setMvtime(rs.getInt(7));
 				movie.setMvopen(rs.getString(8));
+				movie.setReservationCount(rs.getInt(9));
+				movie.setRecommendCount(rs.getInt(10));
 				searchList.add(movie);
 			}
 		} catch (SQLException e) {
@@ -346,7 +358,7 @@ public class ReservationDao {
 
 	// 예매 내역 확인
 	public ArrayList<Reservation> getMyRreservation(String loginId) {
-		String sql = "SELECT RE.RECODE, MV.MVNAME, TH.THNAME, SC.SCROOM, SC.SCDATE, RE.REAMOUNT"
+		String sql = "SELECT RE.RECODE, MV.MVNAME, TH.THNAME, SC.SCROOM, SC.SCDATE, RE.REAMOUNT, MV.MVCODE"
 				+ " FROM RESERVATION RE, MOVIES MV, THEATERS TH, SCHEDULES SC"
 				+ " WHERE REMID = ?"
 				+ " AND RE.RESCTHCODE = SC.SCTHCODE AND RE.RESCROOM = SC.SCROOM AND RE.RESCDATE = SC.SCDATE"
@@ -365,6 +377,7 @@ public class ReservationDao {
 				myRe.setRescroom(rs.getString(4));
 				myRe.setRescdate(rs.getString(5));
 				myRe.setReamount(rs.getInt(6));
+				myRe.setMvcode(rs.getString(7));
 				myReList.add(myRe);
 			}
 		} catch (SQLException e) {
@@ -374,6 +387,7 @@ public class ReservationDao {
 	}
 	
 	// 추천 영화 코드 불러오기
+	// 예매내역에서 같이 불러와버리면 됨. 사용X
 	public String getMvcode(String recode, String remid) {
 		String sql = "SELECT SCMVCODE"
 				+ " FROM SCHEDULES"
@@ -397,12 +411,12 @@ public class ReservationDao {
 	}
 	
 	// 추천했던 영화인지 확인
-	public int checkRecommend(String recode) {
+	public int checkRecommend(String rcrecode) {
 		String sql = "SELECT * FROM RECOMMEND WHERE RCRECODE = ?";
 		int selectResult = 0;
 		try {
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, recode);
+			pstmt.setString(1, rcrecode);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				selectResult++;
@@ -428,6 +442,20 @@ public class ReservationDao {
 			e.printStackTrace();
 		}
 		return insertResult;
+	}
+	
+	// Recommend 테이블에서 추천내역 DELETE
+	public int deleteRecommend(String rcrecode) {
+		String sql = "DELETE FROM RECOMMEND WHERE RCRECODE = ?";
+		int deleteResult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, rcrecode);
+			deleteResult = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return deleteResult;
 	}
 
 	// 예매 취소

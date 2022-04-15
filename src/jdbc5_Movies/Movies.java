@@ -12,7 +12,14 @@ public class Movies {
 	private String mvopen;	//개봉일
 	private int reservationCount;	//예매횟수
 	private double reservationRate; //예매율
+	private int recommendCount;		//추천수
 	
+	public int getRecommendCount() {
+		return recommendCount;
+	}
+	public void setRecommendCount(int recommendCount) {
+		this.recommendCount = recommendCount;
+	}
 	public int getReservationCount() {
 		return reservationCount;
 	}

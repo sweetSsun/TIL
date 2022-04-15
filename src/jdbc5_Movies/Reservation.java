@@ -19,7 +19,14 @@ public class Reservation {
 	
 	private String mvname;
 	private String thname;
+	private String mvcode;
 	
+	public String getMvcode() {
+		return mvcode;
+	}
+	public void setMvcode(String mvcode) {
+		this.mvcode = mvcode;
+	}
 	
 	public String getMvname() {
 		return mvname;

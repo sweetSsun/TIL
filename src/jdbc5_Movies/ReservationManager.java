@@ -128,7 +128,8 @@ public class ReservationManager {
 			System.out.print("[" + (i+1) + "]");
 			System.out.print(mvList.get(i).getMvname());
 			System.out.print(" [개봉일]" + mvopen_split[0] + "년" + mvopen_split[1] + "월" + mvopen_split[2] + "일");
-			System.out.println(" [예매율]" + reRate + "%");
+			System.out.print(" [예매율]" + reRate + "%");
+			System.out.println(" [추천수]" + mvList.get(i).getRecommendCount());
 		}
 		System.out.print("선택 >> ");
 		int menuSel = scan.nextInt();
@@ -140,7 +141,8 @@ public class ReservationManager {
 			System.out.print(" [장르]" + mvList.get(mvNum).getMvgenre());
 			System.out.print(" [등급]" + mvList.get(mvNum).getMvage() + "세 이상, " + mvList.get(mvNum).getMvtime() + "분");
 			System.out.print(" [개봉일]" + mvList.get(mvNum).getMvopen());
-			System.out.println("  [예매율]" + mvList.get(mvNum).getReservationRate() + "%");
+			System.out.print("  [예매율]" + mvList.get(mvNum).getReservationRate() + "%");
+			System.out.println("  [추천수]" + mvList.get(mvNum).getRecommendCount());
 		} else {
 			System.out.println("잘못 선택하였습니다.");
 		}
@@ -202,13 +204,15 @@ public class ReservationManager {
 		System.out.print("검색할 영화 제목 >> ");
 		String mvname = scan.next();
 		ArrayList<Movies> mvList = rdao.searchMovie(mvname);
+		
 		for(int i = 0; i < mvList.size(); i++) {
 			System.out.println(mvList.get(i).getMvname());
 			System.out.print("[감독]" + mvList.get(i).getMvpd());
 			System.out.print(" [배우]" + mvList.get(i).getMvactor());
 			System.out.print(" [장르]" + mvList.get(i).getMvgenre());
 			System.out.print(" [등급]" + mvList.get(i).getMvage() + "세 이상, " + mvList.get(i).getMvtime() + "분");
-			System.out.println(" [개봉일]" + mvList.get(i).getMvopen());
+			System.out.print(" [개봉일]" + mvList.get(i).getMvopen());
+			System.out.println(" [추천수]" + mvList.get(i).getRecommendCount());
 		}
 	}
 
@@ -277,27 +281,47 @@ public class ReservationManager {
 			System.out.println("예매내역이 없습니다.");
 		} else {
 			for (int i = 0; i < myReList.size(); i++) {
-				System.out.println("[" + i + "] " 
+				System.out.print("\n[" + i + "] " 
 								+ myReList.get(i).getMvname() + ", "
 								+ myReList.get(i).getThname() + ", "
 								+ myReList.get(i).getRescroom() + ", "
 								+ myReList.get(i).getRescdate() + ", "
 								+ myReList.get(i).getReamount() + "명");
-			}
-			System.out.print("추천할 영화 >> ");
-			int mvSel = scan.nextInt();
-			if (mvSel >= 0 && mvSel < myReList.size() ) {
-				int checkResult = rdao.checkRecommend(myReList.get(mvSel).getRecode());
+				// 추천유무 출력
+				int checkResult = rdao.checkRecommend(myReList.get(i).getRecode());
+				/* reservation 클래스에 rccheck라는 변수를 새로 선언하여
+				 * myReList.get(i).setRccheck() 값을 입력해주어도 됨
+				 * 이렇게 진행하면 변수에 추천유무가 담기기 때문에 아래에서 checkRecommend 메소드를 다시 안써도 진행 가능
+				 */
 				if (checkResult > 0) {
-					System.out.println("이미 추천한 영화입니다.");
-				} else {
-					System.out.println(myReList.get(mvSel).getMvname());
+					System.out.print(" [추천]");
+				}
+			}
+			
+			System.out.print("\n추천할 예매정보 선택 >> ");
+			int mvSel = scan.nextInt();
+			if (mvSel >= 0 && mvSel < myReList.size() ) { // 제대로 된 인덱스값 선택했는지 확인
+				System.out.println("[" + myReList.get(mvSel).getMvname() + "]");
+				String recode = myReList.get(mvSel).getRecode();
+				// 추천하려고 선택한 영화가 RECOMMEND 테이블에 없는 예매코드인지 확인
+				int checkResult = rdao.checkRecommend(recode);
+				if (checkResult > 0) { // SELECT 결과 추천한 예매코드임을 확인
+					System.out.println("이미 추천한 예매정보입니다.");
+					System.out.print("추천을 취소하시겠습니까? (1.예 | 2.아니오) >> ");
+					int recommendConfirm = scan.nextInt();
+					if(recommendConfirm == 1) {
+						int deleteResult = rdao.deleteRecommend(recode);
+						if (deleteResult > 0) {
+							System.out.println("추천이 취소되었습니다.");
+						}
+					}
+				} else { // SELECT 결과 추천하지 않았던 예매코드임을 확인
 					System.out.print("선택한 영화를 추천하시겠습니까? (1.예 | 2.아니오) >> ");
 					int recommendConfirm = scan.nextInt();
-					if (recommendConfirm == 1) {
+					if (recommendConfirm == 1) { // RECOMMEND 테이블에 INSERT
 						Recommend recommend = new Recommend();
-						recommend.setRcrecode(myReList.get(mvSel).getRecode());
-						recommend.setRcmvcode(rdao.getMvcode(myReList.get(mvSel).getRecode(), loginId));
+						recommend.setRcrecode(recode);
+						recommend.setRcmvcode(myReList.get(mvSel).getMvcode());
 						recommend.setRcmid(loginId);
 						int insertResult = rdao.insertRecommend(recommend);
 						if (insertResult > 0) {
@@ -336,8 +360,11 @@ public class ReservationManager {
 				System.out.print("선택한 예매를 취소하시겠습니까? (1.예 | 2.아니오) >> ");
 				int cancelConfirm = scan.nextInt();
 				if (cancelConfirm == 1) {
+					// Recommend 테이블에서 먼저 데이터 삭제
+					int deleteResult = rdao.deleteRecommend(myReList.get(cancelSel).getRecode());
+					// Reservation 테이블에서 데이터 삭제
 					String cancelRecode = myReList.get(cancelSel).getRecode();
-					int deleteResult = rdao.cancelReservation(cancelRecode);
+					deleteResult = rdao.cancelReservation(cancelRecode);
 					if (deleteResult > 0) {
 						System.out.println("예매가 취소되었습니다.");
 					}

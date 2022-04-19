@@ -1,0 +1,43 @@
+<!-- day01_a.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- HTML(하이퍼 텍스트 마크업 랭귀지) 태그로 이루어져있는 문서 -->
+    <h1>a 태그</h1>
+    <!-- href : 하이퍼텍스트 레퍼런스 (참조 페이지) -->
+    <a href="https://www.naver.com">
+        <img width="100px" src = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2F20130522_251%2Fkbs111700_1369207069071EG3dB_JPEG%2FNAVER-LOGO-Converted.jpg&type=sc960_832"
+        alt = "네이버 아이콘">
+    </a>
+    <br>
+    <!-- target="_blank" :: 새로운 탭으로 링크가 열림 -->
+    <a href="day01_p.html" target="_blank">
+        <p>day01_p.html</p>
+        <!-- a태그 사이의 모든 부분이 링크로 묶이게 되는 것을 주의 -->
+    </a>
+    
+    <p id="top">처음</p>
+    <a href="#mid">중간으로 이동</a>
+    <br>
+    <a href="#bottom">끝으로 이동</a>
+    <!-- #은 id를 의미 -->
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <p id="mid">중간</p>
+    <a href="#top">처음으로 이동</a>
+    <br>
+    <a href="#bottom">끝으로 이동</a>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <p id="bottom">끝</p>
+    <a href="#top">처음으로 이동</a>
+</body>
+</html>

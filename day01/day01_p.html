@@ -1,0 +1,38 @@
+<!-- day01_p.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- p태그가 차지하는 영역 (왼쪽부터 오른쪽 끝까지 한 줄 모두 차지) -->
+    <!-- 줄바꿈이 이루어진게 아니라 한 줄 자체를 영역으로 차지하고 있기 때문에 다음 영역에 표시되는 것 -->
+    <p style="background-color: indianred;">p태그 : 하나의 문단을 나타내는 태그</p>
+    <p>2022년 4월 19일</p>
+    <p>화요일</p>
+    <!-- span태그가 차지하는 영역 (글자가 차지하는 공간만) -->
+    <span style="background-color: skyblue;">span 태그111</span>
+    <span style="background-color: gray;">span 태그222</span>
+
+    <!-- HTML에서 공백은 0 또는 1 (스페이스바 여러 번 눌러도 한 칸만 공백, 엔터도 공백) -->
+    <p>
+        나는&nbsp;공백을 표현하는
+        기능을 &nbsp;&nbsp;&nbsp;&nbsp;해요
+        <br>줄바꿈을 할 수 있어요<br>다음 줄로 내려가요
+        <br><br><br>단독태그예요
+    </p>
+
+    <pre>
+    나는 읽기 쉬운 마음이야
+당신도 스윽 훑고 가셔요
+        입력한 대로 화면에 표현이      돼요 <br> pre태그 안에서 br태그를 사용할 수도 있어요
+    </pre>
+    <!-- 모든 태그에는 바깥여백(마진)이 있음. p태그는 마진이 넓다 -->
+    <p style="background-color: olivedrab;">줄바꿈 태그는</p> <p style="background-color: olivedrab;">br태그</p>
+    <!-- br -->
+    <p style="background-color: darkcyan;">줄바꿈 태그는<br>br태그</p>
+</body>
+</html>

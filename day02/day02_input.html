@@ -1,0 +1,51 @@
+<!-- day02_input.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- input : 사용자가 입력할 수 있는 창을 만들어줌 -->
+    <!-- input 태그는 사용자가 입력한 값을 서버로 전달하기 위함
+        >> form 태그와 함께 사용 -->
+    <!-- form >> input >> submit -->
+    <h2>input 태그</h2>
+    <form action="testUrl" method="get"> 
+        <!-- action : form 태그 내부의 사용자 입력 데이터를 "주소"로 전송 
+             method : 전송 시켜줄 방법 [get|post] 
+            - get : input 값이 주소창에 나타남 (url 파라미터에 담아서 전송하는 방법)               
+            - post : input 값을 숨김 -->
+        아이디 : <input type="text" name="ID"> <br>
+        비밀번호 : <input type="text" name="PW"> <br>
+        이름 : <input type="text" name="username"><br>
+        <!-- 사용자가 단순히 입력만 하는 용도가 아니라면 input 태그에는 name 속성이 반드시 있어야 함
+            >> name 속성이 없을 경우 변수에 담길 수가 없기 때문에 -->
+        <input type="submit" value="로그인">
+    </form>
+
+    <hr>
+    <form action="https://search.naver.com/search.naver" method="get" target="_blank">
+        검색 : <input type="text" name="query">
+        <br>
+        <input type="submit">
+    </form>
+    <!-- https://search.naver.com/search.naver 주소에 get 방식으로 데이터를 전송
+        input 데이터는 query라는 변수에 담겨서 전송 -->
+
+    <hr>
+    
+    onchange <input type="text" name="" onchange="test()">
+
+</body>
+<script>
+    function test(){
+        alert("!!!!!");
+    }
+</script>
+
+
+
+</html>

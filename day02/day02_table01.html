@@ -1,0 +1,103 @@
+<!-- day02_table01.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* style 적용
+        1. 선택자 선택
+        2. 적용할 내용 입력 (어떤 속성, 어떻게 부여) */
+
+        table,
+        td,
+        th {
+            /* 동일한 style을 적용한다면 한 번에 적용 가능 */
+            border: 1px solid black;
+            /* border(경계선) : 선굵기 선형태 색 (순서는 무관) */
+            color: royalblue;
+            border-collapse: collapse;
+            /* collapse : 맞닿아있는 경계선을 합쳐줌 */
+            padding: 5px;
+            /* padding : 안쪽 여백 */
+        }
+
+        /* td(모든 칸에 적용), tr은 적용 불가능 */
+    </style>
+</head>
+
+<body>
+    <h3>table 태그</h3>
+    <table>
+        <tr> <!-- 가로줄(행) - 한 줄 -->
+            <td>1</td> <!-- 세로줄(열) - 한 칸 -->
+            <td>2</td>
+            <td>3</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+        </tr>
+    </table>
+
+    <hr> <!-- 경계선 표시 -->
+    <table>
+        <tr>
+            <td>AAA</td>
+            <td>1111</td>
+            <td>aaa</td>
+        </tr>
+        <tr>
+            <th>아이디</th> <!-- th : 테이블의 제목 역할 / 글씨 크고 굵게, 가운데정렬 -->
+            <th>비밀번호</th>
+            <th>이름</th>
+        </tr>
+        <tr>
+            <td>BBB</td>
+            <td>2222</td>
+            <td>bbb</td>
+        </tr>
+    </table>
+    <hr> 
+
+    <!-- thead, tbody, tfoot : 테이블 구조를 잡아주는 태그 -->
+    <!-- thead에 넣어두는 내용은 코드 아래쪽에 쓰더라도 테이블 맨 위에 위치하게 됨 -->
+    <!-- 사용할거면 다같이 써주기 (어느 한 부분만 써져있으면 적용이 잘 안됨) -->
+    <table>
+        <tfoot> <!-- 하단부 -->
+            <tr>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+            </tr>
+        </tfoot>
+        <tbody> <!-- 내용부 -->
+            <tr>
+                <td>AAA</td>
+                <td>1111</td>
+                <td>aaa</td>
+            </tr>
+            <tr>
+                <td>BBB</td>
+                <td>2222</td>
+                <td>bbb</td>
+            </tr>
+        </tbody>
+        <thead> <!-- 상단부(제목) -->
+            <tr>
+                <th>아이디</th>
+                <th>비밀번호</th>
+                <th>이름</th>
+            </tr>
+        </thead>
+    </table>
+    
+    
+
+</body>
+
+</html>

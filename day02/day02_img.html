@@ -1,0 +1,43 @@
+<!-- day02_img.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 하늘색으로 표시되는 부분은 기본으로 구성에 필요한 속성 -->
+    <!-- img를 예로 들면 src, alt -->
+    <!-- alt : 이미지가 뜨지 않을 때 대체텍스트 역할 / 시각장애인들에게 음성으로 들려주는 역할 -->
+    
+    <!-- 사이즈 설정단위 : px(해상도에 따라 다르게 나옴), % -->
+    <!-- width, height 둘 다 쓰면 원본 비율 훼손(하나만 쓰면 비율 유지) -->
+    
+    <!-- 상대경로 ::  작업중인 html 문서를 기준으로 위치를 찾음 
+         해당 html 파일이 있는 폴더 내에 저장되어있지 않다면 경로를 설정해주어야 함 -->
+    <!-- 절대경로 ::  작업중인 html 문서 기준 말고 실제 경로를 입력-->
+    
+    <h2>이미지태그 img</h2>
+    <h3>1. src = "url"</h3>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyGnV38qI3kabyXoa6e9eOn9960Lcnzj3jGA&usqp=CAU"
+         alt="고양고양" width="" height="200px">
+    
+    <h3>2. src = "이미지파일" - 작성중인 문서와 같은 폴더일 경우</h3>
+    <img src="cat.jpg" alt="희귀고양" width="400px">
+    
+    <h3>3. src = "이미지파일" - 작성중인 문서의 하위폴더에 있는 경우</h3>
+    <img src="img/rabbit.jfif" alt="토끼" width="200px">
+
+    <h3>4. src = "이미지파일" - 작성중인 문서의 상위폴더에 있는 경우</h3>
+    <img src="../사슴.jfif" alt="사슴" width="200px">
+
+    <h3>5. src = "이미지파일" - 작성중인 문서의 상위폴더에 있는 경우</h3>
+    <img src="../image/족제비.jpg" alt="족제비" width="200px">
+
+    <h3>6. src = "이미지파일" - 절대경로로 설정하는 방법</h3>
+    <img src="C:\Users\user\Desktop\수달.jpg" alt="" width="200px">
+    <!-- LiveSever로 여는 것은 작업중인 영역만 인식함 -->
+</body>
+</html>

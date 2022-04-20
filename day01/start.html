@@ -1,0 +1,38 @@
+<!DOCTYPE html> <!-- (최근에는 다 5버전을 사용하기 때문에) 생략 가능 -->
+<!-- html 5(버전)을 의미함 -->
+<!-- 웹 브라우저에게 '처리할 문서가 HTML 문서, 어떤 유형을 사용했으니 그에 맞게 해석하라'
+     라고 알려주는 부분 -->
+
+<!-- 열리고 닫히는 태그가 제대로 위치하지 않아도 어떻게든 해석해서 실행됨
+    의도와 맞게 실행되고 있는지 잘 확인해주어야 함 -->
+<html lang="en">
+
+<head>
+    <!-- 브라우저가 알아야 할 정보를 주는 태그 -->
+    <!-- 디자인(색, 위치, 크기), 기능 수행(버튼 클릭, 배너 변경) -->
+    <title>브라우저 탭에 나타나는 제목</title>
+    <link rel="stylesheet" href="start.css">
+    <script src="start.js"></script>
+</head>
+
+<body>
+    웹 브라우저에 실제로 표시되는 부분
+    <p>HTML, CSS, javascript</p>
+    <h1>CSS</h1>
+    <h2 onclick="clickTest()">JAVASCRIPT</h2>
+    <!-- JAVASCRIPT를 onclick(클릭하면) clickTest()라는 function 함수를 실행하는 것 -->
+    <p id="p1">스크립트테스트</p>
+</body>
+
+</html>
+
+
+<!-- 자동정렬
+ctrl + A >> 전체 선택
+ctrl(계속 누른 상태) + K >> ctrl + F -->
+
+<!-- 내용 HTML / 디자인 CSS / 기능 jsp
+    >> html 하나에 모두 넣는 것도 가능
+    html에는 내용만 작성하는 것을 권장함
+    Why? >> 탭을 누르면 옮겨가는 건 각각의 html이지만 디자인은 똑같음
+-->    

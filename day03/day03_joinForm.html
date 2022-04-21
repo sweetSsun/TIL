@@ -1,0 +1,93 @@
+<!-- day03_joinForm.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="table.css">
+</head>
+<body>
+    <h2>회원가입 form</h2>
+    <form action="signUp.url" method="get">
+    <table>
+        <tr>
+            <th colspan="2">회원가입</th>
+        </tr>
+        <tr>
+            <th>
+                <label for="inputMid">아이디</label> 
+            </th>
+            <td>
+                <input type="text" name="userId" id="inputMid">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="inputMpw">비밀번호</label></th>
+            <td>
+                <input type="password" name="userPw" id="inputMpw">
+            </td>
+        </tr>
+        <tr>
+            <th><label for="inputMname">이름</label></th>
+            <td><input type="text" name="userName" id="inputMname"></td>
+        </tr>
+        <tr>
+            <th><label for="inputMemail">이메일</label></th>
+            <td>
+                <input type="text" name="userEmail" id="inputMemail">
+                @ <input type="text" name="emailDomain" id="domain">
+                <select onchange="inputDomain(this.value);">
+                    <option value="">직접입력</option>
+                    <option value="naver.com">네이버</option>
+                    <option value="daum.net">다음</option>
+                    <option value="gmail.com">구글</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>생년월일</th>
+            <td><input type="date" name="userBirth"></td>
+        </tr>
+        <tr>
+            <th>성별</th>
+            <td>
+                <input type="radio" name="userGender" value="man" id="inputGender1"> <label for="inputGender1">남</label>
+                <input type="radio" name="userGender" value="woman" id="inputGender2"> <label for="inputGender2">여</label>
+                <!-- label 태그 내부의 내용을 누르면 for의 id를 선택하게 만듦 -->
+            </td>
+        </tr>
+        <tr>
+            <th>관심분야</th>
+            <td>
+                <label>
+                <input type="checkbox" name="userInterest" value="HTML" id="inputInter1">HTML
+                </label>
+                <!-- label 태그 내부에 input 태그를 넣어 하나의 input으로 묶을 수도 있음 -->
+                <input type="checkbox" name="userInterest" value="JAVA" id="inputInter2"> <label for="inputInter2">JAVA</label>
+                <input type="checkbox" name="userInterest" value="ORACLE" id="inputInter3"> <label for="inputInter3">ORACLE</label>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                <input type="reset" value="다시작성">
+                <input type="submit" value="회원가입">
+                <br><br>
+                <button>버튼</button>
+                <!-- form 태그 내부에 쓰이면 type이 없어도 기본으로 submit 기능을 함 -->
+                <button type="button"> type="button" 버튼</button>
+                <!-- form 태그 내부에서는 일반 버튼으로 사용하고 싶다면 button 타입으로 명시해주어야 -->
+                <button type="submit"> type="submit" 버튼</button>                
+            </th>
+        </tr>
+    </table>
+</form>
+</body>
+
+<script>
+    function inputDomain(selectVal){
+        document.getElementById("domain").value = selectVal;
+    }
+</script>
+</html>

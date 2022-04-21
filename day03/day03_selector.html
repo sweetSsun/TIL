@@ -1,0 +1,52 @@
+<!-- day03_selector.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h2 { /* 선택자 - 태그명 */
+            color: blue;
+        }
+        #head3 { /* 선택자 - ID (ID명 앞에 #을 붙임) */
+            color: red;
+        }
+        .colorGreen { /* 선택자 - class (class명 앞에 .을 붙임) */
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h2>선택자</h2>
+    <!-- 태그명, id 속성(단일), class 속성(그룹) -->
+    <h2>태그선택자</h2>
+    <hr>
+    <h3 id="head3">ID</h3> <!-- h3 중 이 부분만 빨간색 -->
+    <!-- id는 한 문서 안에서 유일한 값이어야
+        중복값이 있을 경우 script 사용시 문제 발생 >> 위에서부터 내려와 가장 먼저 발견되는 id에만 적용됨
+        (CSS 사용할 때는 문제 발생 X) -->
+    <h3 id="head3">선택자</h3>
+    <button onclick="testButton()">버튼</button>
+    <hr>
+    <!-- 여러 개를 묶으려면 class 사용 -->
+    <p class="colorGreen">HTML</p>
+    <h4 class="colorGreen">JAVASCRIPT</h4>
+    <h5 class="colorGreen">ORACLE</h5>
+    <p class="colorGreen">SERVLET</p>
+</body>
+
+<script>
+    function testButton() {
+        document.getElementById("head3").innerText="2022-04-21";
+        var cList = document.getElementsByClassName("colorGreen");
+        console.log(cList[0]);
+        console.log(cList[1]);
+        console.log(cList[2]);
+        console.log(cList[3]);
+        cList[0].innerText = "abcd";
+    }
+</script>
+
+</html>

@@ -1,0 +1,86 @@
+<!-- day04_mainPage.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            /* 모든 여백을 0으로 만들어준 후 자신에게 필요한 여백을 각각 설정 */
+        }
+        body{
+            background-color: rgb(240, 245, 255);
+            
+        }
+        .header{
+            text-align: center;
+            background-color: thistle;
+            padding: 20px 15px;
+            margin-bottom: 10px;
+        }
+        .navigation{
+            background-color: black;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        li{
+            padding: 10px;
+            display: inline-block; 
+            /* inline 요소로 변경하면 리스트 문자가 생략됨 */
+            
+            
+        }
+
+        .contents{
+            background-color: white;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .footer{
+            background-color: silver;
+            padding: 10px;
+        }
+        li a:visited{ /* 링크 방문했던 기록이 있으면 */
+            /* li태그 안의 a태그 */
+            text-decoration: none;
+            color: white;
+        }
+        li a:link{ /* 링크 밑줄 없애기 */
+            text-decoration: none;
+        }
+        li a:active{ /* 링크 누를 때 */
+            text-decoration: none;
+            color: darkcyan;
+        }
+        #liLogin:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1> <a href="" >메인타이틀</a></h1>
+    </div>
+    <div class="navigation">
+        <ul>
+            <li>메인화면</li>
+            <li style="float: right;"><a href="../day03/day03_joinForm.html">회원가입</a></li>
+            <li style="float: right;" id="liLogin">로그인</li>
+        </ul>
+        
+    </div>
+    <div class="contents">
+        <h2>본문내용</h2>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+    <div class="footer">
+        <h2>기타정보</h2>
+    </div>
+
+</body>
+</html>

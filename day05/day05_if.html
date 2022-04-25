@@ -1,0 +1,67 @@
+<!-- day05_if.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>짝수 홀수 판별</h2>
+    숫자 입력 : <input type="text" id="inputNum">
+    <button onclick="evenOdd()">버튼</button>
+    <br>
+    결과 : <span id="result"> </span>
+</body>
+<script>
+    // id 입력할 때 "" 잊지않기!!
+    function evenOdd(){
+        console.log("evenOdd() 호출");
+        document.getElementById("result").innerText = ""; // 다시 재생할 때 결과값 지워주는 용도
+
+        // 1. 입력된 숫자 값을 확인
+        var num = document.getElementById("inputNum").value;
+        console.log(num);
+        console.log("num type : " + typeof num); // num의 타입 : string
+        var num2 = Number(num);
+        console.log("num2 type : " + typeof num2); // num2의 타입 : number
+        // 타입은 Number로 만들었기 때문에 문자를 입력해도 강제로 number 타입으로 출력됨
+        console.log(num2);
+        // 문자 입력 시 Number가 될 수 없기 때문에 Not a Number 출력
+        if (isNaN(num2)){ // NaN이면 true, NaN이 아니면 false / 문자 입력시 실행될 코드
+            console.log("num2는 숫자가 아닙니다.");
+            alert("숫자를 입력해주세요.")
+            document.getElementById("inputNum").value = ""; // 입력창 null로 변경
+            document.getElementById("inputNum").focus(); // focus : 해당 id값에 커서를 눌러주는 효과
+            return; // 숫자가 아니면 홀짝 판별하지 않도록 강제중단
+        }
+
+        // 2. 짝수/홀수 판별 후 span 태그에 innerText
+        if( num % 2 == 0 ){
+            console.log("짝수입니다.");
+            document.getElementById("result").innerText = "짝수입니다.";
+        } else {
+            console.log("홀수입니다.");
+            document.getElementById("result").innerText = "홀수입니다.";
+        }
+    }
+
+    console.log("script!");
+    // var a = 10;
+    // if( a == 10 ) {
+    //     console.log("a는 10입니다.");
+    // } else {
+    //     console.log("a는 10이 아닙니다.")
+    // }
+    
+    // var number = 7;
+    // if( number % 2 == 0 ){
+    //     console.log("짝수입니다.");
+    // } else {
+    //     console.log("홀수입니다.");
+    // }
+
+
+</script>
+</html>

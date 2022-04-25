@@ -1,0 +1,62 @@
+<!-- day05_variable.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>variable</h2>
+    <button onclick="printDay()">버튼</button>
+    <div id="div1"></div>
+    <div id="div2"></div>
+</body>
+
+<script>
+    /*
+    < JAVA >
+    String 타입 변수 선언 :: String str1 = "문자";
+    int 타입 변수 선언    :: int int1 = 100;
+    
+    < Script >
+    데이터타입 따지지 X
+    변수타입 부분 선언 :: var, let, const
+    - var : 함수 단위에서 사용
+    - let, const : 블럭 내부에서만 사용
+    */
+
+    var day = "월요일";
+    console.log("day : " + day);
+    var number = 25;
+    console.log("number : " + number);
+    var floatNum = 1.123;
+    console.log("floatNum : " + floatNum);
+    var boolTrue = true;
+    var boolFalse = false;
+    console.log("boolTrue : " + boolTrue);
+    var obj = document.getElementById("div2"); // 문서 내의 요소도 변수에 담을 수 있음
+    // obj.innerHTML = "<h2>텍스트!!</h2>"; // innerHTML : 태그를 삽입
+    console.log(obj);
+    obj.innerText = "텍스트!!"; // innerText : 텍스트를 삽입
+    
+    // 변수타입을 확인
+    console.log("typeof day : " + typeof day); // string 타입
+    console.log("typeof number : " + typeof number); // number 타입
+    console.log("typeof floatNum : " + typeof floatNum); // number 타입 (정수,실수 모두 number)
+    console.log("typeof boolTrue : " + typeof boolTrue); // boolean 타입
+    console.log("typeof obj : " + typeof obj); // object 타입
+
+    function printDay(){
+        console.log("printDay()");
+        // script 만들 때 console.log를 잘 이용해 브라우저에서 기능이 작동하는지 확인하면 좋음
+        // JAVA로 치면 System.out.println과 같은 기능
+        console.log(document.getElementById("div1"));
+        document.getElementById("div1").innerText = day;
+    }
+
+
+</script>
+
+</html>

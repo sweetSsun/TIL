@@ -1,0 +1,44 @@
+<!-- day06_jQuery.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 1. 실제 파일로 다운받아 script로 불러오기(경로설정) -->
+    <script src="../jquery-3.6.0.js"></script> 
+    <!-- 2. Using jQuery with a CDN >> "CDNJS.CDN" >> script tag 복사 >> html 파일에 붙여넣기 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <h2>jQuery</h2>
+    <!-- jQuery : 
+      다양한 function들을 사용자가 쉽게 사용하도록 script 소스들을 모여 구성된 오픈소스 라이브러리
+      외부파일을 받아 사용하는 것 -->
+
+    <p id="p1"> p태그 id = "p1" </p>
+    <button onclick="testBtn1()">버튼1</button>
+    <hr>
+    <p id="p2"> p태그 id = "p2" </p>
+    <button onclick="testBtn2()">버튼2</button>
+
+</body>
+<script>
+    // $.ajax(){} // 전체 페이지가 아니라 변화하는 부분만 통신하는 함수
+    
+    function testBtn1(){
+        document.getElementById("p1").style.color = "red";
+    }
+    function testBtn2(){ // jQuery 라이브러리의 문법
+        // document.getElementById("p2") >> $("#p2")
+        // jQuery >> $
+        // Id가 p2인 요소 >> "#p2" (선택자는 css와 동일 / tag : tag명만, id : #id, class : .class)
+        // $("#p2").css("color","blue");
+        $("#p2").css( { "color" : "blue", "background-color" : "skyblue" } );
+        // 여러 요소를 한 번에 적용
+    }
+
+    // $(function() { });  //아래와 같은 의미
+    $(document).ready(function(){ 
+        // 현재 문서의 body 태그를 전부 해석하고 브라우저에 출력하기 전 단계에 실행
+        // script 태그가 body 태그의 위(기능을 적용하고자 하는 요소)에 선언되더라도 실행됨
+     });
+</script>
+</html>

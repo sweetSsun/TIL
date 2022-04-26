@@ -1,0 +1,69 @@
+<!-- day06_addEvent.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>addEventListener</h2>
+    <button id="alertBtn">alert!</button>
+    <br>
+    keyup: <input type="text" onkeyup="testKeyUp(this.value)"> <br>
+    <!-- onkeyup : 키보드 키를 누르고 있다가 뗐을 때 -->
+    keydown: <input type="text" onkeydown="testKeyDown(this.value)"> <br>
+    <!-- onkeydown : 키보드 키를 누를 때 -->
+    change: <input type="text" onchange="testChange(this.value)"> <br>
+    <!-- change : 입력값이 변화했을 때 -->
+    <!-- 회원가입시 값이 변할 때 서버로 바로바로 전송해서 규격이나 중복아이디를 확인 -->
+    focusin/out: <input type="text" id="focusIn1" onfocusout="testFocusOut()"> <br>
+    <!-- focusin : focus가 맞춰질 때 / focusout : focus가 벗어날 때 -->
+</body>
+<script>
+    function testKeyUp(inputVal) {
+        console.log(inputVal);
+    }
+
+    function testKeyDown(inputVal) {
+        console.log(inputVal);
+    }
+    
+    function testChange(inputVal) {
+        console.log(inputVal);
+    }
+
+    var inputObj = document.getElementById("focusIn1");
+    inputObj.addEventListener("focusin", testFocusIn);
+
+    function testFocusIn() {
+        inputObj.style.backgroundColor = "green";
+    }
+
+    function testFocusOut() {
+        inputObj.style.backgroundColor = "red";
+    }
+
+    var alertObj = document.getElementById("alertBtn");
+    alertObj.addEventListener("click", testAlert); 
+    /* addEventListener : 이벤트를 설정하여, 해당 이벤트가 발생할 때 function을 호출
+        해당 태그에서 직접 설정할 수도 있지만, 속성이나 기능이 너무 많을 때 script에서 addEventListener로 이벤트 설정을 해줄 수도 있음*/
+    // (1, 2) - 1: 이벤트의 종류 / 2: function명
+
+    alertObj.addEventListener("mouseover", font_Red);
+    alertObj.addEventListener("mouseout", font_Blue);
+    // mouseover : 지정된 값에 마우스가 올라가면
+    // mouseout : 지정된 값에 마우스가 벗어나면
+
+    function font_Red(){
+        document.getElementsByTagName("h2")[0].style.color = "red";
+    }
+    function font_Blue(){
+        document.getElementsByTagName("h2")[0].style.color = "blue";
+    }
+    function testAlert(){
+        alert("alert!!!");
+    }
+</script>
+</html>

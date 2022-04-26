@@ -1,0 +1,78 @@
+<!-- day06_addClass.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .fontGreen{
+            color: darkgreen;
+        }
+        .font50{
+            font-size: 50px;
+        }
+        .dis_none{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="addFontGreen()">초록색</button>
+    <button onclick="toggleGrren()">초록색 toggle</button>
+    <button onclick="showHide()">보이기/숨기기</button>
+    <button onclick="toggleShowHide()">보이기/숨기기 toggle</button>
+    <h2 id="head2" class="font50 dis_none">addClass</h2>
+</body>
+<script>
+
+    function toggleShowHide(){
+        var obj = document.getElementById("head2");
+        var objClassList = obj.classList;
+        objClassList.toggle("dis_none");
+    }
+
+    function toggleGrren(){
+        var obj = document.getElementById("head2");
+        var objClassList = obj.classList;
+        objClassList.toggle("fontGreen");
+        // toggle : add, remove 역할을 동시에. class가 있으면 속성 제거, 없으면 속성 추가.
+    }
+
+    // document.getElementById("head2").style.color = "darkgreen";
+    function addFontGreen(){
+        console.log("addFontGreen() 호출");
+        var obj = document.getElementById("head2");
+        console.log(obj);
+        // id가 가지고 있는 class를 불러올 것 (복수이기 때문에 배열 형식으로 받음)
+        var objClassList = obj.classList;
+        
+        console.log(objClassList.contains("fontGreen"));
+        // contains : 배열에 매개변수값이 담겼는지 확인. 있으면 true, 없으면 false 반환.
+        if (objClassList.contains("fontGreen")) {
+            // 있으면 해당 class 속성 제거
+            objClassList.remove("fontGreen");
+        } else {
+            // 없으면 해당 class 속성 추가
+            objClassList.add("fontGreen");
+            // obj.classList.add("fontGreen"); // 왜 이게 아닐까
+            /* script에서는!! 오른쪽 값을 왼쪽 변수에 저장하는 것도 맞지만
+                변수에 요소를 담았을 때, 그 요소의 단축키같은 역할을 할 수도 있다.
+                (변수가 그 아이디의 요소가 되는 것)*/
+        }
+    }
+
+    function showHide(){
+        // 더보기 탭에서 활용
+        var obj = document.getElementById("head2");
+        var objClassList = obj.classList;
+        if (objClassList.contains("dis_none")){
+            objClassList.remove("dis_none");
+        } else {
+            objClassList.add("dis_none");
+        }
+    }
+
+</script>
+</html>

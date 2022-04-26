@@ -1,0 +1,71 @@
+<!-- day06_array03.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Array</h2>
+    <fieldset>
+        <legend>성적</legend>
+        점수 입력 : <input type="text" id="score" placeholder="점수입력(숫자)">
+        <br><br>
+        <input onclick="inputScore()" type="button" value="입력">
+        <input onclick="totalScore()" type="button" value="총점">
+        <input onclick="avgScroe()" type="button" value="평균">
+        <h3 id="resultMsg"></h3> 
+        <!--입력 : "__점이 입력되었습니다."
+            총점 : "총점은 __점 입니다.""
+            평균 : "평균은 __점 입니다." -->
+    </fieldset>
+</body>
+
+<script>
+    
+    var scoreList = []; // 점수를 저장할 배열
+    var total = 0;
+    
+    function inputScore() {
+        var score = Number(document.getElementById("score").value);
+        
+        if (isNaN(score) || score == "") {
+            alert("점수를 입력해주세요!");
+        } else {
+            scoreList.push(score);
+            document.getElementById("resultMsg").innerText = score + "점이 입력되었습니다.";
+            for(var i = 0; i < scoreList.length; i++) {
+                console.log("입력된 점수 : " + scoreList[i]);
+            }
+        }
+        document.getElementById("score").value = "";
+        document.getElementById("score").focus();
+    }
+    
+    function totalScore() {
+        if (scoreList.length == 0) {
+            document.getElementById("resultMsg").innerText = "입력된 점수가 없습니다.";
+        } else {
+            for(var i = 0; i < scoreList.length; i++){
+                total = total + scoreList[i];
+                console.log(total);
+            }
+            document.getElementById("resultMsg").innerText = "총점은 " + total + "점입니다.";
+        }
+    }
+    
+    function avgScroe() {
+        if (scoreList.length == 0) {
+            document.getElementById("resultMsg").innerText = "입력된 점수가 없습니다.";
+        } else {
+            console.log("총점 : " + total);
+            var avg = total / scoreList.length;
+            console.log(" 평균 : " + avg);
+            document.getElementById("resultMsg").innerText = "평균은 " + avg.toFixed(2) + "점입니다.";
+            // toFixed(숫자) : 소수점 몇 번째 자리까지 끊어주는 메소드
+        }
+    }
+</script>
+</html>

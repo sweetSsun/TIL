@@ -1,0 +1,65 @@
+<!-- day06_array01.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2 id="head2">Array</h2>
+    <p id="p1">p태그</p>
+
+    아이디 : <span class="memInfo"></span> <br>
+    비밀번호 : <span class="memInfo"></span> <br>
+    이름 : <span class="memInfo"></span> <br>
+</body>
+<script>
+    /* 
+    int num = 10;
+    int[] numbers = new int[3];
+                    {10, 20, 30}; */
+    var numbers = new Array();
+    // 타입이 정해져있지 않기 때문에 다양한 데이터타입이 하나의 배열에 담길 수 있음
+    numbers[0] = 10;
+    numbers[1] = 20;
+    console.log(numbers[0]);
+    console.log(numbers[1]);
+    numbers[2] = "최정훈"; 
+    console.log(numbers[2]);
+    numbers[3] = true; 
+    console.log(numbers[3]);
+    numbers[4] = document.getElementById("head2");
+    console.log(numbers[4]);
+    numbers[5] = document.getElementById("p1").innerText;
+    // numbers[5] = document.getElementById("p1").textContent;
+    console.log(numbers[5]);
+
+    var profile = new Array("최정훈","010-3522-2311",31,"성남",false);
+    console.log(profile[0]);
+    console.log(profile[1]);
+    console.log(profile[2]);
+    console.log(profile[3]);
+    console.log(profile[4]);
+    console.log("profile.length : " + profile.length); // profile.length : 5
+    console.log(profile[5]); // 없는 value여도 오류가 나지 않고 undefined
+    profile[7] = 20;
+    console.log(profile[6]); // undefined
+    console.log(profile[7]); // 중간 배열의 인덱스를 비운 채로 저장할 수도 있음
+    console.log(profile.length); // 제일 마지막에 저장되어 있는 값을 기준으로 길이를 측정
+    for (var i = 0; i < profile.length; i++) {
+        console.log(profile[i]);
+    }
+
+    var member = [];
+    member[0] = "kdh"
+    member[1] = "0416";
+    member[2] = "김도형";
+    for (var i = 0; i < member.length; i++) {
+        console.log(member[i]);
+        document.getElementsByClassName("memInfo")[i].innerText = member[i];
+    }
+
+</script>
+</html>

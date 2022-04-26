@@ -21,6 +21,7 @@
             </th>
             <td>
                 <input type="text" name="userId" id="inputMid">
+                <div id="checkMsg" style="color: red; font-size: small;"></div>
             </td>
         </tr>
         <tr>
@@ -88,6 +89,16 @@
 <script>
     function inputDomain(selectVal){
         document.getElementById("domain").value = selectVal;
+    }
+
+    var inputId = document.getElementById("inputMid");
+    inputId.addEventListener("keyup",checkMid);
+
+    function checkMid() {
+        console.log(inputId.value.length)
+        if (inputId.value.length <= 6) {
+            document.getElementById("checkMsg").innerText = "6글자 이상 입력해주세요.";
+        }
     }
 </script>
 </html>

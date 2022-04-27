@@ -1,0 +1,103 @@
+<!-- day07_addClass.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../jquery-3.6.0.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <style>
+        .fontRed {
+            color: red;
+        }
+
+        .fontBlue {
+            color: blue;
+        }
+
+        .boldText {
+            font-weight: bold;
+        }
+
+        .fontDongle {
+            font-family: 'Dongle', sans-serif;
+        }
+
+        .fontNanum {
+            font-family: 'Nanum Pen Script', cursive;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>addClass</h2>
+    <button id="btn1">fontDongle</button>
+    <button id="btn2">fontNanum</button>
+    <button id="btn3">*</button>
+    <p id="p1">p태그 id="p1"</p>
+    <p id="p2">p태그 id="p2"</p>
+    <p id="p3">p태그 id="p3"</p>
+</body>
+
+<script>
+    $(document).ready(function(){
+        console.log("확인");
+        /*
+        $("#p1").click(function() {
+            console.log("#p1 클릭")
+            $("#p1").addClass("fontRed");
+        });
+
+        $("#p1").dblclick(function() {
+            console.log("#p1 더블클릭")
+            $("#p1").addClass("fontBlue");
+        });
+        */
+        $("#p1").click(function() {
+            console.log("#p1 클릭");
+            $("#p1").addClass("fontRed");
+        }).dblclick(function() { // (같은 선택자일 때) 세미콜론 없이 다음 이벤트 바로 부여 
+            console.log("#p1 더블클릭");
+            $("#p1").addClass("boldText");
+        });
+
+        $("#p2").click(function() {
+            console.log("#p1 클릭");
+            $("#p2").addClass("fontRed");
+        });
+        $("#p2").dblclick(function() {
+            console.log("#p1 더블클릭");
+            $("#p2").removeClass("fontRed");
+        });
+
+        $("#p3").click(function() {
+            console.log("#p3 클릭");
+            $("#p3").toggleClass("fontBlue");
+        });
+
+        $("#btn1").click(function(){
+            console.log("#btn1 클릭");
+            $("body").toggleClass("fontDongle");
+            $("body").removeClass("fontNanum");     
+        });
+        
+        $("#btn2").click(function() {
+            console.log("#btn2 클릭");
+            $("body").toggleClass("fontNanum");
+            $("body").removeClass("fontDongle");     
+        });
+        
+        $("#btn3").click(function() {
+            console.log("#btn3 클릭");
+            $("*").toggleClass("fontNanum"); // 모든 태그  
+        });
+
+    });
+</script>
+
+</html>

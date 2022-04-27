@@ -1,0 +1,63 @@
+<!-- day07_attr.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../jquery-3.6.0.js"></script>
+</head>
+<body>
+    <h2>속성 적용</h2>
+    <button id="btn1"> src 속성변경 </button>
+    <button id="btn2"> height 속성제거 </button>
+    <button id="btn3"> width 속성변경 </button>
+    <br><br>
+    <img id="img1" src="../image/곰.jpg" width="300px" height="50px">
+</body>
+<script>
+    /* 
+    function 안에 function이 들어가면 작동하지 X
+      1. 해당 태그에 직접 이벤트가 부여되어있을 경우, body 태그를 읽으면서 이벤트 발견
+        >> 해당 function으로 이동해야 하는데 ready 안에 들어가있으면 body 태그가 모두 읽히지 않았기 때문에 찾을 수 없음
+      2. script에서 이벤트가 부여되어있을 경우, body 태그를 모두 읽고 script 태그에서 이벤트 발견
+        >> 이미 body 태그는 모두 파악했기 때문에, ready 안에 function이 있어도 무방
+    */
+
+    // css() : 선택자의 style을 변경할 때 쓰는 함수
+    // attr() : 선택자의 속성(id, src, width, class...)을 변경할 때 쓰는 함수 (attribute)
+
+    /* attr / addClass 의 차이
+       - attr : class의 속성을 변경
+       - addClass : class를 추가 */
+
+    $(document).ready(function() {
+        $("#btn1").click(function() {
+            console.log("btn1 클릭!");
+            var imgName = $("#img1").attr("src")
+            console.log(imgName);
+            if (imgName == "../image/곰.jpg") { // toggle처럼
+                $("#img1").attr("src", "../image/토끼.jpg"); 
+            } else {
+                $("#img1").attr("src", "../image/곰.jpg"); 
+            }
+            /* 매개변수 갯수에 따라 값을 반환할지, 변경할지 기능이 달라짐
+                - 속성만 명시하면 해당 속성값을 반환
+                - 속성과 속성값을 명시하면 해당 속성을 추가/변경
+            */ 
+        }); 
+
+        $("#btn2").click(function() {
+            console.log("btn2 클릭!");
+            $("#img1").removeAttr("height");
+        });   
+        
+        $("#btn3").click(function() {
+            console.log("btn3 클릭!");
+            $("#img1").attr("width", "100px");
+        });
+           
+    });    
+</script>
+</html>

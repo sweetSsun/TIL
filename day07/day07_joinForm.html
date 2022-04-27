@@ -1,0 +1,178 @@
+<!-- day07_joinForm.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Poor+Story&display=swap" rel="stylesheet">
+    <script src="../jquery-3.6.0.js"></script>
+    <script src="https://kit.fontawesome.com/9125416ae4.js" crossorigin="anonymous"></script>
+
+    <style>
+        * { font-family: 'Poor Story', cursive;}
+        table, td, th{ /* border: 1px solid black; */
+                       border-collapse: collapse;}
+        th, td{ padding: 10px;}
+        table{ margin-left: auto; margin-right: auto; }
+        input{
+            border: 0px;
+            border-bottom: 2px solid silver;
+            margin: 5px;
+        }
+        #sumBtn1{
+            font-size: large;
+            background-color: white;
+            border: 3px solid slategray;
+            padding: 10px 20px;
+        }
+        #sumBtn1:hover{
+            background-color: #ffd900;
+            color: white;
+            cursor: pointer;
+        }
+        .font10{
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <h2>회원가입 Form</h2>
+    <form action="JOIN" method="get" onsubmit="return joinFormCheck()">
+        <!-- submit 버튼을 누를 때 true이면 실행, false이면 실행X
+            함수에서 반환되는 값을 통해 true / false -->
+    <table>
+        <tr>
+            <th colspan="3">회원가입</th>
+        </tr>
+        <tr>
+            <td><i class="fa-solid fa-address-book"></i></td>
+            <th>아이디</th>
+            <td>
+                <input type="text" id="userId" placeholder="4~10자리"> 
+                <span id="idCheckMsg" class="font10"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><i class="fa-regular fa-address-card"></i></td>
+            <th>비밀번호</th>
+            <td> 
+                <input type="password" name="memberPw" id="userPw" placeholder="4~8자리">
+                <span id="pwCheckMsg" class="font10"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><i class="fa-regular fa-address-card"></i></td>
+            <th>비밀번호 확인</th>
+            <td> 
+                <input type="password" id="pwConfirm"> 
+                <span id="pwConfirmMsg" class="font10"></span>
+            </td>
+        </tr>
+        <tr>
+            <td><i class="fa-solid fa-building-user"></i></td>
+            <th>이름</th>
+            <td> <input type="text"> </td>
+        </tr>
+        <tr>
+            <td><i class="fa-solid fa-building-user"></i></td>
+            <th>생년월일</th>
+            <td> <input type="text"> </td>
+        </tr>
+        <tr>
+            <td><i class="fa-solid fa-building-user"></i></td>
+            <th>이메일</th>
+            <td> <input type="text"> </td>
+        </tr>
+        <tr>
+            <td><i class="fa-solid fa-building-user"></i></td>
+            <th>주소</th>
+            <td> <input type="text"> </td>
+        </tr>
+        <tr>
+            <th colspan="3"> <input type="submit" id="sumBtn1" value="회원가입"> </th>
+        </tr>
+    </table>
+    </form>
+</body>
+
+<script>
+    var formIdCheck = false; // 아이디 입력창을 확인할 변수
+    var formPwCheck = false;
+
+    $(document).ready(function(){
+        $("#userId").focusout(function(){
+            var dbId = "ICIA";
+            // var userId = document.getElementById("userId").value
+            var userId = $("#userId").val();
+            console.log("userId : " + userId);
+            if (userId.length == 0) {
+                $("#idCheckMsg").text("필수정보입니다.").css("color","red");
+                formIdCheck = false;
+            } else if(userId.length < 4 || userId.length > 10) {
+                $("#idCheckMsg").text("4~10자리로 입력해주세요.").css("color","red");
+                formIdCheck = false;
+            } else if (dbId == userId) {
+                // document.getElementById("idCheckMsg").innerText = "중복된 아이디입니다.";
+                $("#idCheckMsg").text("중복된 아이디입니다.").css("color","red");
+                formIdCheck = false;
+            } else {
+                $("#idCheckMsg").text("사용가능한 아이디입니다.").css("color","green");
+                formIdCheck = true;
+            }
+        });
+
+        $("#userPw").focusout(function(){
+            var userPw = $("#userPw").val();
+            console.log("userPw : " + userPw);
+            if (userPw.length == 0){
+                $("#pwCheckMsg").text("필수정보입니다.").css("color","red");
+            } else if(userPw.length < 4 || userPw.length > 8) {
+                $("#pwCheckMsg").text("4~8자리로 입력해주세요.").css("color","red");
+            } else {
+                $("#pwCheckMsg").text("");
+            }
+        })
+
+        $("#pwConfirm").keyup(function(){
+            var userPw = $("#userPw").val();
+            var cfPw = $("#pwConfirm").val();
+            if (userPw != cfPw) {
+                $("#pwConfirmMsg").text("비밀번호가 일치하지 않습니다.").css("color","red");
+                formPwCheck = false;
+            } else {
+                $("#pwConfirmMsg").text("일치").css("color","green");
+                if(userPw.length < 4 || userPw.length > 8) {
+                    formPwCheck = false;
+                    return;
+                } else {
+                    formPwCheck = true;
+                }
+            }
+        })
+
+    });
+
+    function joinFormCheck(){
+        console.log("joinFormCheck() 호출");
+        console.log("formIdCheck : " + formIdCheck);
+        console.log("formPwCheck : " + formPwCheck);
+        // 아이디 확인
+        if(!formIdCheck){ // false이면 if문이 실행
+            alert("아이디를 확인해주세요!")
+            $("#userId").focus();
+            return false;
+        }
+        if(!formPwCheck){
+            alert("비밀번호를 확인해주세요!")
+            $("#userPw").focus();
+            return false;
+        }
+    }
+
+</script>
+
+</html>

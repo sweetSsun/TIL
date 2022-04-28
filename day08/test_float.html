@@ -1,0 +1,61 @@
+<!-- test -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .navigation {
+            background-color: black;
+            color: white;
+            margin-bottom: 10px;
+            padding: 10px;
+        }
+        
+        .navigation::after {
+            content: "";
+            clear: both;
+            display: block;
+        }
+
+        .navigation ul {
+            /* overflow: auto; */
+            list-style: none;
+            padding-left: 0px;
+        }
+
+        .navigation ul li {
+            float: left;
+            margin-right: 5px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        li a {
+            text-decoration: none;
+            color: white;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>메인페이지 제목</h1>
+    </div>
+    <div class="navigation">
+        <ul>
+            <li>메인페이지</li>
+            <li>회원가입</li>
+            <li>로그인</li>
+        </ul>
+    </div>
+    <div class="contents">
+        <h2>MainPage - 컨텐츠 영역</h2>
+    </div>
+</body>
+
+</html>

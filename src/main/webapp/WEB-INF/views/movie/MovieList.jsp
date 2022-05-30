@@ -59,14 +59,14 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                            	<a class="text-gray-900" style="cursor:none;" href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }">${mv.mvname }</a>
+                                            	<a class="text-gray-900" style="text-decoration-line:none;" href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }">${mv.mvname }</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                               	<div class="card-footer" style="background-color:white; border-top:none;">
-                                    <div class="text-xs mb-0 text-gray-900 font-weight-bold">예매율 % | 추천수 10</div>
-                                    <div class="text-xs mb-1 text-gray-900 font-weight-bold">${mv.mvopen } 개봉</div>
+                                    <div class="text-xs mb-0 text-gray-800 font-weight-bold">예매율 % | 추천수 10</div>
+                                    <div class="text-xs mb-1 text-gray-800 font-weight-bold">${mv.mvopen } 개봉</div>
                                     <div style="text-align: right;">
                               			<a class="btn btn-sm btn-danger" href="#">예매하기</a>
                               		</div>

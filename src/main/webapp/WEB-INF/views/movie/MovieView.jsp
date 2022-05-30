@@ -74,8 +74,10 @@
                                 	<div>
 	                                    개봉일 : ${movieInfo.mvopen }
                                 	</div>
+                                	<div>예매율 :  % / 추천수 : 10</div>
                                 	<div class="mt-1" style="text-align: right;">
 	                                	<a class="btn btn-sm btn-danger" href="#">예매하기</a>
+	                                	<a class="btn btn-sm btn-primary" href="#">추천하기</a>
                                 	</div>
                                 </div>
                             </div>

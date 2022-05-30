@@ -27,7 +27,8 @@ public interface MemberDao {
 	@Select("SELECT MID,MPROFILE,MSTATE FROM MEMBERS WHERE MID=#{mid} AND MPW=#{mpw}")
 	MemberDto memberLogin(@Param("mid") String mid, @Param("mpw") String mpw);
 
-	@Select("SELECT MID,MPW,MNAME,TO_CHAR(MBIRTH,'YYYY-MM-DD') AS MBIRTH,MEMAIL,MADDRESS,MPROFILE,MSTATE FROM MEMBERS WHERE MID=#{loginId}")
+	@Select("SELECT MID,MPW,MNAME,TO_CHAR(MBIRTH,'YYYY-MM-DD') AS MBIRTH,MEMAIL,MADDRESS,MPROFILE,MSTATE"
+			+ " FROM MEMBERS WHERE MID=#{loginId}")
 	MemberDto selectMemberInfo(String loginId);
 
 	@Update("UPDATE MEMBERS SET MSTATE=1 WHERE MID=#{withdrowId}")

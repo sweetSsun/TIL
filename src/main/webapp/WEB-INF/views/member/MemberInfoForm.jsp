@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>회원정보</title>
 
 	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
 	<style type="text/css">
@@ -224,15 +224,15 @@
 			$("#inputMdetailAddr").attr("type", "text").removeAttr("readonly");
 			$("#inputMextraAddr").attr("type", "text").removeAttr("readonly");
 			
-	 	/*	var button = $('input:button');
-	 		console.log($('input:button').eq[0]);
+			/* var button = $('input[type=button]');
+	 		console.log(button.eq[0].val());
 			for(int i = 0; i < button.length; i++ ) {
 				button.eq[i].toggleClass("d-none");
-			} */
+			}  */
 			$("#searchPostcode").toggleClass("d-none");
 			$("#modiFormButton").toggleClass("d-none");
 			$("#modiButton").toggleClass("d-none");
-			$("#inputMfile").toggleClass("d-none"); 
+			$("#inputMfile").toggleClass("d-none");
 		});
 		
 		// 아이디 중복확인

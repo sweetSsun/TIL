@@ -84,9 +84,14 @@ public class MemberService {
 		mav = new ModelAndView();
 		MemberDto loginmember = mdao.memberLogin(mid, mpw);
 		if (loginmember != null) { // 로그인 성공
-			session.setAttribute("loginId", loginmember.getMid());
-			session.setAttribute("mprofile", loginmember.getMprofile());
-			mav.setViewName("redirect:/");
+			if (loginmember.getMstate() == 1) {
+				ra.addFlashAttribute("msg",	"탈퇴한 계정입니다.");
+				mav.setViewName("redirect:/memberLoginForm");
+			} else {
+				session.setAttribute("loginId", loginmember.getMid());
+				session.setAttribute("mprofile", loginmember.getMprofile());
+				mav.setViewName("redirect:/");
+			}
 		} else { // 로그인 실패
 			ra.addFlashAttribute("msg",	"아이디 또는 비밀번호가 일치하지 않습니다.");
 			// redirect 형식으로 넘어갈 때만 사용 가능.
@@ -136,9 +141,10 @@ public class MemberService {
 		System.out.println("MemberService.memberWithdrow() 호출");
 		mav = new ModelAndView();
 		String withdrowId = (String) session.getAttribute("loginId");
-		int deleteResult = mdao.deleteMember(withdrowId);
-		if (deleteResult > 0) {
+		int withdrowResult = mdao.wiithdrowMember(withdrowId);
+		if (withdrowResult > 0) {
 			ra.addFlashAttribute("msg", "회원탈퇴 하였습니다.");
+			session.invalidate();
 		} else {
 			ra.addFlashAttribute("msg", "회원탈퇴에 실패하였습니다.");
 		}

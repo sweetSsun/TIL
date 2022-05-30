@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>로그인</title>
 
   	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
   	<style type="text/css">

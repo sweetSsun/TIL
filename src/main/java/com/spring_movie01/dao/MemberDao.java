@@ -24,14 +24,14 @@ public interface MemberDao {
 	// ﻿Dao에 여러 개의 파라미터를 넘겨줄 때는, @Param이라는 어노테이션과 변수명을 명시해주면서 변수를 받아야 함
 	// 단순히 데이터타입과 변수명만 적으면, 똑같은 이름으로 받더라도 어떤 변수명을 어디에 써야하는지 인식하지 못함.
 
-	@Select("SELECT MID,MPROFILE FROM MEMBERS WHERE MID=#{mid} AND MPW=#{mpw}")
+	@Select("SELECT MID,MPROFILE,MSTATE FROM MEMBERS WHERE MID=#{mid} AND MPW=#{mpw}")
 	MemberDto memberLogin(@Param("mid") String mid, @Param("mpw") String mpw);
 
 	@Select("SELECT MID,MPW,MNAME,TO_CHAR(MBIRTH,'YYYY-MM-DD') AS MBIRTH,MEMAIL,MADDRESS,MPROFILE,MSTATE FROM MEMBERS WHERE MID=#{loginId}")
 	MemberDto selectMemberInfo(String loginId);
 
-	@Delete("DELETE INTO MEMBERS WHERE MID=#{withdrowId}")
-	int deleteMember(String withdrowId);
+	@Update("UPDATE MEMBERS SET MSTATE=1 WHERE MID=#{withdrowId}")
+	int wiithdrowMember(String withdrowId);
 
 	@Update("UPDATE MEMBERS SET MPW=#{mpw},MNAME=#{mname},MBIRTH=TO_DATE(#{mbirth},'YYYY-MM-DD'),MEMAIL=#{memail},MADDRESS=#{maddress},MPROFILE=#{mprofile} WHERE MID=#{mid}")
 	int updateMember(MemberDto modiMember);

@@ -19,8 +19,21 @@ public class MovieController {
 	public ModelAndView getCgvMovieList() throws IOException {
 		System.out.println("영화 등록 요청");
 		ModelAndView mav = mvsvc.getCgvMovieList();
-		
 		return mav;
 	}
 
+	@RequestMapping(value="/movieList")
+	public ModelAndView movieList() {
+		System.out.println("영화 목록페이지 이동 요청");
+		ModelAndView mav = mvsvc.movieList();
+		return mav;
+	}
+	
+	@RequestMapping(value="/movieView")
+	public ModelAndView movieView(String mvcode) {
+		System.out.println("영화 상세페이지 이동 요청");
+		ModelAndView mav = mvsvc.movieInfoView(mvcode);
+		System.out.println(mav.getModel());
+		return mav;
+	}
 }

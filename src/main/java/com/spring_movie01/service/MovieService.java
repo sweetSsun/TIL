@@ -104,4 +104,27 @@ public class MovieService {
 		return mav;
 	}
 
+	public ModelAndView movieList() {
+		System.out.println("MovieService.movieList() 호출");
+		ModelAndView mav = new ModelAndView();
+		// 1. 영화목록 조회
+		ArrayList<MovieDto> mvList = mvdao.selectMovieList();
+		System.out.println(mvList);
+		mav.addObject("mvList", mvList);
+		
+		// 2. 영화목록 페이지
+		mav.setViewName("movie/MovieList");
+		return mav;
+	}
+
+	public ModelAndView movieInfoView(String mvcode) {
+		System.out.println("MovieService.movieInfoView() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println("영화코드 : " + mvcode);
+		MovieDto movieInfo = mvdao.selectMovieInfo(mvcode);
+		mav.addObject("movieInfo", movieInfo);
+		mav.setViewName("movie/MovieView");
+		return mav;
+	}
+
 }

@@ -24,5 +24,7 @@ public interface MovieDao {
 	ArrayList<MovieDto> selectMovieList();
 
 	MovieDto selectMovieInfo(String mvcode);
+
+	ArrayList<MovieDto> selectReserveMvList();
 	
 }

@@ -17,5 +17,11 @@
 		FROM MOVIES
 		WHERE MVCODE=#{mvcode}
 	</select>
+	
+	<select id="selectReserveMvList" resultType="com.spring_movie01.dto.MovieDto">
+		SELECT *
+		FROM MOVIES
+		WHERE MVCODE IN (SELECT SCMVCODE FROM SCHEDULES)
+	</select>
 
 </mapper>

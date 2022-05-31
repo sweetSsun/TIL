@@ -36,4 +36,11 @@ public class MovieController {
 		System.out.println(mav.getModel());
 		return mav;
 	}
+	
+	@RequestMapping(value="/movieReservationPage")
+	public ModelAndView movieReservationPage() {
+		System.out.println("영화 예매페이지 이동 요청");
+		ModelAndView mav = mvsvc.movieReservationPage();
+		return mav;
+	}
 }

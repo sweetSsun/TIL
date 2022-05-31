@@ -42,7 +42,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">영화</h6>
                         <a class="collapse-item" href="movieList">영화차트</a>
-                        <a class="collapse-item" href="#">영화예매</a>
+                        <a class="collapse-item" href="movieReservationPage">영화예매</a>
                         <a class="collapse-item" href="#">예매확인</a>
                         <a class="collapse-item" href="getCgvMovieList">영화정보등록</a>
                     </div>

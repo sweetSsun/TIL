@@ -127,4 +127,17 @@ public class MovieService {
 		return mav;
 	}
 
+	public ModelAndView movieReservationPage() {
+		System.out.println("MovieService.movieReservationPage() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		// 1. 영화목록 조회 (예매가능한 영화)
+		ArrayList<MovieDto> reMvList = mvdao.selectReserveMvList();
+		System.out.println(reMvList);
+		
+		mav.addObject("reMvList", reMvList);
+		mav.setViewName("movie/MovieReservationPage");
+		return mav;
+	}
+
 }

@@ -23,5 +23,26 @@
 		FROM MOVIES
 		WHERE MVCODE IN (SELECT SCMVCODE FROM SCHEDULES)
 	</select>
+	
+	<select id="selectReservThList" resultType="com.spring_movie01.dto.TheaterDto">
+		SELECT THCODE, THNAME
+		FROM THEATERS
+		WHERE THCODE IN (SELECT SCTHCODE FROM SCHEDULES WHERE SCMVCODE=#{mvcode})
+	</select>
+	
+	<select id="getScDay" resultType="com.spring_movie01.dto.SchedulesDto">
+		SELECT TO_CHAR(SCDATE,'YYYY.MM.DD') AS SCDAY
+		FROM SCHEDULES
+		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode}
+		GROUP BY TO_CHAR(SCDATE,'YYYY.MM.DD')
+		ORDER BY TO_CHAR(SCDATE,'YYYY.MM.DD')
+	</select>
+	
+	<select id="getScTime" resultType="com.spring_movie01.dto.SchedulesDto">
+		SELECT TO_CHAR(SCDATE,'HH24:MI') AS SCTIME,SCROOM
+		FROM SCHEDULES
+		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode} AND TO_CHAR(SCDATE,'YYYY.MM.DD')=#{scday}
+		ORDER BY TO_CHAR(SCDATE,'HH24:MI')
+	</select>
 
 </mapper>

@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.spring_movie01.dao.MovieDao;
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.SchedulesDto;
+import com.spring_movie01.dto.TheaterDto;
 
 @Service
 public class MovieService {
@@ -138,6 +141,35 @@ public class MovieService {
 		mav.addObject("reMvList", reMvList);
 		mav.setViewName("movie/MovieReservationPage");
 		return mav;
+	}
+
+	public String getThList(String mvcode) {
+		System.out.println("MovieService.getThList() 호출");
+		System.out.println("선택한 영화 코드 : " + mvcode);
+		
+		ArrayList<TheaterDto> thList = mvdao.selectReservThList(mvcode);
+		Gson gson = new Gson();
+		String thList_json = gson.toJson(thList);
+		System.out.println(thList_json);
+		return thList_json;
+	}
+
+	public String getScDay(String mvcode, String thcode) {
+		System.out.println("MovieService.getScDay() 호출");
+		System.out.println("영화코드 : " + mvcode + " / 극장코드 : " + thcode);
+		ArrayList<SchedulesDto> dayList = mvdao.getScDay(mvcode, thcode);
+		Gson gson = new Gson();
+		String dayList_json = gson.toJson(dayList);
+		return dayList_json;
+	}
+
+	public String getScTime(String mvcode, String thcode, String scday) {
+		System.out.println("MovieService.getScTime() 호출");
+		System.out.println("영화코드 : " + mvcode + " / 극장코드 : " + thcode + " / 날짜 : " + scday);
+		ArrayList<SchedulesDto> timeList = mvdao.getScTime(mvcode, thcode, scday);
+		Gson gson = new Gson();
+		String timeList_json = gson.toJson(timeList);
+		return timeList_json;
 	}
 
 }

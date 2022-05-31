@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.SchedulesDto;
+import com.spring_movie01.dto.TheaterDto;
 
 
 public interface MovieDao {
@@ -26,5 +28,11 @@ public interface MovieDao {
 	MovieDto selectMovieInfo(String mvcode);
 
 	ArrayList<MovieDto> selectReserveMvList();
+
+	ArrayList<TheaterDto> selectReservThList(String mvcode);
+
+	ArrayList<SchedulesDto> getScDay(@Param("mvcode") String mvcode, @Param("thcode") String thcode);
+
+	ArrayList<SchedulesDto> getScTime(@Param("mvcode") String mvcode, @Param("thcode") String thcode, @Param("scday") String scday);
 	
 }

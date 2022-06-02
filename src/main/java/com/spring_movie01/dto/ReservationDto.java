@@ -15,4 +15,7 @@ public class ReservationDto {
 	private String resctime;
 	
 	private int reamount;
+	
+	private String thname;
+
 }

@@ -43,6 +43,7 @@
                     </div>
                     <h5>세션 아이디 : ${sessionScope.loginId }</h5>
                     <h5>세션 아이디 : ${sessionScope.mprofile }</h5>
+                    <h5>세션 예매정보 : ${sessionScope.recentReCount }</h5>
 					
 					<!--  Content Row -->
 

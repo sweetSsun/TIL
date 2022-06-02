@@ -53,5 +53,12 @@
 		INSERT INTO RESERVATION(RECODE, REMID, RESCTHCODE, RESCROOM, RESCDATE, REAMOUNT)
 		VALUES(#{recode}, #{remid}, #{rescthcode}, #{rescroom}, TO_DATE(#{rescdate},'YYYY.MM.DD HH24:MI'), #{reamount})
 	</insert>
+	
+	<select id="getRecentReserve" resultType="com.spring_movie01.dto.ReservationDto">
+		SELECT TH.THNAME, RE.RESCROOM, TO_CHAR(RE.RESCDATE,'YYYY.MM.DD HH24:MI') AS RESCDATE, RE.REAMOUNT
+		FROM THEATERS TH, RESERVATION RE
+		WHERE TH.THCODE=RE.RESCTHCODE AND REMID=#{mid}
+  			  AND RESCDATE > SYSDATE
+	</select>
 
 </mapper>

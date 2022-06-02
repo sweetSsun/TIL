@@ -2,6 +2,7 @@ package com.spring_movie01.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -13,7 +14,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring_movie01.dao.MemberDao;
+import com.spring_movie01.dao.MovieDao;
 import com.spring_movie01.dto.MemberDto;
+import com.spring_movie01.dto.ReservationDto;
 
 @Service
 public class MemberService {     
@@ -22,6 +25,9 @@ public class MemberService {
 	
 	@Autowired
 	private MemberDao mdao;
+	
+	@Autowired
+	private MovieDao mvdao;
 	
 	@Autowired // 세션은 별다른 설정을 하지 않아도 autowired 사용 가능
 	private HttpSession session;
@@ -88,6 +94,12 @@ public class MemberService {
 				ra.addFlashAttribute("msg",	"탈퇴한 계정입니다.");
 				mav.setViewName("redirect:/memberLoginForm");
 			} else {
+				// 기한이 남은 예매정보 조회
+				ArrayList<ReservationDto> recentReList = mvdao.getRecentReserve(mid);
+				int recentReCount = recentReList.size();
+				System.out.println("볼 예정인 예매정보갯수 : " + recentReCount);
+				System.out.println("예매정보 : " + recentReList);
+				session.setAttribute("recentReCount", recentReCount);
 				session.setAttribute("loginId", loginmember.getMid());
 				session.setAttribute("mprofile", loginmember.getMprofile());
 				mav.setViewName("redirect:/");

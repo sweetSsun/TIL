@@ -40,5 +40,7 @@ public interface MovieDao {
 	String getMaxRecode();
 
 	int insertReservation(ReservationDto redto);
+
+	ArrayList<ReservationDto> getRecentReserve(String mid);
 	
 }

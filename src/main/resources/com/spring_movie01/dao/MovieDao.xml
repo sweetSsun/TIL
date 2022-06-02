@@ -35,7 +35,7 @@
 		FROM SCHEDULES
 		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode}
 		GROUP BY TO_CHAR(SCDATE,'YYYY.MM.DD')
-		ORDER BY TO_CHAR(SCDATE,'YYYY.MM.DD')
+		ORDER BY SCDAY
 	</select>
 	
 	<select id="getScTime" resultType="com.spring_movie01.dto.SchedulesDto">
@@ -44,5 +44,10 @@
 		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode} AND TO_CHAR(SCDATE,'YYYY.MM.DD')=#{scday}
 		ORDER BY TO_CHAR(SCDATE,'HH24:MI')
 	</select>
+	
+	<insert id="insertReservation">
+		INSERT INTO RESERVATION(RECODE, REMID, RESCTHCODE, RESCROOM, RESCDATE, REAMOUNT)
+		VALUES(#{recode}, #{remid}, #{rescthcode}, #{rescroom}, TO_DATE(#{rescdate},'YYYY.MM.DD HH24:MI'), #{reamount})
+	</insert>
 
 </mapper>

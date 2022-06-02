@@ -9,10 +9,12 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.spring_movie01.dao.MovieDao;
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.ReservationDto;
 import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
 
@@ -170,6 +172,38 @@ public class MovieService {
 		Gson gson = new Gson();
 		String timeList_json = gson.toJson(timeList);
 		return timeList_json;
+	}
+
+	public ModelAndView movieReservation(ReservationDto redto, RedirectAttributes ra) {
+		System.out.println("MovieService.movieReservation() 호출");
+		ModelAndView mav = new ModelAndView();
+		// 상영 날짜 및 시간 합치기
+		String rescdate = redto.getRescday() + " " + redto.getResctime();
+		redto.setRescdate(rescdate);
+		System.out.println(redto);
+		// 예매코드 생성
+		String getMaxRecode = mvdao.getMaxRecode();
+		String Recode = "RE";
+		int RecodeNum = Integer.parseInt(getMaxRecode.substring(2)) + 1;
+		if (RecodeNum < 10) {
+			Recode += "00" + RecodeNum;
+		} else if (RecodeNum < 100) {
+			Recode += "0" + RecodeNum;
+		} else {
+			Recode += RecodeNum;
+		}
+		System.out.println("예매코드 : " + Recode);
+		redto.setRecode(Recode);
+		// 예매 테이블 INSERT
+		int insertResult = mvdao.insertReservation(redto);
+		System.out.println(insertResult);
+		if (insertResult > 0) {
+			mav.setViewName("movie/ReservationInfo");
+		} else {
+			ra.addFlashAttribute("msg", "예매에 실패했습니다.");
+			mav.setViewName("redirect:/movieReservationPage");
+		}
+		return mav;
 	}
 
 }

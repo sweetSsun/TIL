@@ -95,27 +95,28 @@
 					<!--  Content Row -->
 					<!-- 선택 항목 확인 -->
 					<!-- 여기~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ input 전부다 입력됐는지 확인하고 넘기기 -->
-					<form action="" method="post" onsubmit="return ">
+					<form action="movieReservation" method="post" onsubmit="return selectCheck()">
 					<div class="row mt-5 text-gray-100 bg-gray-900">
 						<div class="col-3">
+							<input type="hidden" name="remid" value="${sessionScope.loginId }">
 							<div class="pt-3 pb-3">
 								<!-- 선택 영화 정보 -->
 								<img class="img-fluid" alt="" src="" id="viewSelMvPoster" style="max-height:200px;">
 								<div class="tx-sm" id="viewSelMvName"></div>
-								<input type="text" id="selMvCode" name="mvcode">
+								<!-- <input type="text" id="selMvCode" name="mvcode"> -->
 							</div>
 						</div>  
 						<div class="col-3">
 							<div class="pt-3 pb-3">
 								<!-- 선택 극장 및 상영관 정보 -->
 								<div calss="tx-sm">극장 : <span id="viewSelMvTheater"></span></div>
-								<input type="text" id="selThCode" name="thcode">
+								<input type="hidden" id="selThCode" name="rescthcode">
 								<div calss="tx-sm">날짜 : <span id="viewSelMvDate"></span></div>
-								<input type="text" id="selScDay" name="scday" >
+								<input type="hidden" id="selScDay" name="rescday" >
 								<div calss="tx-sm">시간 : <span id="viewSelMvTime"></span></div>
-								<input type="text" id="selScTime" name="sctime">
+								<input type="hidden" id="selScTime" name="resctime">
 								<div calss="tx-sm">상영관 : <span id="viewSelScroom"></span></div>
-								<input type="text" id="selScRoom" name="scroom">
+								<input type="hidden" id="selScRoom" name="rescroom">
 							</div>
 						</div>  
 						<div class="col-3">
@@ -124,7 +125,7 @@
 									관람인원
 								</div>
 								<div class="pt-1">
-									<select name="reamount" required>
+									<select name="reamount" id="selReamount">
 										<option value="">인원선택</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -138,7 +139,8 @@
 						</div>  
 						<div class="col-3">
 							<div class="pt-3 pb-3">
-								<input class="btn btn-danger btn-user btn-block" type="submit" value="예매하기">
+								<input class="btn btn-danger btn-user btn-block" type="submit" 
+								value="예매하기">
 							</div>
 						</div>  
 					</div>
@@ -358,7 +360,27 @@
     		$("#selScTime").attr("value",sctime);
     		$("#viewSelScroom").text(scroom);
     		$("#selScRoom").attr("value",scroom);
-    		
+    	}
+    	
+    	// onsubmit (전부 선택했는지 확인)
+    	function selectCheck(){
+    		console.log("selectCheck() 호출");
+    		if ($("#selThCode").val().length == 0){
+    			alert("영화를 선택해주세요.");
+    			return false;
+    		}
+    		if ($("#selScDay").val().length == 0){
+    			alert("상영날짜를 선택해주세요.");
+    			return false;
+    		}
+    		if ($("#selScTime").val().length == 0){
+    			alert("상영시간을 선택해주세요.");
+    			return false;
+    		}
+    		if ($("#selReamount").val().length == 0){
+    			alert("인원을 선택해주세요.");
+    			return false;
+    		}
     	}
     	
     </script>

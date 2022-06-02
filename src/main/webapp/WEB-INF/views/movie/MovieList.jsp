@@ -68,7 +68,7 @@
                                     <div class="text-xs mb-0 text-gray-800 font-weight-bold">예매율 % | 추천수 10</div>
                                     <div class="text-xs mb-1 text-gray-800 font-weight-bold">${mv.mvopen } 개봉</div>
                                     <div style="text-align: right;">
-                              			<a class="btn btn-sm btn-danger" href="#">예매하기</a>
+                              			<a class="btn btn-sm btn-danger" href="movieReservationPage">예매하기</a>
 	                              		</div>
                                 </div>
                             </div>

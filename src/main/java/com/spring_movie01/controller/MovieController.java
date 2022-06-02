@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring_movie01.dto.ReservationDto;
 import com.spring_movie01.service.MovieService;
 
 @Controller
@@ -47,6 +49,7 @@ public class MovieController {
 	@RequestMapping(value="/movieReservationPage")
 	public ModelAndView movieReservationPage() {
 		System.out.println("영화 예매페이지 이동 요청");
+		
 		ModelAndView mav = mvsvc.movieReservationPage();
 		return mav;
 	}
@@ -64,5 +67,11 @@ public class MovieController {
 		System.out.println("시간 및 상영관 조회 요청");
 		String timeList = mvsvc.getScTime(mvcode, thcode, scday);
 		return timeList;
+	}
+	
+	@RequestMapping(value="/movieReservation")
+	public ModelAndView movieReservation(ReservationDto redto, RedirectAttributes ra) {
+		ModelAndView mav = mvsvc.movieReservation(redto, ra);
+		return mav;
 	}
 }

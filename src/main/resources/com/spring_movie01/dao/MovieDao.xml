@@ -42,7 +42,7 @@
 		SELECT TO_CHAR(SCDATE,'HH24:MI') AS SCTIME,SCROOM
 		FROM SCHEDULES
 		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode} AND TO_CHAR(SCDATE,'YYYY.MM.DD')=#{scday}
-		ORDER BY TO_CHAR(SCDATE,'HH24:MI')
+		ORDER BY SCROOM
 	</select>
 	
 	<insert id="insertReservation">

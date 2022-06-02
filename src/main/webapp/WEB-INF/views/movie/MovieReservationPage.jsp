@@ -51,9 +51,22 @@
                                 </div>
                                 <div class="card-body listArea pl-1 " id="mvList">
                                    	<div class="pl-1 text-md text-gray-800">
-        	                            <c:forEach items="${reMvList }" var="reMv">
-                                    		<div class="btn font-weight-bold " onclick="mvSelect(this, '${reMv.mvcode}', '${reMv.mvposter }')"
-                                    		style="text-align:left; display:block;">${reMv.mvname }</div>
+        	                            <c:forEach items="${reMvList }" var="reMv" >
+        	                            	<c:choose>
+	        	                            	<c:when test="${reMv.mvcode == mvcode }">
+	        	                            	<!-- mvcode를 div의 id로 주고, hidden input을 만들어서 포스터값을 저장해둔다.
+	        	                            		input의 id는 divId + input으로 만들기
+	        	                            		스크립트에서 파라미터에 mvcode가 있으면 함수를 호출하면서 해당 파라미터들 같이 넘기기 -->
+	        	                            	
+		                                    		<div class="btn font-weight-bold" id="${mvcode }"
+		                                    		style="text-align:left; display:block;">${reMv.mvname }</div>
+		                                    		<input type="hidden" id="input${mvcode }" value="${reMv.mvposter }">
+	        	                            	</c:when>
+	        	                            	<c:otherwise>
+		                                    		<div class="btn font-weight-bold " onclick="mvSelect(this, '${reMv.mvcode}', '${reMv.mvposter }')"
+		                                    		style="text-align:left; display:block;">${reMv.mvname }</div>
+	                                    		</c:otherwise>
+	                                    	</c:choose>
             	                        </c:forEach>
                                    	</div>
                                 </div>
@@ -94,7 +107,6 @@
 					
 					<!--  Content Row -->
 					<!-- 선택 항목 확인 -->
-					<!-- 여기~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ input 전부다 입력됐는지 확인하고 넘기기 -->
 					<form action="movieReservation" method="post" onsubmit="return selectCheck()">
 					<div class="row mt-5 text-gray-100 bg-gray-900">
 						<div class="col-3">
@@ -197,6 +209,13 @@
     	var thcode = "";
     	var scday = "";
     	var sctime = "";
+    	
+    	// 영화차트에서 예매하기로 넘어왔을 경우
+    	var selMvListCode = "${mvcode}";
+    	console.log(selMvListCode.length);
+    	if (selMvListCode.length != 0) {
+    		mvSelect( $("#"+selMvListCode), selMvListCode, $("#input"+selMvListCode).val() );
+    	}
     	
     	// 영화 선택 후 극장 조회
     	function mvSelect(selObj, selMvcode, selMvposter){

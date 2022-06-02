@@ -47,10 +47,9 @@ public class MovieController {
 	}
 	
 	@RequestMapping(value="/movieReservationPage")
-	public ModelAndView movieReservationPage(String mvcode) {
+	public ModelAndView movieReservationPage() {
 		System.out.println("영화 예매페이지 이동 요청");
-		System.out.println("선택 영화 : " + mvcode);
-		ModelAndView mav = mvsvc.movieReservationPage(mvcode);
+		ModelAndView mav = mvsvc.movieReservationPage();
 		return mav;
 	}
 	

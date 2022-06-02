@@ -68,9 +68,7 @@
                                     <div class="text-xs mb-0 text-gray-800 font-weight-bold">예매율 % | 추천수 10</div>
                                     <div class="text-xs mb-1 text-gray-800 font-weight-bold">${mv.mvopen } 개봉</div>
                                     <div style="text-align: right;">
-                                    	<c:if test="${sessionScope.loginId != null}">
                               			<a class="btn btn-sm btn-danger" href="movieReservationPage?mvcode=${mv.mvcode }">예매하기</a>
-                              			</c:if>
 	                              	</div>
                                 </div>
                             </div>

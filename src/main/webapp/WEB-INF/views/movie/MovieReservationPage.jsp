@@ -12,8 +12,42 @@
     <title>영화예매</title>
 
   	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
+  	
+  	<style type="text/css">
+	  	.radiobtn input[type=radio]{
+	  	 	 display: none;
+		}
+  		.radiobtn input[type=radio]+label{
+    		background-color: #fff;
+    		color: #333;
+    		cursor: pointer;
+ 			height: 25px;
+ 		    width: 25px;
+ 		    border: 1px solid #333;
+ 		    text-align: center;
+ 		    border-radius: 5px;
+		}
+		.radiobtn input[type=radio]:checked+label{
+		    background-color: #5a5c69;
+		    color: white;
+		}
+		.listArea{
+			min-height: 300px;
+			max-height: 300px;
+			overflow: auto;
+		}
+  	</style>
   
 </head>
+
+<script type="text/javascript">
+	var loginCheck = "${sessionScope.loginId}";
+	if(loginCheck.length == 0){
+		alert("로그인 후 이용 가능합니다.");
+		location.href="memberLoginForm";
+	}
+</script>
+    
 
 <body id="page-top">
 
@@ -49,24 +83,11 @@
                                 <div class="card-header py-3 bg-gray-900">
                                     <h6 class="m-0 font-weight-bold text-white">영화</h6>
                                 </div>
-                                <div class="card-body listArea pl-1 " id="mvList">
+                                <div class="card-body listArea pl-1 listArea" id="mvList">
                                    	<div class="pl-1 text-md text-gray-800">
         	                            <c:forEach items="${reMvList }" var="reMv" >
-        	                            	<c:choose>
-	        	                            	<c:when test="${reMv.mvcode == mvcode }">
-	        	                            	<!-- mvcode를 div의 id로 주고, hidden input을 만들어서 포스터값을 저장해둔다.
-	        	                            		input의 id는 divId + input으로 만들기
-	        	                            		스크립트에서 파라미터에 mvcode가 있으면 함수를 호출하면서 해당 파라미터들 같이 넘기기 -->
-	        	                            	
-		                                    		<div class="btn font-weight-bold" id="${mvcode }"
-		                                    		style="text-align:left; display:block;">${reMv.mvname }</div>
-		                                    		<input type="hidden" id="input${mvcode }" value="${reMv.mvposter }">
-	        	                            	</c:when>
-	        	                            	<c:otherwise>
-		                                    		<div class="btn font-weight-bold " onclick="mvSelect(this, '${reMv.mvcode}', '${reMv.mvposter }')"
-		                                    		style="text-align:left; display:block;">${reMv.mvname }</div>
-	                                    		</c:otherwise>
-	                                    	</c:choose>
+		                               		<div class="btn font-weight-bold " id="${reMv.mvcode }" onclick="mvSelect(this, '${reMv.mvcode}', '${reMv.mvposter }')"
+		                                  		style="text-align:left; display:block;">${reMv.mvname }</div>
             	                        </c:forEach>
                                    	</div>
                                 </div>
@@ -121,23 +142,32 @@
 						<div class="col-3">
 							<div class="pt-3 pb-3">
 								<!-- 선택 극장 및 상영관 정보 -->
-								<div calss="tx-sm">극장 : <span id="viewSelMvTheater"></span></div>
+								<div class="tx-sm">극장 : <span id="viewSelMvTheater"></span></div>
 								<input type="hidden" id="selThCode" name="rescthcode">
-								<div calss="tx-sm">날짜 : <span id="viewSelMvDate"></span></div>
+								<div class="tx-sm">날짜 : <span id="viewSelMvDate"></span></div>
 								<input type="hidden" id="selScDay" name="rescday" >
-								<div calss="tx-sm">시간 : <span id="viewSelMvTime"></span></div>
+								<div class="tx-sm">시간 : <span id="viewSelMvTime"></span></div>
 								<input type="hidden" id="selScTime" name="resctime">
-								<div calss="tx-sm">상영관 : <span id="viewSelScroom"></span></div>
+								<div class="tx-sm">상영관 : <span id="viewSelScroom"></span></div>
 								<input type="hidden" id="selScRoom" name="rescroom">
+								<div class="tx-sm">인원 : <span id="viewSelAmount"></span></div>
+								
 							</div>
 						</div>  
 						<div class="col-3">
 							<div class="pt-3 pb-3">
-								<div calss="tx-sm">
+								<div class="tx-sm">
 									관람인원
 								</div>
-								<div class="pt-1">
-									<select name="reamount" id="selReamount">
+								<div class="pt-1 radiobtn font-weight-bold">
+									<input type="radio" id=amount1 name=reamount value="1"><label for="amount1">1</label>
+									<input type="radio" id=amount2 name=reamount value="2"><label for="amount2">2</label>
+									<input type="radio" id=amount3 name=reamount value="3"><label for="amount3">3</label>
+									<input type="radio" id=amount4 name=reamount value="4"><label for="amount4">4</label>
+									<input type="radio" id=amount5 name=reamount value="5"><label for="amount5">5</label>
+									<input type="radio" id=amount6 name=reamount value="6"><label for="amount6">6</label>
+								
+									<!-- <select name="reamount" id="selReamount" onchange="amountOutput()">
 										<option value="">인원선택</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -145,7 +175,7 @@
 										<option value="4">4</option>
 										<option value="5">5</option>
 										<option value="6">6</option>
-									</select>
+									</select> -->
 								</div>
 							</div>
 						</div>  
@@ -196,7 +226,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="${pageContext.request.contextPath }/resources/js/sb-admin-2.min.js"></script>
-    
+
     <script type="text/javascript">
     	var checkMsg = "${msg}"
     	console.log(checkMsg.length);
@@ -211,10 +241,10 @@
     	var sctime = "";
     	
     	// 영화차트에서 예매하기로 넘어왔을 경우
-    	var selMvListCode = "${mvcode}";
-    	console.log(selMvListCode.length);
-    	if (selMvListCode.length != 0) {
-    		mvSelect( $("#"+selMvListCode), selMvListCode, $("#input"+selMvListCode).val() );
+    	var checkMvCode = "${param.mvcode}";
+    	console.log(checkMvCode.length);
+    	if (checkMvCode.length != 0) {
+    		$("#"+checkMvCode).click();
     	}
     	
     	// 영화 선택 후 극장 조회
@@ -355,12 +385,19 @@
     	// 시간 출력문
     	function timeOutput(result){
     		$("#timeList").html("");
-    		var output = "<div class='pl-1 text-gray-900 text-md'>";
+    		var output = "<div class='pl-1 text-md'>";
 			/* 상영관 따라서 시간 몰아주고 싶은데 어떻게 하면 좋을까.... */
+			var scRoom = ""; // output에 담아주는 상영관을 비교하기 위한 변수
     		for (var i = 0; i < result.length; i++){
+    			if (scRoom != result[i].scroom){
+    				if(i != 0) {
+    					output += "<hr class='my-1'>";
+    				}
+    				output += "<div class='font-weight-bold text-gray-800 ml-2 my-1'>" + result[i].scroom + "</div>"
+    				scRoom = result[i].scroom;
+    			}
     			output += "<div class='btn font-weight-bold' onclick='timeSelect(this, \""+result[i].sctime+"\", \""+result[i].scroom+"\")'>";
-	    		output += result[i].sctime + "&nbsp;&nbsp;";
-	    		output += result[i].scroom;
+	    		output += result[i].sctime;
 	    		output += "</div>";
 	    		
     		}
@@ -381,11 +418,24 @@
     		$("#selScRoom").attr("value",scroom);
     	}
     	
+    	// 인원 선택
+    	function amountOutput(){
+    		$("#viewSelAmount").text($("#selReamount").val()+"명");
+    	}
+    	$("input[type=radio][name=reamount]").change(function(){
+    		$("#viewSelAmount").text($("input[type=radio][name=reamount]:checked").val() + "명");
+    		console.log($("input[type=radio][name=reamount]:checked").val());
+    	});
+    	
     	// onsubmit (전부 선택했는지 확인)
     	function selectCheck(){
     		console.log("selectCheck() 호출");
-    		if ($("#selThCode").val().length == 0){
+    		if (mvcode.length == 0){
     			alert("영화를 선택해주세요.");
+    			return false;
+    		}
+    		if ($("#selThCode").val().length == 0){
+    			alert("극장을 선택해주세요.");
     			return false;
     		}
     		if ($("#selScDay").val().length == 0){
@@ -396,11 +446,12 @@
     			alert("상영시간을 선택해주세요.");
     			return false;
     		}
-    		if ($("#selReamount").val().length == 0){
+    		if ($("#viewSelAmount").text().length == 0){
     			alert("인원을 선택해주세요.");
     			return false;
     		}
     	}
+    	
     	
     </script>
 

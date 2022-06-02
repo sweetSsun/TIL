@@ -115,6 +115,19 @@ public class MovieService {
 		// 1. 영화목록 조회
 		ArrayList<MovieDto> mvList = mvdao.selectMovieList();
 		System.out.println(mvList);
+		
+		int count = 0;
+		// 총 예매횟수
+		for(int i = 0; i < mvList.size(); i++) {
+			count += mvList.get(i).getRecount();
+		}
+		// 예매율 저장
+		for(int i = 0; i < mvList.size(); i++) {
+			double rerate = 0;
+			rerate = Math.round((double) mvList.get(i).getRecount() / count * 100);
+			System.out.println(mvList.get(i).getMvcode()+"예매율 : " + rerate);
+			mvList.get(i).setRerate(rerate);
+		}
 		mav.addObject("mvList", mvList);
 		
 		// 2. 영화목록 페이지

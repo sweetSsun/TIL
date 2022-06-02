@@ -7,9 +7,13 @@
 				<!-- Dao가 있는 패키지.Dao명 -->
   	<select id="selectMovieList" resultType="com.spring_movie01.dto.MovieDto">
   		<!-- id : Dao가 호출되는 메소드명 / resultType : resultSet에 담기는 것을 어느 객체로 담을지-->
-  		SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,TO_CHAR(MVOPEN,'YYYY.MM.DD') AS MVOPEN,MVPOSTER 
-  		FROM MOVIES
-  		ORDER BY MVCODE
+  		SELECT MVCODE, MVNAME, MVPD, MVACTOR, MVGENRE, MVAGE, MVTIME, TO_CHAR(MVOPEN,'YYYY.MM.DD') AS MVOPEN, MVPOSTER, NVL(RECOUNT, 0) AS RECOUNT
+		FROM MOVIES MV LEFT OUTER JOIN (SELECT SCMVCODE,COUNT(SCMVCODE) AS RECOUNT
+                        				FROM RESERVATION RE, SCHEDULES SC
+                      					WHERE RE.RESCTHCODE = SC.SCTHCODE AND RE.RESCROOM=SC.SCROOM AND RE.RESCDATE=SC.SCDATE
+                      					GROUP BY SCMVCODE) RE
+						ON MV.MVCODE=RE.SCMVCODE
+		ORDER BY RECOUNT DESC
  	 </select>
 
 	<select id="selectMovieInfo" resultType="com.spring_movie01.dto.MovieDto">

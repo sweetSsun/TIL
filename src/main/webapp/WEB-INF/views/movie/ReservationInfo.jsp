@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>영화목록</title>
+    <title>예매정보</title>
 
   	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
   
@@ -39,44 +39,10 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">영화목록 페이지 - MovieList.jsp</h1>
+                        <h1 class="h3 mb-0 text-gray-800">예매정보 페이지 - ReservationInfo.jsp</h1>
                     </div>
 					
 					<!--  Content Row -->
-					<!-- 포스터, 영화제목, 개봉일 출력 -->
-					<div class="row">
-					<div class="col-xl-11 col-lg-7 mr-auto ml-auto">
-					<div class="row">
-					<c:forEach items="${mvList }" var="mv">
-						<div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card h-100 py-2">
-                            	<div class="card-header">
-                            		<a href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }">
-                                    <img class="img-fluid" alt="${mv.mvposter }" src="${mv.mvposter }">
-                                    </a>
-                            	</div>
-                                <div class="card-body pb-1">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                            	<a class="text-gray-900" style="text-decoration-line:none;" href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }">${mv.mvname }</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                              	<div class="card-footer" style="background-color:white; border-top:none;">
-                                    <div class="text-xs mb-0 text-gray-800 font-weight-bold">예매율 ${mv.rerate } % | 추천수 10</div>
-                                    <div class="text-xs mb-1 text-gray-800 font-weight-bold">${mv.mvopen } 개봉</div>
-                                    <div style="text-align: right;">
-                              			<a class="btn btn-sm btn-danger" href="movieReservationPage?mvcode=${mv.mvcode }">예매하기</a>
-	                              	</div>
-                                </div>
-                            </div>
-                        </div>
-					</c:forEach>
-					</div>
-					</div>
-					</div>
 
 					<!--  Content Row -->
 

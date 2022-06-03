@@ -84,9 +84,16 @@ public class MovieController {
 	}
 	
 	@RequestMapping(value="/reservationList")
-	public ModelAndView reservationList(String loginId) {
+	public ModelAndView reservationList() {
 		System.out.println("예매목록 조회 요청");
-		ModelAndView mav = mvsvc.reservationList(loginId);
+		ModelAndView mav = mvsvc.reservationList();
+		return mav;
+	}
+	
+	@RequestMapping(value="/cancleReservation")
+	public ModelAndView cancleReservation(String recode, RedirectAttributes ra) {
+		System.out.println("예매취소 요청");
+		ModelAndView mav = mvsvc.deleteReservation(recode, ra);
 		return mav;
 	}
 }

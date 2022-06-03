@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%@ page import="java.util.Date" %>
+    
 <!DOCTYPE html>
 <head>
 
@@ -58,26 +63,41 @@
                         	</div>
                             <div class="card-body pb-1">
                             	<div class="row">
-                            	<div class="col-6">
-	                                <div class="row no-gutters align-items-center">
-	                                    <div class="h6 mb-3 font-weight-bold text-gray-800" >
-	                                 		 <img class="img-fluid" alt="영화포스터" style="max-height:500px;" src="${redto.mvposter }">
-	                                    </div>
-	                                </div>
+	                            	<div class="col-6">
+		                                <div class="row no-gutters align-items-center">
+		                                    <div class="h6 mb-3 font-weight-bold text-gray-800" >
+		                                 		 <img class="img-fluid" alt="영화포스터" style="max-height:500px;" src="${redto.mvposter }">
+		                                    </div>
+		                                </div>
+		                            </div>
+	                            	<div class="col-6">
+		                                <div class="row no-gutters align-items-center">
+		                                    <div class="h6 my-3 font-weight-bold text-gray-800">
+				                                  ${redto.mvname }
+				                                  <br><br>
+				                                  ${redto.thname }&nbsp; ${redto.rescroom }
+				                                  <br><br>
+				                                  ${redto.rescdate }
+				                                  <br><br>
+				                                  ${redto.reamount } 명
+		                                    </div>
+		                                </div>
+		                            </div>
 	                            </div>
-                            	<div class="col-6">
-	                                <div class="row no-gutters align-items-center">
-	                                    <div class="h6 my-3 font-weight-bold text-gray-800">
-			                                  ${redto.mvname }
-			                                  <br><br>
-			                                  ${redto.thname }&nbsp; ${redto.rescroom }
-			                                  <br><br>
-			                                  ${redto.rescdate }
-			                                  <br><br>
-			                                  ${redto.reamount } 명
-	                                    </div>
-	                                </div>
-	                            </div>
+                            	<div class="row mb-2" >
+                           			<button class="btn btn-secondary btn-icon-split px-1 mx-1 " onclick="location.href='reservationList'">예매목록</button>
+                            	
+                            		<c:set var="today" value="<%=new Date() %>"></c:set>
+                                   	<fmt:parseDate value="${re.rescdate }" var="scdate_fm" pattern="yyyy.MM.dd HH:mm"></fmt:parseDate>
+                                  	
+                                  	<c:choose>
+                                   	<c:when test="${scdate_fm > today }">
+                                  			<button class="btn btn-secondary btn-icon-split px-1" onclick="cancleReservation('${re.recode}')">예매취소</button>
+                                  		</c:when>
+                                  		<c:otherwise>
+                                  			<button class="btn btn-primary btn-icon-split px-1">관람평 작성</button>
+                                  		</c:otherwise>
+                                  	</c:choose>
 	                            </div>
                             </div>
                         </div>

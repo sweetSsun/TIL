@@ -95,6 +95,18 @@
     	if(checkMsg.length > 0){
     		alert(checkMsg);
     	}
+    	
+    	console.log("${ReInfo.recode}");
+    	if ( "${ReInfo.recode}".length > 0 ){
+    		$("#reservMsg_mvposter").attr("src","${ReInfo.mvposter }");
+    		$("#reservMsg_recode").text("예매코드 : " + "${ReInfo.recode }");
+    		$("#reservMsg_mvname").text("영화 : " + "${ReInfo.mvname }");
+    		$("#reservMsg_thname").text("극장 : " + "${ReInfo.thname } ${ReInfo.rescroom }");
+    		$("#reservMsg_rescdate").text(" 일시  : " + "${ReInfo.rescdate }");
+    		$("#reservMsg_reamount").text("인원 : " + "${ReInfo.reamount } 명");
+    		
+    		$("#reInfoModal").modal('show');
+    	}
     </script>
 
 </body>

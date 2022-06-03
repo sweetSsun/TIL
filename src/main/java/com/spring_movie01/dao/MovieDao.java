@@ -2,6 +2,7 @@ package com.spring_movie01.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -46,5 +47,8 @@ public interface MovieDao {
 	ReservationDto reservationInfo(String recode);
 
 	ArrayList<ReservationDto> reservationList(String loginId);
+	
+	@Delete("DELETE FROM RESERVATION WHERE RECODE=#{recode}")
+	void deleteReservation(String recode);
 	
 }

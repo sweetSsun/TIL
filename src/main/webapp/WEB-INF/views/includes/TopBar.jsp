@@ -241,4 +241,39 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal fade" id="reInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title font-weight-bold " id="exampleModalLabel">예매되었습니다.</h6>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                  	<div class="row">
+                        <div class="col-5">
+                            <div class="h6 mb-3 font-weight-bold text-gray-800" >
+                             	<img class="img-fluid" alt="영화포스터" style="max-height:300px;" id="reservMsg_mvposter" src="">
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="h6 my-3 font-weight-bold text-gray-800">
+                            	<div class="p-2 font-weight-bold" id="reservMsg_recode"></div>
+                            	<div class="p-2 font-weight-bold" id="reservMsg_mvname"></div>
+                            	<div class="p-2 font-weight-bold" id="reservMsg_thname"></div>
+                            	<div class="p-2 font-weight-bold" id="reservMsg_rescdate"></div>
+                            	<div class="p-2 font-weight-bold" id="reservMsg_reamount"></div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" href="${pageContext.request.contextPath }">확인</a>
+                </div>
+            </div>
+        </div>
+    </div>
                 

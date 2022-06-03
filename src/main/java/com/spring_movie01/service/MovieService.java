@@ -3,6 +3,8 @@ package com.spring_movie01.service;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -23,6 +25,9 @@ public class MovieService {
 
 	@Autowired
 	MovieDao mvdao;
+	
+	@Autowired
+	private HttpSession session;
 
 	public ModelAndView getCgvMovieList() throws IOException {
 		System.out.println("MovieService.getCgvMovieList() 호출");
@@ -208,14 +213,12 @@ public class MovieService {
 		redto.setRecode(recode);
 		// 예매 테이블 INSERT
 		int insertResult = mvdao.insertReservation(redto);
-		System.out.println(insertResult);
-		if (insertResult > 0) {
-			ra.addFlashAttribute("msg", "예매되었습니다.");
-			mav.setViewName("redirect:/reservationInfo?recode=" + recode);
-		} else {
-			ra.addFlashAttribute("msg", "예매에 실패했습니다.");
-			mav.setViewName("redirect:/movieReservationPage");
-		}
+		// 예매 정보 SELECT
+		ReservationDto ReInfo = mvdao.reservationInfo(recode);
+		
+		ra.addFlashAttribute("ReInfo", ReInfo);
+//		mav.setViewName("redirect:/reservationInfo?recode=" + recode);
+		mav.setViewName("redirect:/");
 		return mav;
 	}
 	
@@ -229,15 +232,28 @@ public class MovieService {
 		return mav;
 	}
 
-	public ModelAndView reservationList(String loginId) {
+	public ModelAndView reservationList() {
 		System.out.println("MovieService.reservationList() 호출");
 		ModelAndView mav = new ModelAndView();
+		String loginId = (String) session.getAttribute("loginId");
 		ArrayList<ReservationDto> reList =  mvdao.reservationList(loginId);
 		System.out.println(reList);
 		mav.addObject("reList", reList);
 		mav.setViewName("movie/ReservationList");
 		return mav;
 	}
+
+	public ModelAndView deleteReservation(String recode, RedirectAttributes ra) {
+		System.out.println("MovieService.deleteReservation() 호출");
+		ModelAndView mav = new ModelAndView();
+		mvdao.deleteReservation(recode);
+		
+		ra.addFlashAttribute("msg", "예매취소 되었습니다.");
+		mav.setViewName("redirect:/reservationList");
+		return mav;
+	}
+	
+	
 
 	
 }

@@ -42,5 +42,9 @@ public interface MovieDao {
 	int insertReservation(ReservationDto redto);
 
 	ArrayList<ReservationDto> getRecentReserve(String mid);
+
+	ReservationDto reservationInfo(String recode);
+
+	ArrayList<ReservationDto> reservationList(String loginId);
 	
 }

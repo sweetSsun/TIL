@@ -9,11 +9,27 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>${movieInfo.mvname } 상세정보</title>
+    <title>예매내역</title>
 
   	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
-  
+  	
+  	<!-- Custom styles for this page -->
+    <link href="${pageContext.request.contextPath }/resources/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    
+    <style type="text/css">
+	    .table td{
+	   		vertical-align : middle;
+	    }
+    </style>
 </head>
+
+<script type="text/javascript">
+	var loginCheck = "${sessionScope.loginId}";
+	if(loginCheck.length == 0){
+		alert("로그인 후 이용 가능합니다.");
+		location.href="memberLoginForm";
+	}
+</script>
 
 <body id="page-top">
 
@@ -39,50 +55,45 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">영화 상세정보 페이지 - MovieView.jsp</h1>
+                        <h1 class="h3 mb-0 text-gray-800">예매내역확인 페이지 - ReservationList.jsp</h1>
                     </div>
 					
 					<!--  Content Row -->
-					<div class="row">
-                        <div class="col-lg-6">
-                            <!-- Default Card Example -->
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                 	 <img class="img-fluid" alt="${movieInfo.mvname }" src="${movieInfo.mvposter }">
-                                </div>
-                            </div>
+					<div class="container-fluid">
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 bg-gray-900">
+                            <h6 class="m-0 font-weight-bold text-white">예매내역</h6>
                         </div>
-
-                        <div class="col-lg-6">
-                            <!-- Dropdown Card Example -->
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 text-gray-800 font-weight-bold">${movieInfo.mvname }</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body text-gray-800 text-sm">
-                                	<div>
-	                                    감독 : ${movieInfo.mvpd }
-                                	</div>
-                                	<div>
-	                                    배우 : ${movieInfo.mvactor }
-                                	</div>
-                                	<div>
-	                                    장르 : ${movieInfo.mvgenre } / 기본 : ${movieInfo.mvage }, ${movieInfo.mvtime }
-                                	</div>
-                                	<div>
-	                                    개봉일 : ${movieInfo.mvopen }
-                                	</div>
-                                	<div>예매율 :  ${param.rerate }% / 추천수 : 10</div>
-                                	<div class="mt-1" style="text-align: right;">
-	                                	<a class="btn btn-sm btn-danger" href="#">예매하기</a>
-	                                	<a class="btn btn-sm btn-primary" href="#">추천하기</a>
-                                	</div>
-                                </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr class="bg-gray-700 text-white">
+                                            <th>제목</th>
+                                            <th>극장</th>
+                                            <th>상영관</th>
+                                            <th>일시</th>
+                                            <th>인원</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    	<c:forEach items="${reList }" var="re">
+	                                        <tr>
+	                                            <td><a href="reservationInfo?recode=${re.recode }" class="btn p-0 font-weight-bold">${re.mvname }</a></td>
+	                                            <td class="font-weight-bold">${re.thname }</td>
+	                                            <td class="font-weight-bold">${re.rescroom }</td>
+	                                            <td class="font-weight-bold">${re.rescdate }</td>
+	                                            <td class="font-weight-bold">${re.reamount }</td>
+	                                        </tr>
+                                    	</c:forEach>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+					
+
 					<!--  Content Row -->
 
 					<!--  Content Row -->

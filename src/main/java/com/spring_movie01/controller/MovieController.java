@@ -70,7 +70,23 @@ public class MovieController {
 	
 	@RequestMapping(value="/movieReservation")
 	public ModelAndView movieReservation(ReservationDto redto, RedirectAttributes ra) {
+		System.out.println("예매정보 입력 요청 요청");
 		ModelAndView mav = mvsvc.movieReservation(redto, ra);
+		return mav;
+	}
+	
+	@RequestMapping(value="/reservationInfo")
+	public ModelAndView reservationInfo(String recode) {
+		System.out.println("예매정보 조회 요청");
+		System.out.println("컨트롤러 recode : " + recode);
+		ModelAndView mav = mvsvc.reservationInfo(recode);
+		return mav;
+	}
+	
+	@RequestMapping(value="/reservationList")
+	public ModelAndView reservationList(String loginId) {
+		System.out.println("예매목록 조회 요청");
+		ModelAndView mav = mvsvc.reservationList(loginId);
 		return mav;
 	}
 }

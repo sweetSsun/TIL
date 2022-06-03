@@ -51,7 +51,7 @@
 						<div class="col-xl-3 col-md-6 mb-4">
                             <div class="card h-100 py-2">
                             	<div class="card-header">
-                            		<a href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }">
+                            		<a href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }&rerate=${mv.rerate}">
                                     <img class="img-fluid" alt="${mv.mvposter }" src="${mv.mvposter }">
                                     </a>
                             	</div>
@@ -59,7 +59,7 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                            	<a class="text-gray-900" style="text-decoration-line:none;" href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }">${mv.mvname }</a>
+                                            	<a class="text-gray-900" style="text-decoration-line:none;" href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }&rerate=${mv.rerate}">${mv.mvname }</a>
                                             </div>
                                         </div>
                                     </div>

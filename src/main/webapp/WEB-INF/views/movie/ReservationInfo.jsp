@@ -15,6 +15,14 @@
   
 </head>
 
+<script type="text/javascript">
+	var loginCheck = "${sessionScope.loginId}";
+	if(loginCheck.length == 0){
+		alert("로그인 후 이용 가능합니다.");
+		location.href="memberLoginForm";
+	}
+</script>
+
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -43,7 +51,37 @@
                     </div>
 					
 					<!--  Content Row -->
-
+					<div class="col-xl-9 mr-auto ml-auto">
+                        <div class="card h-100" style="max-width: 800px;">
+                        	<div class="card-header font-weight-bold bg-gray-700 text-white">
+                                예매코드 ${redto.recode }
+                        	</div>
+                            <div class="card-body pb-1">
+                            	<div class="row">
+                            	<div class="col-6">
+	                                <div class="row no-gutters align-items-center">
+	                                    <div class="h6 mb-3 font-weight-bold text-gray-800" >
+	                                 		 <img class="img-fluid" alt="영화포스터" style="max-height:500px;" src="${redto.mvposter }">
+	                                    </div>
+	                                </div>
+	                            </div>
+                            	<div class="col-6">
+	                                <div class="row no-gutters align-items-center">
+	                                    <div class="h6 my-3 font-weight-bold text-gray-800">
+			                                  ${redto.mvname }
+			                                  <br><br>
+			                                  ${redto.thname }&nbsp; ${redto.rescroom }
+			                                  <br><br>
+			                                  ${redto.rescdate }
+			                                  <br><br>
+			                                  ${redto.reamount } 명
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            </div>
+                            </div>
+                        </div>
+					</div>
 					<!--  Content Row -->
 
 					<!--  Content Row -->

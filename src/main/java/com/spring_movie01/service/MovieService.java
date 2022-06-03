@@ -125,7 +125,6 @@ public class MovieService {
 		for(int i = 0; i < mvList.size(); i++) {
 			double rerate = 0;
 			rerate = Math.round((double) mvList.get(i).getRecount() / count * 100);
-			System.out.println(mvList.get(i).getMvcode()+"예매율 : " + rerate);
 			mvList.get(i).setRerate(rerate);
 		}
 		mav.addObject("mvList", mvList);
@@ -140,6 +139,7 @@ public class MovieService {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("영화코드 : " + mvcode);
 		MovieDto movieInfo = mvdao.selectMovieInfo(mvcode);
+		
 		mav.addObject("movieInfo", movieInfo);
 		mav.setViewName("movie/MovieView");
 		return mav;
@@ -195,27 +195,49 @@ public class MovieService {
 		System.out.println(redto);
 		// 예매코드 생성
 		String getMaxRecode = mvdao.getMaxRecode();
-		String Recode = "RE";
+		String recode = "RE";
 		int RecodeNum = Integer.parseInt(getMaxRecode.substring(2)) + 1;
 		if (RecodeNum < 10) {
-			Recode += "00" + RecodeNum;
+			recode += "00" + RecodeNum;
 		} else if (RecodeNum < 100) {
-			Recode += "0" + RecodeNum;
+			recode += "0" + RecodeNum;
 		} else {
-			Recode += RecodeNum;
+			recode += RecodeNum;
 		}
-		System.out.println("예매코드 : " + Recode);
-		redto.setRecode(Recode);
+		System.out.println("예매코드 : " + recode);
+		redto.setRecode(recode);
 		// 예매 테이블 INSERT
 		int insertResult = mvdao.insertReservation(redto);
 		System.out.println(insertResult);
 		if (insertResult > 0) {
-			mav.setViewName("movie/ReservationInfo");
+			ra.addFlashAttribute("msg", "예매되었습니다.");
+			mav.setViewName("redirect:/reservationInfo?recode=" + recode);
 		} else {
 			ra.addFlashAttribute("msg", "예매에 실패했습니다.");
 			mav.setViewName("redirect:/movieReservationPage");
 		}
 		return mav;
 	}
+	
+	public ModelAndView reservationInfo(String recode) {
+		System.out.println("MovieService.reservationInfo() 호출");
+		ModelAndView mav = new ModelAndView();
+		// 예매 정보 조회
+		ReservationDto redto = mvdao.reservationInfo(recode);
+		mav.addObject("redto", redto);
+		mav.setViewName("movie/ReservationInfo");
+		return mav;
+	}
 
+	public ModelAndView reservationList(String loginId) {
+		System.out.println("MovieService.reservationList() 호출");
+		ModelAndView mav = new ModelAndView();
+		ArrayList<ReservationDto> reList =  mvdao.reservationList(loginId);
+		System.out.println(reList);
+		mav.addObject("reList", reList);
+		mav.setViewName("movie/ReservationList");
+		return mav;
+	}
+
+	
 }

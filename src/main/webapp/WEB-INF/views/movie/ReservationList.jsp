@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+	<script src="https://kit.fontawesome.com/9125416ae4.js" crossorigin="anonymous"></script>
 
     <title>예매내역</title>
 
@@ -25,6 +26,7 @@
 	    .table td{
 	   		vertical-align : middle;
 	    }
+  
     </style>
 </head>
 
@@ -97,10 +99,17 @@
 	                                            	
 	                                            	<c:choose>
 		                                            	<c:when test="${scdate_fm > today }">
-	                                            			<button class="btn btn-secondary btn-icon-split px-1" onclick="cancleReservation('${re.recode}')">예매취소</button>
+	                                            			<button class="btn btn-danger btn-icon-split px-1" onclick="cancleReservation('${re.recode}')">예매취소</button>
 	                                            		</c:when>
 	                                            		<c:otherwise>
-	                                            			<button class="btn btn-primary btn-icon-split px-1">관람평 작성</button>
+	                                            			<c:choose>
+	                                            				<c:when test="${re.rvrecode != null }">
+			                                            			<button class="btn btn-secondary btn-icon-split px-1" onclick="showReview('${re }', '${re.rvrecode }')">관람평 확인</button>
+	                                            				</c:when>
+	                                            				<c:otherwise>
+			                                            			<button class="btn btn-primary btn-icon-split px-1" onclick="reviewWriteForm('${re }')">관람평 작성</button>
+			                                            		</c:otherwise>
+			                                            	</c:choose>
 	                                            		</c:otherwise>
 	                                            	</c:choose>
 	                                            </th>
@@ -174,6 +183,167 @@
 			console.log("예매취소 요청");
 			location.href="cancleReservation?recode="+recode;
 		}
+		
+		function reviewWriteForm(reInfo){
+			console.log("관람평 작성페이지 이동 요청");
+			console.log(reInfo);
+			var row = reInfo.replaceAll(", ",",").split('(')[1].split(')')[0].split(',');
+			var reserveData = {};
+			for(var i = 0; i < row.length; i++){
+				var key = row[i].split('=')[0];
+				var val = row[i].split('=')[1];
+				reserveData[key] = val;
+			}
+			
+			$("#review_mvposter").attr("src", reserveData.mvposter);
+			$("#review_mvname").text(reserveData.mvname);
+			$("#review_thname_rescroom").text(reserveData.thname + "&nbsp;" + reserveData.rescroom);
+			$("#review_rescdate").text(reserveData.rescdate);
+			$("#review_reamount").text(reserveData.reamount + "명");
+			
+			$("#review_modalLabel").text("관람평 작성");
+			$("#review_rvcomment").val("");
+			$("#review_rvrecode").val(reserveData.recode);
+			$("#review_rvmvcode").val(reserveData.mvcode);
+			$("#reviewModal").modal('show');
+		}
+		
+		function showReview(reInfo, rvrecode){
+			console.log("작성된 관람평 확인 요청");
+			var row = reInfo.replaceAll(", ",",").split('(')[1].split(')')[0].split(',');
+			var reserveData = {};
+			for(var i = 0; i < row.length; i++){
+				var key = row[i].split('=')[0];
+				var val = row[i].split('=')[1];
+				reserveData[key] = val;
+			}
+			
+			$.ajax({
+				type: "post",
+				url: "getReview",
+				data: {"rvrecode":rvrecode},
+				dataType: "json",
+				success: function(result){
+					console.log(result);
+
+					$("#rvInfo_mvposter").attr("src", reserveData.mvposter);
+					$("#rvInfo_mvname").text(reserveData.mvname);
+					$("#rvInfo_thname_rescroom").text(reserveData.thname + "&nbsp;" + reserveData.rescroom);
+					$("#rvInfo_rescdate").text(reserveData.rescdate);
+					$("#rvInfo_reamount").text(reserveData.reamount + "명");
+					
+					$("#rvInfo_modalLabel").text(result.rvrecode + " 관람평");
+					$("#rvInfo_rvcomment").text(result.rvcomment);
+					if (result.rvrecommend == 1){
+						$("#rvInfo_rvrecommend").html("<i class='fa-regular fa-thumbs-up'></i>좋아요");
+					} else {
+						$("#rvInfo_rvrecommend").html("<i class='fa-regular fa-thumbs-down'></i>별로예요");
+					}
+					$("#rvInfoModal").modal('show');
+				}
+			});
+		}
 	</script>    
+	
+	 <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title font-weight-bold " id="review_modalLabel"></h6>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="insertReview" method="post">
+	                <div class="modal-body p-3">
+	                	<div class="row">
+                           	<div class="col-5">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="h6 mb-1 font-weight-bold text-gray-800 mr-auto ml-auto" >
+                                 		<img class="img-fluid" alt="영화포스터" style="max-height:300px;" id="review_mvposter" src="">
+                                    </div>
+                                </div>
+                            </div>
+                           	<div class="col-7">
+                                <div class="no-gutters align-items-center">
+                                    <div class="h6 font-weight-bold text-gray-800">
+		                                  <div id="review_mvname"></div>
+		                                  <br>
+		                                  <div id="review_thname_rescroom"></div>
+		                                  <br>
+		                                  <div id="review_rescdate"></div>
+		                                  <br>
+		                                  <div id="review_reamount"></div>
+		                                  <br>
+		                                  <input type="radio" name="rvrecommend" id="recommend1" value="1" checked="checked"><label for="recommend1">
+		                                 	<i class="fa-regular fa-thumbs-up"></i>좋아요&nbsp;</label>
+	                        			  <input type="radio" name="rvrecommend" id="recommend2" value="0"><label for="recommend2">
+	                        			  	<i class="fa-regular fa-thumbs-down"></i>별로예요</label>
+		                                  <textarea rows="3" name="rvcomment" id="review_rvcomment" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+	                </div>
+	                <input type="hidden" name="rvrecode" id="review_rvrecode">
+	                <input type="hidden" name="rvmid" id="review_rvmid" value="${sessionScope.loginId }">
+	                <input type="hidden" name="rvmvcode" id="review_rvmvcode">
+	                <div class="modal-footer">
+	                	<input type="submit" class="btn btn-primary" value="작성완료">
+	                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="rvInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title font-weight-bold " id="rvInfo_modalLabel"></h6>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="insertReview" method="post">
+	                <div class="modal-body ">
+	                	<div class="row">
+	                		<div class="col-5">
+                                <div class="no-gutters align-items-center">
+                                    <div class="h6 mb-1 font-weight-bold text-gray-800" >
+                                 		<img class="img-fluid" alt="영화포스터" style="max-height:300px;" id="rvInfo_mvposter" src="">
+                                    </div>
+                                </div>
+                            </div>
+                           	<div class="col-7">
+                                <div class="no-gutters align-items-center">
+                                    <div class="h6 font-weight-bold text-gray-800">
+	                                  <div id="rvInfo_mvname"></div>
+	                                  <br>
+	                                  <div id="rvInfo_thname_rescroom"></div>
+	                                  <br>
+	                                  <div id="rvInfo_rescdate"></div>
+	                                  <br>
+	                                  <div id="rvInfo_reamount"></div>
+	                                  <br>
+	                                  <div id="rvInfo_rvrecommend" style="font-weight:normal; font-size:medium;"></div>
+	                                  <textarea rows="3" cols="100%" readonly name="rvcomment" id="rvInfo_rvcomment" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+	                </div>
+	                <input type="hidden" name="rvrecode" id="review_rvrecode">
+	                <input type="hidden" name="rvmid" id="review_rvmid" value="${sessionScope.loginId }">
+	                <input type="hidden" name="rvmvcode" id="review_rvmvcode">
+	                <div class="modal-footer">
+	                	<input type="button" class="btn btn-primary" value="관람평 수정">
+	                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

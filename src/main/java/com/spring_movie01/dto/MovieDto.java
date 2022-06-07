@@ -16,6 +16,7 @@ public class MovieDto {
 	
 	private String mvposter;	//영화포스터
 	
-	private int recount; 		// 예매횟수
-	private double rerate; 		// 예매율
+	private int recount; 		//예매횟수
+	private double rerate; 		//예매율
+	
 }

@@ -17,5 +17,6 @@ public class ReservationDto {
 	private String mvposter;
 	private String mvname;
 	private String thname;
-
+	private String rvrecode;
+	private String mvcode;
 }

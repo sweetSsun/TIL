@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.spring_movie01.dao.MovieDao;
 import com.spring_movie01.dto.MovieDto;
 import com.spring_movie01.dto.ReservationDto;
+import com.spring_movie01.dto.ReviewDto;
 import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
 
@@ -144,7 +145,9 @@ public class MovieService {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("영화코드 : " + mvcode);
 		MovieDto movieInfo = mvdao.selectMovieInfo(mvcode);
+		ArrayList<ReviewDto> rvList = mvdao.getMovieReview(mvcode);
 		
+		mav.addObject("rvList", rvList);
 		mav.addObject("movieInfo", movieInfo);
 		mav.setViewName("movie/MovieView");
 		return mav;
@@ -236,6 +239,9 @@ public class MovieService {
 		System.out.println("MovieService.reservationList() 호출");
 		ModelAndView mav = new ModelAndView();
 		String loginId = (String) session.getAttribute("loginId");
+		if(loginId == null) {
+			loginId = "";
+		}
 		ArrayList<ReservationDto> reList =  mvdao.reservationList(loginId);
 		System.out.println(reList);
 		mav.addObject("reList", reList);
@@ -251,6 +257,26 @@ public class MovieService {
 		ra.addFlashAttribute("msg", "예매취소 되었습니다.");
 		mav.setViewName("redirect:/reservationList");
 		return mav;
+	}
+
+	public ModelAndView insertReview(ReviewDto rvdto, RedirectAttributes ra) {
+		System.out.println("MovieService.insertReview() 호출");
+		ModelAndView mav = new ModelAndView();
+		mvdao.insertReview(rvdto);
+		System.out.println("insertReview 영화코드 " + rvdto.getRvmvcode());
+		
+		ra.addFlashAttribute("msg", "관람평이 작성되었습니다.");
+		mav.setViewName("redirect:/movieView?mvcode="+rvdto.getRvmvcode());
+		return mav;
+	}
+
+	public String getReview(String rvrecode) {
+		System.out.println("MovieService.getReview() 호출");
+		ReviewDto rvInfo = mvdao.getMyReview(rvrecode);
+		Gson gson = new Gson();
+		String rvInfo_json = gson.toJson(rvInfo);
+		System.out.println("내 관람평 : " + rvInfo_json);
+		return rvInfo_json;
 	}
 	
 	

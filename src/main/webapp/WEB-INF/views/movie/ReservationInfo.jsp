@@ -86,18 +86,6 @@
 	                            </div>
                             	<div class="row mb-2" >
                            			<button class="btn btn-secondary btn-icon-split px-1 mx-1 " onclick="location.href='reservationList'">예매목록</button>
-                            	
-                            		<c:set var="today" value="<%=new Date() %>"></c:set>
-                                   	<fmt:parseDate value="${re.rescdate }" var="scdate_fm" pattern="yyyy.MM.dd HH:mm"></fmt:parseDate>
-                                  	
-                                  	<c:choose>
-                                   	<c:when test="${scdate_fm > today }">
-                                  			<button class="btn btn-secondary btn-icon-split px-1" onclick="cancleReservation('${re.recode}')">예매취소</button>
-                                  		</c:when>
-                                  		<c:otherwise>
-                                  			<button class="btn btn-primary btn-icon-split px-1">관람평 작성</button>
-                                  		</c:otherwise>
-                                  	</c:choose>
 	                            </div>
                             </div>
                         </div>

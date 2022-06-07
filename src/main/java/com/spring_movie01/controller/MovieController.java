@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring_movie01.dto.ReservationDto;
+import com.spring_movie01.dto.ReviewDto;
 import com.spring_movie01.service.MovieService;
 
 @Controller
@@ -95,5 +96,20 @@ public class MovieController {
 		System.out.println("예매취소 요청");
 		ModelAndView mav = mvsvc.deleteReservation(recode, ra);
 		return mav;
+	}
+	
+	@RequestMapping(value="/insertReview")
+	public ModelAndView insertReview(ReviewDto rvdto, RedirectAttributes ra) {
+		System.out.println("리뷰작성 요청");
+		System.out.println("작성 리뷰 내용 : " + rvdto);
+		ModelAndView mav = mvsvc.insertReview(rvdto, ra);
+		return mav;
+	}
+	
+	@RequestMapping(value="/getReview")
+	public @ResponseBody String getReview(String rvrecode) {
+		System.out.println("작성된 관람평 확인");
+		String rvInfo = mvsvc.getReview(rvrecode);
+		return rvInfo;
 	}
 }

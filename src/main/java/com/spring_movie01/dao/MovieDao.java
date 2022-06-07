@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.spring_movie01.dto.MovieDto;
 import com.spring_movie01.dto.ReservationDto;
+import com.spring_movie01.dto.ReviewDto;
 import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
 
@@ -50,5 +51,13 @@ public interface MovieDao {
 	
 	@Delete("DELETE FROM RESERVATION WHERE RECODE=#{recode}")
 	void deleteReservation(String recode);
+
+	@Insert("INSERT INTO REVIEW VALUES(#{rvrecode}, #{rvmid}, #{rvmvcode}, #{rvcomment}, SYSDATE, #{rvrecommend})")
+	void insertReview(ReviewDto rvdto);
+
+	ArrayList<ReviewDto> getMovieReview(String mvcode);
+
+	@Select("SELECT RVRECODE,RVMID,RVMVCODE,RVCOMMENT,TO_CHAR(RVDATE,'YYYY.MM.DD HH24:MI') AS RVDATE,RVRECOMMEND FROM REVIEW WHERE RVRECODE=#{rvrecode}")
+	ReviewDto getMyReview(String rvrecode);
 	
 }

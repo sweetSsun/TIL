@@ -65,7 +65,7 @@
                                     </div>
                                 </div>
                               	<div class="card-footer" style="background-color:white; border-top:none;">
-                                    <div class="text-xs mb-0 text-gray-800 font-weight-bold">예매율 ${mv.rerate } % | 추천수 10</div>
+                                    <div class="text-xs mb-0 text-gray-800 font-weight-bold">예매율 ${mv.rerate } % | 추천수 ${mv.recommend }</div>
                                     <div class="text-xs mb-1 text-gray-800 font-weight-bold">${mv.mvopen } 개봉</div>
                                     <div style="text-align: right;">
                               			<a class="btn btn-sm btn-danger" href="movieReservationPage?mvcode=${mv.mvcode }">예매하기</a>

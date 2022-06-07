@@ -18,5 +18,5 @@ public class MovieDto {
 	
 	private int recount; 		//예매횟수
 	private double rerate; 		//예매율
-	
+	private int recommend;		//추천횟수
 }

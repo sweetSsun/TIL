@@ -187,7 +187,13 @@
 		function reviewWriteForm(reInfo){
 			console.log("관람평 작성페이지 이동 요청");
 			console.log(reInfo);
+			var row1 = reInfo.replaceAll(", ",",");
+			console.log(row1);
+			var row2 = reInfo.replaceAll(", ",",").split('(')[1].split(')')[0];
+			console.log(row2);
 			var row = reInfo.replaceAll(", ",",").split('(')[1].split(')')[0].split(',');
+			console.log(row);
+
 			var reserveData = {};
 			for(var i = 0; i < row.length; i++){
 				var key = row[i].split('=')[0];
@@ -197,7 +203,7 @@
 			
 			$("#review_mvposter").attr("src", reserveData.mvposter);
 			$("#review_mvname").text(reserveData.mvname);
-			$("#review_thname_rescroom").text(reserveData.thname + "&nbsp;" + reserveData.rescroom);
+			$("#review_thname_rescroom").text(reserveData.thname + " " + reserveData.rescroom);
 			$("#review_rescdate").text(reserveData.rescdate);
 			$("#review_reamount").text(reserveData.reamount + "명");
 			
@@ -206,6 +212,7 @@
 			$("#review_rvrecode").val(reserveData.recode);
 			$("#review_rvmvcode").val(reserveData.mvcode);
 			$("#reviewModal").modal('show');
+			
 		}
 		
 		function showReview(reInfo, rvrecode){
@@ -228,9 +235,11 @@
 
 					$("#rvInfo_mvposter").attr("src", reserveData.mvposter);
 					$("#rvInfo_mvname").text(reserveData.mvname);
-					$("#rvInfo_thname_rescroom").text(reserveData.thname + "&nbsp;" + reserveData.rescroom);
+					$("#rvInfo_thname_rescroom").text(reserveData.thname + " " + reserveData.rescroom);
 					$("#rvInfo_rescdate").text(reserveData.rescdate);
 					$("#rvInfo_reamount").text(reserveData.reamount + "명");
+					$("#rvInfo_rvrecode").val(reserveData.rvrecode);
+					$("#rvInfo_rvmvcode").val(reserveData.mvcode);
 					
 					$("#rvInfo_modalLabel").text(result.rvrecode + " 관람평");
 					$("#rvInfo_rvcomment").text(result.rvcomment);
@@ -242,6 +251,12 @@
 					$("#rvInfoModal").modal('show');
 				}
 			});
+		}
+		
+		function modifyReview(){
+			$("#rvInfo_rvcomment").removeAttr("readonly");
+			$("#modiPageBtn").toggleClass("d-none");
+			$("#modiBtn").toggleClass("d-none");
 		}
 	</script>    
 	
@@ -307,7 +322,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="insertReview" method="post">
+                <form action="modifyReview" method="post">
 	                <div class="modal-body ">
 	                	<div class="row">
 	                		<div class="col-5">
@@ -329,17 +344,19 @@
 	                                  <div id="rvInfo_reamount"></div>
 	                                  <br>
 	                                  <div id="rvInfo_rvrecommend" style="font-weight:normal; font-size:medium;"></div>
-	                                  <textarea rows="3" cols="100%" readonly name="rvcomment" id="rvInfo_rvcomment" class="form-control"></textarea>
+	                                  <!-- 관람평 수정 시에 추천/비추천도 다시 선택할 수 있도록 만들어보기 -->
+	                                  <textarea rows="3" readonly name="rvcomment" id="rvInfo_rvcomment" class="form-control"></textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
 	                </div>
-	                <input type="hidden" name="rvrecode" id="review_rvrecode">
-	                <input type="hidden" name="rvmid" id="review_rvmid" value="${sessionScope.loginId }">
-	                <input type="hidden" name="rvmvcode" id="review_rvmvcode">
+	                <input type="hidden" name="rvrecode" id="rvInfo_rvrecode">
+	                <input type="hidden" name="rvmid" id="rvInfo_rvmid" value="${sessionScope.loginId }">
+	                <input type="hidden" name="rvmvcode" id="rvInfo_rvmvcode">
 	                <div class="modal-footer">
-	                	<input type="button" class="btn btn-primary" value="관람평 수정">
+	                	<input type="button" class="btn btn-primary" id="modiPageBtn" value="관람평 수정" onclick="modifyReview()">
+	                	<input type="submit" class="btn btn-primary d-none"  id="modiBtn" value="수정완료">
 	                </div>
                 </form>
             </div>

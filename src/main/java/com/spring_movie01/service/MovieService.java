@@ -278,6 +278,15 @@ public class MovieService {
 		System.out.println("내 관람평 : " + rvInfo_json);
 		return rvInfo_json;
 	}
+
+	public ModelAndView modifyReview(ReviewDto rvdto, RedirectAttributes ra) {
+		System.out.println("MovieService.modifyReview() 호출");
+		ModelAndView mav = new ModelAndView();
+		mvdao.updateReview(rvdto);
+		ra.addFlashAttribute("msg", "관람평이 수정되었습니다.");
+		mav.setViewName("redirect:/movieView?mvcode="+rvdto.getRvmvcode());
+		return mav;
+	}
 	
 	
 

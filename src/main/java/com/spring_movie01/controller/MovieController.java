@@ -101,7 +101,6 @@ public class MovieController {
 	@RequestMapping(value="/insertReview")
 	public ModelAndView insertReview(ReviewDto rvdto, RedirectAttributes ra) {
 		System.out.println("리뷰작성 요청");
-		System.out.println("작성 리뷰 내용 : " + rvdto);
 		ModelAndView mav = mvsvc.insertReview(rvdto, ra);
 		return mav;
 	}
@@ -111,5 +110,13 @@ public class MovieController {
 		System.out.println("작성된 관람평 확인");
 		String rvInfo = mvsvc.getReview(rvrecode);
 		return rvInfo;
+	}
+	
+	// 관람평 수정에 추천/비추천 변경
+	@RequestMapping(value="/modifyReview")
+	public ModelAndView modifyReview(ReviewDto rvdto, RedirectAttributes ra){
+		System.out.println("리뷰수정 요청");
+		ModelAndView mav = mvsvc.modifyReview(rvdto, ra);
+		return mav;
 	}
 }

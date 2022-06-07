@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.spring_movie01.dto.MovieDto;
 import com.spring_movie01.dto.ReservationDto;
@@ -59,5 +60,8 @@ public interface MovieDao {
 
 	@Select("SELECT RVRECODE,RVMID,RVMVCODE,RVCOMMENT,TO_CHAR(RVDATE,'YYYY.MM.DD HH24:MI') AS RVDATE,RVRECOMMEND FROM REVIEW WHERE RVRECODE=#{rvrecode}")
 	ReviewDto getMyReview(String rvrecode);
+
+	@Update("UPDATE REVIEW SET RVCOMMENT=#{rvcomment} WHERE RVRECODE=#{rvrecode}")
+	void updateReview(ReviewDto rvdto);
 	
 }

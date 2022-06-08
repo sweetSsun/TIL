@@ -127,5 +127,11 @@ public class MovieController {
 		return pagingReviewList;
 	}
 	
+	@RequestMapping(value="/pagingNumber")
+	public @ResponseBody String pagingNumber(String mvcode, int page) {
+		System.out.println("페이징 넘버 조회 요청");
+		String pagingNumber = mvsvc.pagingNumber(mvcode, page);
+		return pagingNumber;
+	}
 	
 }

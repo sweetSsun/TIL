@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.spring_movie01.dao.MovieDao;
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.PageDto;
 import com.spring_movie01.dto.ReservationDto;
 import com.spring_movie01.dto.ReviewDto;
 import com.spring_movie01.dto.SchedulesDto;
@@ -324,10 +325,28 @@ public class MovieService {
 
 	public String pagingReview(String mvcode, int requestPage) {
 		System.out.println("MovieService.pagingReview() 호출");
-		ModelAndView mav = new ModelAndView();
 		Gson gson = new Gson();
 		
-		int page = 1;
+		int page = 0;
+		if(requestPage > 0) {
+			page = requestPage;
+		}
+		System.out.println("페이지 번호 : " + page);
+		
+		// 관람평 총 갯수
+		int viewCount = 6;
+		int startRow = (page-1)*viewCount+1;
+		int endRow = page*viewCount;
+		
+		ArrayList<ReviewDto> reviewPagingList = mvdao.getReviewPagingList(mvcode, startRow, endRow);
+		String pagingReviewList_json = gson.toJson(reviewPagingList);
+		return pagingReviewList_json;
+	}
+
+	public String pagingNumber(String mvcode, int requestPage) {
+		System.out.println("MovieService.pagingNumber() 호출");
+		Gson gson = new Gson();
+		int page = 0;
 		if(requestPage > 0) {
 			page = requestPage;
 		}
@@ -337,12 +356,24 @@ public class MovieService {
 		int reviewTotalCount = mvdao.getReviewTotalCount(mvcode);
 		int viewCount = 6;
 		int pageNumCount = 5;
-		int startRow = (page-1)*viewCount+1;
-		int endRow = page*viewCount;
 		
-		ArrayList<ReviewDto> reviewPagingList = mvdao.getReviewPagingList(mvcode, startRow, endRow);
-		String pagingReviewList_json = gson.toJson(reviewPagingList);
-		return pagingReviewList_json;
+		// 페이지번호 최대값
+		int maxPage = (int) (Math.ceil((double)reviewTotalCount/viewCount));
+		// 출력페이지 번호 시작값
+		int startPage = (int) ( (Math.ceil((double)page/pageNumCount) -1) ) * pageNumCount;
+		// 출력페이지 번호 마지막값
+		int endPage = startPage + pageNumCount - 1;
+		if (endPage > maxPage) {
+			endPage = maxPage;
+		}
+		PageDto pagedto = new PageDto();
+		pagedto.setPage(page);
+		pagedto.setMaxPage(maxPage);
+		pagedto.setStartPage(startPage);
+		pagedto.setEndPage(endPage);
+		String pagedto_json = gson.toJson(pagedto);
+		System.out.println(pagedto_json);
+		return pagedto_json;
 	}
 	
 	

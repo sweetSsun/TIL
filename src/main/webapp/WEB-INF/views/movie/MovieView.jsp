@@ -153,7 +153,7 @@
        				<ul class="pagination">
        					<li class="paginate_button page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
        					<li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-       					<li class="paginate_button page-item "><a href="#" onclick="pageLink(2)" class="page-link">2</a></li>
+       					<li class="paginate_button page-item " onclick="pageLink(this)" ><a href="#" class="page-link">2</a></li>
        					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
        					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
        					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
@@ -213,10 +213,11 @@
     	
     	function pageLink(pageObj){
     		console.log("관람평 페이지 이동 요청");
-    		console.log("요청페이지 : " + pageObj);
+    		var page = $(pageObj).text();
+    		console.log("요청페이지 : " + page);
     		$.ajax({
     			type: "get",
-    			data: {"page":pageObj, "mvcode":"${movieInfo.mvcode }" },
+    			data: {"page":page, "mvcode":"${movieInfo.mvcode }" },
     			url: "pagingReview",
     			dataType: "json",
     			success: function(result){
@@ -254,6 +255,39 @@
 						output += "</div>";
     				}
     				$("#reviewDiv").html(output);
+    			}
+    		});
+    		
+    		$.ajax({
+    			type: "get",
+    			data: {"page":page, "mvcode":"${movieInfo.mvcode }" },
+    			url: "pagingNumber",
+    			dataType: "json",
+    			success: function(result){
+    				console.log("페이지넘버링 : " + result.page);
+    				$("#dataTable_paginate").text("");
+    				output = "<ul class='pagination'>";
+    				for (var i = result.startPage; i < result.endPage; i++){
+    					if (pageObj == result.page){
+		    				output += "<li class='paginate_button page-item active' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='1' tabindex='0' class='page-link'>"
+		    							+ result.page + "</a></li>";
+    					} else {
+		    				output += "<li class='paginate_button page-item' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='1' tabindex='0' class='page-link'>"
+    							+ i + "</a></li>";
+    					}
+    				}
+    				output += "</ul>";
+    				$("#dataTable_paginate").html(output);
+					    				
+    				
+    				
+   				/* 	<li class="paginate_button page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+   					<li class='paginate_button page-item active'><a href='#' aria-controls='dataTable' data-dt-idx='1' tabindex='0' class='page-link'>1</a></li>
+   					<li class="paginate_button page-item "><a href="#" onclick="pageLink(this)" class="page-link">2</a></li>
+   					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
+   					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
+   					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
+   					<li class="paginate_button page-item next" id="dataTable_next"><a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li> */
     			}
     		});
     	}

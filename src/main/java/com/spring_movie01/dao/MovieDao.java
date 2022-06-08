@@ -63,5 +63,10 @@ public interface MovieDao {
 
 	@Update("UPDATE REVIEW SET RVCOMMENT=#{rvcomment}, RVRECOMMEND=#{rvrecommend} WHERE RVRECODE=#{rvrecode}")
 	void updateReview(ReviewDto rvdto);
+
+	@Select("SELECT COUNT(*) FROM REVIEW WHERE RVMVCODE=#{mvcode}")
+	int getReviewTotalCount(String mvcode);
+
+	ArrayList<ReviewDto> getReviewPagingList(@Param("mvcode")String mvcode, @Param("startRow") int startRow, @Param("endRow") int endRow);
 	
 }

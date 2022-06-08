@@ -125,8 +125,9 @@ public class MovieService {
 		int sumRecount = mvList.get(0).getSumrecount(); // 총 예매횟수
 		for(int i = 0; i < mvList.size(); i++) {
 			// 예매율 저장
-			double rerate = 0;
-			rerate = Math.round((double) mvList.get(i).getRecount() / sumRecount * 100);
+			double rerate = (double)mvList.get(i).getRecount() / sumRecount * 100;
+			System.out.println("예매율:"+rerate);
+			rerate = Math.round(rerate*100)/100.0;
 			mvList.get(i).setRerate(rerate);
 
 			// 추천수 저장
@@ -157,7 +158,8 @@ public class MovieService {
 		MovieDto movieInfo = mvdao.selectMovieInfo(mvcode);
 		// 예매율 저장
 		int sumRecount = movieInfo.getSumrecount();
-		double rerate = Math.round((double) movieInfo.getRecount() / sumRecount * 100);
+		double rerate = (double) movieInfo.getRecount() / sumRecount * 100;
+		rerate = Math.round(rerate*100)/100.0;
 		movieInfo.setRerate(rerate);
 		
 		// 댓글정보
@@ -320,12 +322,27 @@ public class MovieService {
 		return mav;
 	}
 
-	public String pagingReview(int page) {
+	public String pagingReview(String mvcode, int requestPage) {
 		System.out.println("MovieService.pagingReview() 호출");
 		ModelAndView mav = new ModelAndView();
+		Gson gson = new Gson();
 		
-		mav.setView(null);
-		return "";
+		int page = 1;
+		if(requestPage > 0) {
+			page = requestPage;
+		}
+		System.out.println("페이지 번호 : " + page);
+		
+		// 관람평 총 갯수
+		int reviewTotalCount = mvdao.getReviewTotalCount(mvcode);
+		int viewCount = 6;
+		int pageNumCount = 5;
+		int startRow = (page-1)*viewCount+1;
+		int endRow = page*viewCount;
+		
+		ArrayList<ReviewDto> reviewPagingList = mvdao.getReviewPagingList(mvcode, startRow, endRow);
+		String pagingReviewList_json = gson.toJson(reviewPagingList);
+		return pagingReviewList_json;
 	}
 	
 	

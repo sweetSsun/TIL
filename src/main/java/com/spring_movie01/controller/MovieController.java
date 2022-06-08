@@ -121,10 +121,11 @@ public class MovieController {
 	}
 	
 	@RequestMapping(value="/pagingReview")
-	public @ResponseBody String pagingReview(int page) {
-		System.out.println("관람평 페이징 요청");
-		String reviewPagingList = mvsvc.pagingReview(page);
-		return reviewPagingList;
+	public @ResponseBody String pagingReview(String mvcode, int page) {
+		System.out.println("페이징 된 관람평 조회 요청");
+		String pagingReviewList = mvsvc.pagingReview(mvcode, page);
+		return pagingReviewList;
 	}
+	
 	
 }

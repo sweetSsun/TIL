@@ -82,53 +82,60 @@
                             </div>
                         </div>
                     </div>
-					<!--  Content Row -->
-					<div class="row">
-                        <div class="col-lg-11">
-							<div class="card shadow mb-4">
-	                            <!-- Card Header - Dropdown -->
-	                            <div class="card-header d-flex flex-row align-items-center justify-content-between">
-	                                <h6 class="m-0 text-gray-800 font-weight-bold">관람평</h6>
-	                            </div>
-	                            <!-- Card Body -->
-	                            <div class="card-body text-gray-800 text-sm">
-	                               	<div id="reviewList">
-	                               		<div class="row">
-		                                    <div class="col-7">관람평</div>
-		                                    <div class="col-2">작성자</div>
-		                                    <div class="col-2">작성일</div>
-		                                    <div class="col-1">추천</div>
-	                            			<hr>
-	                            		<c:forEach items="${rvList }" var="review">
-		                                    <div class="col-7">${review.rvcomment }</div>
-		                                    <div class="col-2">${review.rvmid }</div>
-		                                    <div class="col-2">${review.rvdate }</div>
-		                                    <div class="col-1">
-		                                    <c:choose>
-		                                    	<c:when test="${review.rvrecommend == 1 }">
-		                                    		<i class='fa-regular fa-thumbs-up'></i>
-		                                    	</c:when>
-		                                    	<c:otherwise>
-		                                    		<i class='fa-regular fa-thumbs-down'></i>
-		                                    	</c:otherwise>
-		                                    </c:choose>
-		                                    </div>
-	                            		</c:forEach>
-	                               		</div>
-	                               	</div>
-	                          	</div>
-	                       </div>
-	                   </div>
-                   </div>
-					
-					
-					<!--  Content Row -->
-
                 </div>
+				<!--  Content Row -->
+                <div class="container-fluid">
+					<div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 text-gray-800 font-weight-bold"><i class="fas fa-comments fa-2x text-gray-300"></i>관람평 </h6>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body text-gray-800 text-sm">
+               			<div class="row">
+                			<div class="col-12">
+                	
+                				<div class="row">
+		                        <!-- Pending Requests Card Example -->
+		                        <c:forEach items="${rvList }" var="review">
+		                        <div class="col-6 mb-4">
+		                            <div class="card border-left-warning h-100 py-2">
+		                                <div class="card-body py-1">
+		                                    <div class="row no-gutters align-items-center">
+		                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">${review.rvmid }</div>
+			                                </div>
+		                                    <div class="h6 mb-3 font-weight-bold text-gray-800">${review.rvcomment }</div>
+		                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
+		                                    	작성일 : ${review.rvdate }
+					                            <c:choose>
+					                               	<c:when test="${review.rvrecommend == 1 }">
+					                               		<i class='fa-regular fa-thumbs-up' style='text-align:right;'></i>
+					                               	</c:when>
+					                               	<c:otherwise>
+					                               		<i class='fa-regular fa-thumbs-down' style='text-align:right;'></i>
+					                               	</c:otherwise>
+					                            </c:choose>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </div>
+		                     	</c:forEach>
+                    	
+                   			</div>
+              			</div>
+           			</div>
+       			</div>
+   			</div>
+        </div>
+	    </div>
+            <!-- End of Main Content -->
+	    </div>
+        </div>
+					
+					
+
                 <!-- /.container-fluid -->
 
-            </div>
-            <!-- End of Main Content -->
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">

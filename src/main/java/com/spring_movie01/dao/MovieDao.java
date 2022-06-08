@@ -56,7 +56,7 @@ public interface MovieDao {
 	@Insert("INSERT INTO REVIEW VALUES(#{rvrecode}, #{rvmid}, #{rvmvcode}, #{rvcomment}, SYSDATE, #{rvrecommend})")
 	void insertReview(ReviewDto rvdto);
 
-	ArrayList<ReviewDto> getMovieReview(String mvcode);
+	ArrayList<ReviewDto> getTotalReview(String mvcode);
 
 	@Select("SELECT RVRECODE,RVMID,RVMVCODE,RVCOMMENT,TO_CHAR(RVDATE,'YYYY.MM.DD HH24:MI') AS RVDATE,RVRECOMMEND FROM REVIEW WHERE RVRECODE=#{rvrecode}")
 	ReviewDto getMyReview(String rvrecode);

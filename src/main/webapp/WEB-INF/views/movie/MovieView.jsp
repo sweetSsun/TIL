@@ -266,8 +266,8 @@
     			success: function(result){
     				console.log("페이지넘버링 : " + result.page);
     				$("#dataTable_paginate").text("");
-    				output = "<ul class='pagination'>";
-    				for (var i = result.startPage; i < result.endPage; i++){
+    				output = "<ul class='pagination mr-auto ml-auto'>";
+    				for (var i = result.startPage; i <= result.endPage; i++){
     					if (pageObj == result.page){
 		    				output += "<li class='paginate_button page-item active' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='1' tabindex='0' class='page-link'>"
 		    							+ result.page + "</a></li>";
@@ -296,29 +296,5 @@
 </body>
 <script type="text/javascript">
 
-/* 	$("#reviewBtn").click(function(){
-		console.log("관람평 작성 요청");
-		var rvcommend = $("#review").val();
-		console.log("관람평 : " + rvcommend);
-		$.ajax({
-			type: "post",
-			url: "insertReview",
-			data: {"rvcommend" : rvcommend},
-			datatype: "json",
-			success: function(result){
-				$("#reviewList").html("");
-				output = "<div class='row'><div class='col-7'>관람평</div><div class='col-2'>작성자</div><div class='col-2'>작성일</div><div class='col-1'>추천</div></div><hr>";
-				for(var i = 0; i < result.length; i++){
-					output += "<div class='row'>";
-	                output += "<div class='col-7'>"+result[i].rvcomment+"</div>";
-	                output += "<div class='col-2'>"+result[i].rvmid+"</div>";
-	                output += "<div class='col-2'>"+result[i].rvdate+"</div>";
-	                output += "<div class='col-1'>"+result[i].rvcomment+"</div>";
-				}
-                output += "</div>";
-				$("#reviewList").html(output);
-			} 
-		});
-	}); */
 </script>
 </html>

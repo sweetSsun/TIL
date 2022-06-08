@@ -127,16 +127,15 @@ public class MovieService {
 		for(int i = 0; i < mvList.size(); i++) {
 			// 예매율 저장
 			double rerate = (double)mvList.get(i).getRecount() / sumRecount * 100;
-			System.out.println("예매율:"+rerate);
 			rerate = Math.round(rerate*100)/100.0;
 			mvList.get(i).setRerate(rerate);
 
 			// 추천수 저장
-			ArrayList<ReviewDto> rvList = mvdao.getMovieReview(mvList.get(i).getMvcode());
+			ArrayList<ReviewDto> totalRv = mvdao.getTotalReview(mvList.get(i).getMvcode());
 			int badCount = 0;
 			int goodCount = 0;
-			for (int j = 0; j < rvList.size(); j++) {
-				if(rvList.get(j).getRvrecommend()==0) {
+			for (int j = 0; j < totalRv.size(); j++) {
+				if(totalRv.get(j).getRvrecommend()==0) {
 					badCount++;
 				} else {
 					goodCount++;
@@ -164,16 +163,12 @@ public class MovieService {
 		movieInfo.setRerate(rerate);
 		
 		// 댓글정보
-		ArrayList<ReviewDto> rvList = mvdao.getMovieReview(mvcode);
+		ArrayList<ReviewDto> totalRv = mvdao.getTotalReview(mvcode);
 		// 추천수 저장
 		int badCount = 0;
 		int goodCount = 0;
-		for(int i = 0; i < rvList.size(); i++) {
-			String rvcomment = rvList.get(i).getRvcomment();
-			rvcomment = rvcomment.replace(" ", "&nbsp;");
-			rvcomment = rvcomment.replace("\r\n", "<br>");
-			rvList.get(i).setRvcomment(rvcomment);
-			if (rvList.get(i).getRvrecommend() == 0) {
+		for(int i = 0; i < totalRv.size(); i++) {
+			if (totalRv.get(i).getRvrecommend() == 0) {
 				badCount++;
 			} else {
 				goodCount++;
@@ -182,6 +177,14 @@ public class MovieService {
 		movieInfo.setRecommend0(badCount);
 		movieInfo.setRecommend1(goodCount);
 		
+		// 개행문자 변환
+		ArrayList<ReviewDto> rvList = mvdao.getReviewPagingList(mvcode, 1, 6);
+		for(int i = 0; i < rvList.size(); i++) {
+			String rvcomment = rvList.get(i).getRvcomment();
+			rvcomment = rvcomment.replace(" ", "&nbsp;");
+			rvcomment = rvcomment.replace("\r\n", "<br>");
+			totalRv.get(i).setRvcomment(rvcomment);
+		}
 		mav.addObject("rvList", rvList);
 		mav.addObject("movieInfo", movieInfo);
 		mav.setViewName("movie/MovieView");
@@ -327,7 +330,7 @@ public class MovieService {
 		System.out.println("MovieService.pagingReview() 호출");
 		Gson gson = new Gson();
 		
-		int page = 0;
+		int page = 1;
 		if(requestPage > 0) {
 			page = requestPage;
 		}
@@ -346,7 +349,7 @@ public class MovieService {
 	public String pagingNumber(String mvcode, int requestPage) {
 		System.out.println("MovieService.pagingNumber() 호출");
 		Gson gson = new Gson();
-		int page = 0;
+		int page = 1;
 		if(requestPage > 0) {
 			page = requestPage;
 		}
@@ -360,7 +363,7 @@ public class MovieService {
 		// 페이지번호 최대값
 		int maxPage = (int) (Math.ceil((double)reviewTotalCount/viewCount));
 		// 출력페이지 번호 시작값
-		int startPage = (int) ( (Math.ceil((double)page/pageNumCount) -1) ) * pageNumCount;
+		int startPage = (int) ( (Math.ceil((double)page/pageNumCount) -1) ) * pageNumCount +1;
 		// 출력페이지 번호 마지막값
 		int endPage = startPage + pageNumCount - 1;
 		if (endPage > maxPage) {

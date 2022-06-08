@@ -11,4 +11,6 @@ public class ReviewDto {
 	private String rvcomment;
 	private String rvdate;
 	private int rvrecommend;
+	
+	private String mprofile;
 }

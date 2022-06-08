@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <script src="https://kit.fontawesome.com/9125416ae4.js" crossorigin="anonymous"></script>
 
     <title>영화목록</title>
 
@@ -51,7 +52,7 @@
 						<div class="col-xl-3 col-md-6 mb-4">
                             <div class="card h-100 py-2">
                             	<div class="card-header">
-                            		<a href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }&rerate=${mv.rerate}">
+                            		<a href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }">
                                     <img class="img-fluid" alt="${mv.mvposter }" src="${mv.mvposter }">
                                     </a>
                             	</div>
@@ -59,13 +60,18 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="h6 mb-0 font-weight-bold text-gray-800">
-                                            	<a class="text-gray-900" style="text-decoration-line:none;" href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }&rerate=${mv.rerate}">${mv.mvname }</a>
+                                            	<a class="text-gray-900" style="text-decoration-line:none;" href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }">${mv.mvname }</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                               	<div class="card-footer" style="background-color:white; border-top:none;">
-                                    <div class="text-xs mb-0 text-gray-800 font-weight-bold">예매율 ${mv.rerate } % | 추천수 ${mv.recommend }</div>
+                                    <div class="text-xs mb-0 text-gray-800 font-weight-bold">
+                                    	예매율 ${mv.rerate } % |
+                                    	추천수                          
+                                    	<i class='fa-regular fa-thumbs-up text-primary'></i> ${mv.recommend1 }
+                                		<i class='fa-regular fa-thumbs-down text-danger'></i> ${mv.recommend0 }
+                                    </div>
                                     <div class="text-xs mb-1 text-gray-800 font-weight-bold">${mv.mvopen } 개봉</div>
                                     <div style="text-align: right;">
                               			<a class="btn btn-sm btn-danger" href="movieReservationPage?mvcode=${mv.mvcode }">예매하기</a>

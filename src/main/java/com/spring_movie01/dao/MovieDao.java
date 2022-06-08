@@ -61,7 +61,7 @@ public interface MovieDao {
 	@Select("SELECT RVRECODE,RVMID,RVMVCODE,RVCOMMENT,TO_CHAR(RVDATE,'YYYY.MM.DD HH24:MI') AS RVDATE,RVRECOMMEND FROM REVIEW WHERE RVRECODE=#{rvrecode}")
 	ReviewDto getMyReview(String rvrecode);
 
-	@Update("UPDATE REVIEW SET RVCOMMENT=#{rvcomment} WHERE RVRECODE=#{rvrecode}")
+	@Update("UPDATE REVIEW SET RVCOMMENT=#{rvcomment}, RVRECOMMEND=#{rvrecommend} WHERE RVRECODE=#{rvrecode}")
 	void updateReview(ReviewDto rvdto);
 	
 }

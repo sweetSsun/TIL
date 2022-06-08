@@ -254,9 +254,20 @@
 		}
 		
 		function modifyReview(){
+			var recommend = $("#rvInfo_rvrecommend").text();
+			console.log("추천 : " + recommend);
+			var output = "";
+			if (recommend=="좋아요"){
+				output += "<input type='radio' name='rvrecommend' id='recommend1' value='1' checked='checked'><label for='recommend1'><i class='fa-regular fa-thumbs-up'></i>좋아요&nbsp;</label><input type='radio' name='rvrecommend' id='recommend2' value='0'><label for='recommend2'><i class='fa-regular fa-thumbs-down'></i>별로예요</label>";
+			} else {
+				output += "<input type='radio' name='rvrecommend' id='recommend1' value='1'><label for='recommend1'><i class='fa-regular fa-thumbs-up'></i>좋아요&nbsp;</label><input type='radio' name='rvrecommend' id='recommend2' value='0' checked='checked'><label for='recommend2'><i class='fa-regular fa-thumbs-down'></i>별로예요</label>";
+			}
+
 			$("#rvInfo_rvcomment").removeAttr("readonly");
 			$("#modiPageBtn").toggleClass("d-none");
 			$("#modiBtn").toggleClass("d-none");
+			$("#rvInfo_rvrecommend").text("");
+			$("#rvInfo_rvrecommend").html(output);
 		}
 	</script>    
 	

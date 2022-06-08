@@ -122,19 +122,28 @@ public class MovieService {
 		ArrayList<MovieDto> mvList = mvdao.selectMovieList();
 		System.out.println(mvList);
 		
-		int count = 0;
-		// 총 예매횟수
+		int sumRecount = mvList.get(0).getSumrecount(); // 총 예매횟수
 		for(int i = 0; i < mvList.size(); i++) {
-			count += mvList.get(i).getRecount();
-		}
-		// 예매율 저장
-		for(int i = 0; i < mvList.size(); i++) {
+			// 예매율 저장
 			double rerate = 0;
-			rerate = Math.round((double) mvList.get(i).getRecount() / count * 100);
+			rerate = Math.round((double) mvList.get(i).getRecount() / sumRecount * 100);
 			mvList.get(i).setRerate(rerate);
+
+			// 추천수 저장
+			ArrayList<ReviewDto> rvList = mvdao.getMovieReview(mvList.get(i).getMvcode());
+			int badCount = 0;
+			int goodCount = 0;
+			for (int j = 0; j < rvList.size(); j++) {
+				if(rvList.get(j).getRvrecommend()==0) {
+					badCount++;
+				} else {
+					goodCount++;
+				}
+			}
+			mvList.get(i).setRecommend0(badCount);
+			mvList.get(i).setRecommend1(goodCount);
 		}
 		mav.addObject("mvList", mvList);
-		
 		// 2. 영화목록 페이지
 		mav.setViewName("movie/MovieList");
 		return mav;
@@ -144,8 +153,31 @@ public class MovieService {
 		System.out.println("MovieService.movieInfoView() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("영화코드 : " + mvcode);
+		// 영화정보
 		MovieDto movieInfo = mvdao.selectMovieInfo(mvcode);
+		// 예매율 저장
+		int sumRecount = movieInfo.getSumrecount();
+		double rerate = Math.round((double) movieInfo.getRecount() / sumRecount * 100);
+		movieInfo.setRerate(rerate);
+		
+		// 댓글정보
 		ArrayList<ReviewDto> rvList = mvdao.getMovieReview(mvcode);
+		// 추천수 저장
+		int badCount = 0;
+		int goodCount = 0;
+		for(int i = 0; i < rvList.size(); i++) {
+			String rvcomment = rvList.get(i).getRvcomment();
+			rvcomment = rvcomment.replace(" ", "&nbsp;");
+			rvcomment = rvcomment.replace("\r\n", "<br>");
+			rvList.get(i).setRvcomment(rvcomment);
+			if (rvList.get(i).getRvrecommend() == 0) {
+				badCount++;
+			} else {
+				goodCount++;
+			}
+		}
+		movieInfo.setRecommend0(badCount);
+		movieInfo.setRecommend1(goodCount);
 		
 		mav.addObject("rvList", rvList);
 		mav.addObject("movieInfo", movieInfo);
@@ -286,6 +318,14 @@ public class MovieService {
 		ra.addFlashAttribute("msg", "관람평이 수정되었습니다.");
 		mav.setViewName("redirect:/movieView?mvcode="+rvdto.getRvmvcode());
 		return mav;
+	}
+
+	public String pagingReview(int page) {
+		System.out.println("MovieService.pagingReview() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setView(null);
+		return "";
 	}
 	
 	

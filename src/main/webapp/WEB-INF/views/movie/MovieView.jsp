@@ -65,16 +65,25 @@
                                 	<div>
 	                                    감독 : ${movieInfo.mvpd }
                                 	</div>
+	                                    <br>
                                 	<div>
 	                                    배우 : ${movieInfo.mvactor }
                                 	</div>
+	                                    <br>
                                 	<div>
 	                                    장르 : ${movieInfo.mvgenre } / 기본 : ${movieInfo.mvage }, ${movieInfo.mvtime }
                                 	</div>
+	                                    <br>
                                 	<div>
 	                                    개봉일 : ${movieInfo.mvopen }
                                 	</div>
-                                	<div>예매율 :  ${param.rerate }% / 추천수 : ${movieInfo.recommend }</div>
+	                                    <br>
+                                	<div>
+                                		예매율 :  ${movieInfo.rerate }% |
+                                		<i class='fa-regular fa-thumbs-up text-primary'></i> ${movieInfo.recommend1 }
+                                		<i class='fa-regular fa-thumbs-down text-danger'></i> ${movieInfo.recommend0 }
+                                	</div>
+	                                    <br>
                                 	<div class="mt-1" style="text-align: right;">
 	                                	<a class="btn btn-sm btn-danger" href="#">예매하기</a>
                                 	</div>
@@ -98,24 +107,39 @@
                 				<div class="row">
 		                        <!-- Pending Requests Card Example -->
 		                        <c:forEach items="${rvList }" var="review">
-		                        <div class="col-6 mb-4">
+		                        <div class="col-6 mb-4" style="min-height:110px; max-height:110px;">
 		                            <div class="card border-left-warning h-100 py-2">
 		                                <div class="card-body py-1">
-		                                    <div class="row no-gutters align-items-center">
-		                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">${review.rvmid }</div>
+		                                    <div class="row no-gutters">
+				                                <div class=" mr-2">
+		                                    		<c:choose>
+						                                <c:when test="${review.mprofile != null }">
+						                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
+						                                    src="${pageContext.request.contextPath }/resources/mprofileUpload/${review.mprofile}">
+						                                </c:when>
+						                                <c:otherwise>
+						                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
+						                                    src="${pageContext.request.contextPath }/resources/img/undraw_profile.svg">
+						                                </c:otherwise>
+					                                </c:choose>
+		                                    	</div>
+				                                <div class="col mr-2">
+			                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">${review.rvmid }</div>
+				                                    <div class="h6 mb-3 font-weight-bold text-gray-800">${review.rvcomment }</div>
+				                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
+				                                    	${review.rvdate }</div>
+			                                    </div>
+				                                <div class="col-auto">
+						                            <c:choose>
+						                               	<c:when test="${review.rvrecommend == 1 }">
+						                               		<i class='fa-regular fa-thumbs-up fa-2x text-primary'></i>
+						                               	</c:when>
+						                               	<c:otherwise>
+						                               		<i class='fa-regular fa-thumbs-down fa-2x text-danger'></i>
+						                               	</c:otherwise>
+						                            </c:choose>
+				                                </div>
 			                                </div>
-		                                    <div class="h6 mb-3 font-weight-bold text-gray-800">${review.rvcomment }</div>
-		                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
-		                                    	작성일 : ${review.rvdate }
-					                            <c:choose>
-					                               	<c:when test="${review.rvrecommend == 1 }">
-					                               		<i class='fa-regular fa-thumbs-up' style='text-align:right;'></i>
-					                               	</c:when>
-					                               	<c:otherwise>
-					                               		<i class='fa-regular fa-thumbs-down' style='text-align:right;'></i>
-					                               	</c:otherwise>
-					                            </c:choose>
-		                                    </div>
 		                                </div>
 		                            </div>
 		                        </div>

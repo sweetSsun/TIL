@@ -378,6 +378,29 @@ public class MovieService {
 		System.out.println(pagedto_json);
 		return pagedto_json;
 	}
+
+	public ModelAndView getSearchMovie(String searchText) {
+		System.out.println("MovieService.getSearchMovie() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println("검색할 단어 : " + searchText);
+		ArrayList<MovieDto> searchAllMvList = mvdao.getSearchMvList(searchText, "movie");
+		System.out.println( "모든 영화 검색 : " + searchAllMvList);
+		
+		ArrayList<MovieDto> searchScMvList = mvdao.getSearchMvList(searchText, "schedule");
+		System.out.println("상영중인 영화 검색 : " + searchScMvList );
+		
+		int sumRecount = searchScMvList.get(0).getSumrecount(); // 총 예매횟수
+		for(int i = 0; i < searchScMvList.size(); i++) {
+			// 예매율 저장
+			double rerate = (double)searchScMvList.get(i).getRecount() / sumRecount * 100;
+			rerate = Math.round(rerate*100)/100.0;
+			searchScMvList.get(i).setRerate(rerate);
+		}
+		mav.addObject("searchAllMvList", searchAllMvList);
+		mav.addObject("searchScMvList", searchScMvList);
+		mav.setViewName("movie/SearchMovieList");
+		return mav;
+	}
 	
 	
 

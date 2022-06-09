@@ -73,19 +73,19 @@
 	<select id="selectReserveMvList" resultType="com.spring_movie01.dto.MovieDto">
 		SELECT *
 		FROM MOVIES
-		WHERE MVCODE IN (SELECT SCMVCODE FROM SCHEDULES) 
+		WHERE MVCODE IN (SELECT SCMVCODE FROM SCHEDULES WHERE SCDATE > SYSDATE) 
 	</select>
 	
 	<select id="selectReservThList" resultType="com.spring_movie01.dto.TheaterDto">
 		SELECT THCODE, THNAME
 		FROM THEATERS
-		WHERE THCODE IN (SELECT SCTHCODE FROM SCHEDULES WHERE SCMVCODE=#{mvcode})
+		WHERE THCODE IN (SELECT SCTHCODE FROM SCHEDULES WHERE SCMVCODE=#{mvcode} AND SCDATE > SYSDATE)
 	</select>
 	
 	<select id="getScDay" resultType="com.spring_movie01.dto.SchedulesDto">
 		SELECT TO_CHAR(SCDATE,'YYYY.MM.DD') AS SCDAY
 		FROM SCHEDULES
-		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode}
+		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode} AND SCDATE > SYSDATE
 		GROUP BY TO_CHAR(SCDATE,'YYYY.MM.DD')
 		ORDER BY SCDAY
 	</select>
@@ -94,6 +94,7 @@
 		SELECT TO_CHAR(SCDATE,'HH24:MI') AS SCTIME,SCROOM
 		FROM SCHEDULES
 		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode} AND TO_CHAR(SCDATE,'YYYY.MM.DD')=#{scday}
+			AND SCDATE > SYSDATE
 		ORDER BY SCROOM
 	</select>
 	
@@ -136,6 +137,26 @@
 		        FROM REVIEW RV
 		        WHERE RVMVCODE=#{mvcode}) RV
 		WHERE M.MID=RV.RVMID AND RV.RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="getSearchMvList" resultType="com.spring_movie01.dto.MovieDto" >
+		SELECT MVCODE, MVNAME, MVPD, MVACTOR, MVGENRE, MVAGE, MVTIME, TO_CHAR(MVOPEN, 'YYYY.MM.DD') AS MVOPEN, MVPOSTER
+		<if test="checkWhere == 'movie'">
+			FROM MOVIES
+			WHERE MVNAME LIKE '%'||#{searchText}||'%' 
+		</if>
+		<if test="checkWhere == 'schedule'">
+			, NVL(RECOUNT, 0) AS RECOUNT, SUM.SUMRECOUNT
+			FROM MOVIES MV LEFT OUTER JOIN (SELECT SCMVCODE,COUNT(SCMVCODE) AS RECOUNT
+					                        FROM RESERVATION RE, SCHEDULES SC
+					                      	WHERE RE.RESCTHCODE = SC.SCTHCODE AND RE.RESCROOM=SC.SCROOM AND RE.RESCDATE=SC.SCDATE
+					                      	GROUP BY SCMVCODE) RE
+							ON MV.MVCODE=RE.SCMVCODE,
+				(SELECT COUNT(*) AS SUMRECOUNT FROM RESERVATION) SUM
+			WHERE MVNAME LIKE '%'||#{searchText}||'%' 
+			    AND MVCODE IN (SELECT SCMVCODE FROM SCHEDULES WHERE SCDATE > SYSDATE)
+		</if>
+		ORDER BY MVNAME
 	</select>
 	
 </mapper>

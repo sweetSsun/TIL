@@ -68,5 +68,7 @@ public interface MovieDao {
 	int getReviewTotalCount(String mvcode);
 
 	ArrayList<ReviewDto> getReviewPagingList(@Param("mvcode")String mvcode, @Param("startRow") int startRow, @Param("endRow") int endRow);
+
+	ArrayList<MovieDto> getSearchMvList(@Param("searchText") String searchText, @Param("checkWhere") String checkWhere);
 	
 }

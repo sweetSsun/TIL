@@ -134,4 +134,10 @@ public class MovieController {
 		return pagingNumber;
 	}
 	
+	@RequestMapping(value="/searchMovie")
+	public ModelAndView searchMovie(String searchText) {
+		System.out.println("영화 검색 요청");
+		ModelAndView mav = mvsvc.getSearchMovie(searchText);
+		return mav;
+	}
 }

@@ -227,7 +227,6 @@ public class MemberService {
 			
 		    ra.addFlashAttribute("msg", "카카오계정으로 회원가입 되었습니다.");
 		    mdao.insertKakaoMember(member);
-		    mav.setViewName(randomPw);
 		}
 		session.setAttribute("loginId", member.getMid());
 		session.setAttribute("mprofile", member.getMprofile());

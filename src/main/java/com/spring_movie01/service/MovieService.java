@@ -331,9 +331,11 @@ public class MovieService {
 		System.out.println("MovieService.pagingReview() 호출");
 		Gson gson = new Gson();
 		
-		int page = 1;
+		int page;
 		if(requestPage > 0) {
 			page = requestPage;
+		} else {
+			page = 1;
 		}
 		System.out.println("페이지 번호 : " + page);
 		
@@ -350,9 +352,11 @@ public class MovieService {
 	public String pagingNumber(String mvcode, int requestPage) {
 		System.out.println("MovieService.pagingNumber() 호출");
 		Gson gson = new Gson();
-		int page = 1;
+		int page;
 		if(requestPage > 0) {
 			page = requestPage;
+		} else {
+			page = 1;
 		}
 		System.out.println("페이지 번호 : " + page);
 		

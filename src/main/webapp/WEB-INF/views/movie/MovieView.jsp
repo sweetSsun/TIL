@@ -13,6 +13,20 @@
     <title>${movieInfo.mvname } 상세정보</title>
 
   	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
+  	
+  	    <!-- Custom styles for this template -->
+    <link href="${pageContext.request.contextPath }/resources/css/sb-admin-2.min.css" rel="stylesheet">
+  	<!-- Custom styles for this page -->
+    <link href="${pageContext.request.contextPath }/resources/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    
+    <style>
+	    .active {
+	    	color: #fff;
+		    background-color: #4e73df;
+	    	border-color: #4e73df;
+	    }
+    </style>
+    
 </head>
 
 <body id="page-top">
@@ -101,84 +115,26 @@
                         </div>
                         <!-- Card Body -->
                         <div class="card-body text-gray-800 text-sm">
-               			<div class="row">
+               				<div class="row">
                 			<div class="col-12">
                 	
                 				<div class="row" id="reviewDiv">
 		                        <!-- Pending Requests Card Example -->
-		                        <c:forEach items="${rvList }" var="review">
-		                        <div class="col-6 mb-4" style="min-height:110px; max-height:110px;">
-		                            <div class="card border-left-warning h-100 py-2">
-		                                <div class="card-body py-1">
-		                                    <div class="row no-gutters">
-				                                <div class=" mr-2">
-		                                    		<c:choose>
-						                                <c:when test="${review.mprofile != null }">
-						                                	<c:choose>
-						                                		<c:when test="${review.mstate == 0 }">
-								                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
-								                                    src="${pageContext.request.contextPath }/resources/mprofileUpload/${review.mprofile}">
-						                                		</c:when>
-						                                		<c:when test="${review.mstate == 2 }">
-								                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
-								                                    src="${review.mprofile}">
-						                                		</c:when>
-						                                	</c:choose>
-						                                </c:when>
-						                                <c:otherwise>
-						                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
-						                                    src="${pageContext.request.contextPath }/resources/img/undraw_profile.svg">
-						                                </c:otherwise>
-					                                </c:choose>
-		                                    	</div>
-				                                <div class="col mr-2">
-			                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">${review.rvmid }</div>
-				                                    <div class="h6 mb-3 font-weight-bold text-gray-800">${review.rvcomment }</div>
-				                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
-				                                    	${review.rvdate }</div>
-			                                    </div>
-				                                <div class="col-auto">
-						                            <c:choose>
-						                               	<c:when test="${review.rvrecommend == 1 }">
-						                               		<i class='fa-regular fa-thumbs-up fa-2x text-primary'></i>
-						                               	</c:when>
-						                               	<c:otherwise>
-						                               		<i class='fa-regular fa-thumbs-down fa-2x text-danger'></i>
-						                               	</c:otherwise>
-						                            </c:choose>
-				                                </div>
-			                                </div>
-		                                </div>
-		                            </div>
-		                        </div>
-		                     	</c:forEach>
                     	
-                   			</div>
-              			</div>
-           			</div>
-       			</div>
-       			<div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
-       				<ul class="pagination">
-       					<li class="paginate_button page-item previous disabled" id="dataTable_previous"><a href="#" aria-controls="dataTable" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
-       					<li class="paginate_button page-item active"><a href="#" aria-controls="dataTable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-       					<li class="paginate_button page-item " onclick="pageLink(this)" ><a href="#" class="page-link">2</a></li>
-       					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-       					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-       					<li class="paginate_button page-item "><a href="#" aria-controls="dataTable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-       					<li class="paginate_button page-item next" id="dataTable_next"><a href="#" aria-controls="dataTable" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li>
-       				</ul>
-       			</div>
-   			</div>
-        </div>
-	    </div>
+                   				</div>
+              				</div>
+	           				</div>
+              				<div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate">
+              				
+              				</div>
+       					</div>
+   					</div>
+       			 </div>
+	    	</div>
             <!-- End of Main Content -->
 	    </div>
         </div>
 					
-					
-
-                <!-- /.container-fluid -->
-
 
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
@@ -212,6 +168,13 @@
     <!-- Custom scripts for all pages-->
     <script src="${pageContext.request.contextPath }/resources/js/sb-admin-2.min.js"></script>
     
+     <!-- Page level plugins -->
+    <script src="${pageContext.request.contextPath }/resources/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="${pageContext.request.contextPath }/resources/js/demo/datatables-demo.js"></script>
+    
+    
     <script type="text/javascript">
     	var checkMsg = "${msg}"
     	console.log(checkMsg.length);
@@ -221,7 +184,16 @@
     	
     	function pageLink(pageObj){
     		console.log("관람평 페이지 이동 요청");
-    		var page = $(pageObj).text();
+    		if(pageObj == null) {
+    			page = 1;
+    		} else {
+	    		var page = $(pageObj).text();
+	    		if (page == "<"){
+	    			page = $("#previous").val();
+	    		} else if (page == ">") {
+	    			page = $("#next").val();
+	    		}
+    		}
     		console.log("요청페이지 : " + page);
     		$.ajax({
     			type: "get",
@@ -278,15 +250,25 @@
     			success: function(result){
     				console.log("페이지넘버링 : " + result.page);
     				$("#dataTable_paginate").text("");
-    				output = "<ul class='pagination mr-auto ml-auto'>";
+    				output = "<ul class='pagination mr-auto ml-auto' style='justify-content:center;'>";
+    				if (result.page == 1) {
+	    				output += "<li class='paginate_button page-item previous disabled' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='0' tabindex='0' class='page-link'><<input type='hidden' id='previous' value='1'></a></li>";
+    				} else {
+	    				output += "<li class='paginate_button page-item previous disabled' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='"+(result.page - 1)+"' tabindex='0' class='page-link'><<input type='hidden' id='previous' value='"+(result.page - 1)+"'></a></li>";
+    				}
     				for (var i = result.startPage; i <= result.endPage; i++){
-    					if (pageObj == result.page){
-		    				output += "<li class='paginate_button page-item active' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='1' tabindex='0' class='page-link'>"
+    					if (page == i){
+		    				output += "<li class='paginate_button page-item active' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='"+result.page+"' tabindex='0' class='page-link'>"
 		    							+ result.page + "</a></li>";
     					} else {
-		    				output += "<li class='paginate_button page-item' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='1' tabindex='0' class='page-link'>"
+		    				output += "<li class='paginate_button page-item' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='"+i+"' tabindex='0' class='page-link'>"
     							+ i + "</a></li>";
     					}
+    				}
+    				if (result.page == result.maxPage){
+	    				output += "<li class='paginate_button page-item next disabled' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='"+(result.endPage)+"' tabindex='0' class='page-link'>><input type='hidden' id='next' value='"+(result.endPage)+"'></a></li>";
+    				} else {
+	    				output += "<li class='paginate_button page-item next disabled' onclick='pageLink(this)'><a href='#' aria-controls='dataTable' data-dt-idx='"+(result.page + 1)+"' tabindex='0' class='page-link'>><input type='hidden' id='next' value='"+(result.page + 1)+"'></a></li>";
     				}
     				output += "</ul>";
     				$("#dataTable_paginate").html(output);
@@ -307,6 +289,8 @@
 
 </body>
 <script type="text/javascript">
-
+	$(document).ready(function(){
+		pageLink();
+	});
 </script>
 </html>

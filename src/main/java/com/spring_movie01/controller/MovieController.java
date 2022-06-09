@@ -140,4 +140,6 @@ public class MovieController {
 		ModelAndView mav = mvsvc.getSearchMovie(searchText);
 		return mav;
 	}
+	
+
 }

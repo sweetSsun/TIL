@@ -185,8 +185,16 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.loginId}</span>
                                	<c:choose>
                                 <c:when test="${sessionScope.mprofile != null }">
-                                	<img class="img-profile rounded-circle"
-                                    src="${pageContext.request.contextPath }/resources/mprofileUpload/${sessionScope.mprofile}">
+                                	<c:choose>
+	                                	<c:when test="${sessionScope.mstate == 2}">
+		                                	<img class="img-profile rounded-circle"
+		                                    src="${sessionScope.mprofile}">
+	                                	</c:when>
+										<c:otherwise>
+		                                	<img class="img-profile rounded-circle"
+		                                    src="${pageContext.request.contextPath }/resources/mprofileUpload/${sessionScope.mprofile}">
+										</c:otherwise>                                	
+                                	</c:choose>
                                 </c:when>
                                 <c:otherwise>
                                 	<img class="img-profile rounded-circle"

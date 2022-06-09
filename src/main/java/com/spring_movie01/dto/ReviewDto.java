@@ -13,4 +13,5 @@ public class ReviewDto {
 	private int rvrecommend;
 	
 	private String mprofile;
+	private int mstate;
 }

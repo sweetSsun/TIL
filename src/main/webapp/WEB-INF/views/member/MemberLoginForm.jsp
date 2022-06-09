@@ -72,6 +72,11 @@
 	                                </button>
 	                            </form>
 	                            <hr>
+	                            
+	                            <div class="text-center">
+	                            	<a class="small" id="kakaoLoginBtn"></a>
+	                            </div>
+	                            
 	                            <div class="text-center">
 	                                <a class="small" href="forgot-password.html">Forgot Password?</a>
 	                            </div>
@@ -130,6 +135,51 @@
     	if(checkMsg.length > 0){
     		alert(checkMsg);
     	}
+    </script>
+    
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+        // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('f1ce89dec8a2a2a636d91bc8e97c981e');
+        Kakao.isInitialized();
+        // SDK 초기화 여부를 판단합니다.
+        console.log(Kakao.isInitialized());
+    </script>
+    
+    <script type="text/javascript">
+    Kakao.Auth.createLoginButton({
+    	  container: '#kakaoLoginBtn',
+    	  size: 'large',
+    	  success: function(response) {
+    	    console.log(response);
+    	    
+    	    Kakao.API.request({
+    	        url: '/v2/user/me',
+    	        success: function(res) {
+    	            console.log(res);
+    	            console.log("res.id: " + res.id);
+    	            console.log("res.kakao_account.profile.nickname: " + res.kakao_account.profile.nickname);
+    	            console.log("res.kakao_account.profile.profile_image_url: " + res.kakao_account.profile.profile_image_url);
+    	            
+    	            // 아이디, 이메일, 닉네임, 프로필
+    	            // controller >> service 아이디로 회원정보 조회
+    	            // 회원정보O : 로그인처리 후 메인페이지
+    	            // 회원정보X : 아이디, 이메일, 닉네임, 프로필 회원가입 INSERT 후 로그인페이지
+    	            var mid = res.id;
+    	            var mname = res.kakao_account.profile.nickname;
+    	            var mprofile = res.kakao_account.profile.profile_image_url;
+    	            location.href = "${pageContext.request.contextPath}/kakaoLogin?mid="+mid+"&mname="+mname+"&mprofile="+mprofile;
+    	        },
+    	        fail: function(error) {
+    	            console.log(error);
+    	        }
+    	    });
+    	    
+    	  },
+    	  fail: function(error) {
+    	    console.log(error);
+    	  },
+    	});
     </script>
 
 </body>

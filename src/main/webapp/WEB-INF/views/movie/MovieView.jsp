@@ -114,8 +114,16 @@
 				                                <div class=" mr-2">
 		                                    		<c:choose>
 						                                <c:when test="${review.mprofile != null }">
-						                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
-						                                    src="${pageContext.request.contextPath }/resources/mprofileUpload/${review.mprofile}">
+						                                	<c:choose>
+						                                		<c:when test="${review.mstate == 0 }">
+								                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
+								                                    src="${pageContext.request.contextPath }/resources/mprofileUpload/${review.mprofile}">
+						                                		</c:when>
+						                                		<c:when test="${review.mstate == 2 }">
+								                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
+								                                    src="${review.mprofile}">
+						                                		</c:when>
+						                                	</c:choose>
 						                                </c:when>
 						                                <c:otherwise>
 						                                	<img class="img-profile rounded-circle img-fluid" style="width:50px; height:50px;"
@@ -232,7 +240,11 @@
 						output += "<div class='row no-gutters'>";    	
 						output += "<div class='mr-2'>";
 						if(result[i].mprofile != null){
-							output += "<img class='img-profile rounded-circle img-fluid' style='width:50px; height:50px;' src='${pageContext.request.contextPath }/resources/mprofileUpload/"+result[i].mprofile+"'>";
+							if(result[i].mstate == 0){
+								output += "<img class='img-profile rounded-circle img-fluid' style='width:50px; height:50px;' src='${pageContext.request.contextPath }/resources/mprofileUpload/"+result[i].mprofile+"'>";
+							} else if(result[i].mstate == 2) {
+								output += "<img class='img-profile rounded-circle img-fluid' style='width:50px; height:50px;' src='"+result[i].mprofile+"'>";
+							}
 						} else {
 							output += "<img class='img-profile rounded-circle img-fluid' style='width:50px; height:50px;' src='${pageContext.request.contextPath }/resources/img/undraw_profile.svg'>";
 						}

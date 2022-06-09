@@ -15,6 +15,9 @@ public interface MemberDao {
 	  " VALUES(#{mid},#{mpw},#{mname},TO_DATE(#{mbirth},'YYYY-MM-DD'),#{memail},#{maddress},#{mprofile},0)") 
 		// member 객체의 필드를 바로 명시 (?를 사용하지 않는다)
 	int insertMember(MemberDto member);
+	
+	@Insert("INSERT INTO MEMBERS(MID,MPW,MNAME,MPROFILE,MSTATE) VALUES(#{mid},#{mpw},#{mname},#{mprofile},2)")
+	void insertKakaoMember(MemberDto member);
 
 	@Select("SELECT MID FROM MEMBERS WHERE MID=#{inputMid}")
 	String memberIdCheck(String inputMid);

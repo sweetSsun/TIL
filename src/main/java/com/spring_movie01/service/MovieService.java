@@ -180,6 +180,7 @@ public class MovieService {
 		// 개행문자 변환
 		ArrayList<ReviewDto> rvList = mvdao.getReviewPagingList(mvcode, 1, 6);
 		for(int i = 0; i < rvList.size(); i++) {
+			System.out.println("mstate : " + rvList.get(i).getMstate());
 			String rvcomment = rvList.get(i).getRvcomment();
 			rvcomment = rvcomment.replace(" ", "&nbsp;");
 			rvcomment = rvcomment.replace("\r\n", "<br>");

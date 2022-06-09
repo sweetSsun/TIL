@@ -57,9 +57,17 @@
 	                         </div>
 	                         <div style="text-align:center;">
 	                         <c:choose>
-                                <c:when test="${sessionScope.mprofile != null }">
-                                	<img class="img-profile rounded-circle" style="height:300px; width: 300px; object-fit: cover;"
-                                    src="${pageContext.request.contextPath }/resources/mprofileUpload/${sessionScope.mprofile}">
+                                 <c:when test="${sessionScope.mprofile != null }">
+                                	<c:choose>
+	                                	<c:when test="${sessionScope.mstate == 2}">
+		                                	<img class="img-profile rounded-circle" style="height:300px; width: 300px; object-fit: cover;"
+		                                    src="${sessionScope.mprofile}">
+	                                	</c:when>
+										<c:otherwise>
+		                                	<img class="img-profile rounded-circle" style="height:300px; width: 300px; object-fit: cover;"
+		                                    src="${pageContext.request.contextPath }/resources/mprofileUpload/${sessionScope.mprofile}">
+										</c:otherwise>                                	
+                                	</c:choose>
                                 </c:when>
                                 <c:otherwise>
                                 	<img class="img-profile rounded-circle" style="height:300px; width: 300px; object-fit: cover;"
@@ -215,14 +223,14 @@
 		// 정보수정 폼 요청
  		$("#modiFormButton").click(function(){
  			console.log("정보수정 양식 요청");
-	 		$("#inputMpw").attr("type", "text").removeAttr("readonly");
-			$("#inputMname").attr("type", "text").removeAttr("readonly");
-			$("#inputMbirth").attr("type", "date").removeAttr("readonly");
-			$("#inputMemail").attr("type", "email").removeAttr("readonly");
-			$("#inputMpostcode").attr("type", "text").removeAttr("readonly");
-			$("#inputMaddr").attr("type", "text").removeAttr("readonly");
-			$("#inputMdetailAddr").attr("type", "text").removeAttr("readonly");
-			$("#inputMextraAddr").attr("type", "text").removeAttr("readonly");
+	 		$("#inputMpw").attr("type", "text").attr("required","required").removeAttr("readonly");
+			$("#inputMname").attr("type", "text").attr("required","required").removeAttr("readonly");
+			$("#inputMbirth").attr("type", "date").attr("required","required").removeAttr("readonly");
+			$("#inputMemail").attr("type", "email").attr("required","required").removeAttr("readonly");
+			$("#inputMpostcode").attr("type", "text").attr("required","required").removeAttr("readonly");
+			$("#inputMaddr").attr("type", "text").attr("required","required").removeAttr("readonly");
+			$("#inputMdetailAddr").attr("type", "text").attr("required","required").removeAttr("readonly");
+			$("#inputMextraAddr").attr("type", "text").attr("required","required").removeAttr("readonly");
 			
 			/* var button = $('input[type=button]');
 	 		console.log(button.eq[0].val());

@@ -3,6 +3,7 @@ package com.spring_movie01.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
@@ -102,6 +103,7 @@ public class MemberService {
 				session.setAttribute("recentReCount", recentReCount);
 				session.setAttribute("loginId", loginmember.getMid());
 				session.setAttribute("mprofile", loginmember.getMprofile());
+				session.setAttribute("mstate", loginmember.getMstate());
 				mav.setViewName("redirect:/");
 			}
 		} else { // 로그인 실패
@@ -133,16 +135,18 @@ public class MemberService {
 		mav = new ModelAndView();
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto member = mdao.selectMemberInfo(loginId);
-		String addressSplit[] = member.getMaddress().split("_");
-		for(int i = 0; i < addressSplit.length; i++) {
-			if (addressSplit[i].equals("null")) {
-				addressSplit[i] = "";
+		if (member.getMaddress()!=null) {
+			String addressSplit[] = member.getMaddress().split("_");
+			for(int i = 0; i < addressSplit.length; i++) {
+				if (addressSplit[i].equals("null")) {
+					addressSplit[i] = "";
+				}
 			}
+			member.setMpostcode(addressSplit[0]);
+			member.setMaddr(addressSplit[1]);
+			member.setMdetailAddr(addressSplit[2]);
+			member.setMextraAddr(addressSplit[3]);
 		}
-		member.setMpostcode(addressSplit[0]);
-		member.setMaddr(addressSplit[1]);
-		member.setMdetailAddr(addressSplit[2]);
-		member.setMextraAddr(addressSplit[3]);
 		mav.addObject("member", member);
 		mav.setViewName("member/MemberInfoForm");
 		System.out.println(mav);
@@ -165,7 +169,7 @@ public class MemberService {
 	}
 
 	public int modifyMember(MemberDto modiMember) throws IllegalStateException, IOException {
-		System.out.println("MemberrService.modifyMember() 호출");
+		System.out.println("MemberService.modifyMember() 호출");
 		
 		MultipartFile mfile = modiMember.getMfile();
 		String mprofile = ""; 	 // 첨부파일이 없었으면 ""로 저장		
@@ -188,7 +192,7 @@ public class MemberService {
 		System.out.println("최종프로필 : " + modiMember.getMprofile());
 		
 		modiMember.setMaddress(modiMember.getMpostcode()+"_"+modiMember.getMaddr()
-							+"_"+modiMember.getMdetailAddr()+"_"+modiMember.getMextraAddr());
+		+"_"+modiMember.getMdetailAddr()+"_"+modiMember.getMextraAddr());
 		System.out.println("서비스에서 modiMember : " + modiMember);
 		
 		int updateResult = mdao.updateMember(modiMember);
@@ -202,6 +206,34 @@ public class MemberService {
 			session.setAttribute("mprofile", modiMember.getMprofile());
 		}
 		return updateResult;
+	}
+
+	public ModelAndView kakaoLogin(MemberDto member, RedirectAttributes ra) {
+		System.out.println("MemberService.kakaoLogin() 호출");
+		mav = new ModelAndView();
+		
+		String mid = mdao.memberIdCheck(member.getMid());
+		if (mid == null) {
+			int leftLimit = 97; // letter 'a'
+		    int rightLimit = 122; // letter 'z'
+		    int targetStringLength = 10;
+		    Random random = new Random();
+		    String randomPw = random.ints(leftLimit, rightLimit + 1)
+		                                   .limit(targetStringLength)
+		                                   .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+		                                   .toString();
+		    System.out.println("randomPw : " + randomPw);
+		    member.setMpw(randomPw);
+			
+		    ra.addFlashAttribute("msg", "카카오계정으로 회원가입 되었습니다.");
+		    mdao.insertKakaoMember(member);
+		    mav.setViewName(randomPw);
+		}
+		session.setAttribute("loginId", member.getMid());
+		session.setAttribute("mprofile", member.getMprofile());
+		session.setAttribute("mstate", 2);
+		mav.setViewName("redirect:/");
+		return mav;
 	}
 	
 	

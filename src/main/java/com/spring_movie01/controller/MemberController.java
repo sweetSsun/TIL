@@ -89,4 +89,10 @@ public class MemberController {
 		return "redirect:/memberInfoForm";
 	}
 	
+	@RequestMapping(value="/kakaoLogin")
+	public ModelAndView kakaoLogin(MemberDto member, RedirectAttributes ra) {
+		System.out.println("카카오로그인 요청");
+		ModelAndView mav = mscv.kakaoLogin(member, ra);
+		return mav;
+	}
 }

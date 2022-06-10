@@ -1,6 +1,5 @@
 package com.spring_movie01.controller;
 
-import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,9 +27,9 @@ public class MovieController {
 
 
 	@RequestMapping(value="/movieList")
-	public ModelAndView movieList() {
+	public ModelAndView movieList(String range) {
 		System.out.println("영화 목록페이지 이동 요청");
-		ModelAndView mav = mvsvc.movieList();
+		ModelAndView mav = mvsvc.movieList(range);
 		return mav;
 	}
 	

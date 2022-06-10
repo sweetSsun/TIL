@@ -27,11 +27,14 @@ public class MovieService {
 	@Autowired
 	private HttpSession session;
 
-	public ModelAndView movieList() {
+	public ModelAndView movieList(String range) {
 		System.out.println("MovieService.movieList() 호출");
 		ModelAndView mav = new ModelAndView();
 		// 1. 영화목록 조회
-		ArrayList<MovieDto> mvList = mvdao.selectMovieList();
+		if (range == null) {
+			range = "recount";
+		}
+			ArrayList<MovieDto> mvList = mvdao.selectMovieList(range);
 		System.out.println(mvList);
 		
 		int sumRecount = mvList.get(0).getSumrecount(); // 총 예매횟수

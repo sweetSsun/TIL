@@ -14,7 +14,11 @@
 
   	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
   
+  
 </head>
+
+
+
 
 <body id="page-top">
 
@@ -47,6 +51,11 @@
 					<!-- 포스터, 영화제목, 개봉일 출력 -->
 					<div class="row">
 					<div class="col-xl-11 col-lg-7 mr-auto ml-auto">
+						<select onchange="mvRange(this)" class="mb-2" id="rangeSel">
+							<option value="recount">예매율순</option>
+							<option value="recommend1">추천순</option>
+							<option value="mvopen">개봉일순</option>
+						</select>
 					<div class="row">
 					<c:forEach items="${mvList }" var="mv">
 						<c:if test="${mv.mvstate == 0 }">
@@ -133,6 +142,25 @@
     	console.log(checkMsg.length);
     	if(checkMsg.length > 0){
     		alert(checkMsg);
+    	}
+    </script>
+    
+    <script type="text/javascript">
+	    var rangeOption = $("#rangeSel option");
+	 	var range = "${param.range}";
+		console.log(range);
+		for (var i = 0; i < rangeOption.length; i++){
+			if (rangeOption.eq(i).val() == range){
+		 		rangeOption.eq(i).attr("selected", "selected");
+			}
+		}
+	</script>
+    
+    <script type="text/javascript">
+    	function mvRange(selectObj){
+    		var range = $(selectObj).val();
+    		console.log(range);
+    		location.href="${pageContext.request.contextPath }/movieList?range="+range;
     	}
     </script>
 

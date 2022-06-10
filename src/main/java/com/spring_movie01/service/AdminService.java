@@ -11,12 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.gson.Gson;
 import com.spring_movie01.dao.AdminDao;
-import com.spring_movie01.dao.MemberDao;
 import com.spring_movie01.dao.MovieDao;
 import com.spring_movie01.dto.MovieDto;
-import com.spring_movie01.dto.ReviewDto;
 
 @Service
 public class AdminService {
@@ -24,14 +21,12 @@ public class AdminService {
 	@Autowired
 	MovieDao mvdao;
 	@Autowired
-	MemberDao mdao;
-	@Autowired
 	AdminDao adao;
 	
 	ModelAndView mav;
 	
 	public ModelAndView getCgvMovieList(RedirectAttributes ra) throws IOException {
-		System.out.println("MovieService.getCgvMovieList() 호출");
+		System.out.println("AdminService.getCgvMovieList() 호출");
 		ModelAndView mav = new ModelAndView();
 		
 		String cgvMovieUrl = "http://www.cgv.co.kr/movies/?lt=1&ft=0";
@@ -120,7 +115,7 @@ public class AdminService {
 		System.out.println("AdminService.adminMovieList() 호출");
 		ModelAndView mav = new ModelAndView();
 		// 1. 영화목록 조회
-		ArrayList<MovieDto> mvList = mvdao.selectMovieList();
+		ArrayList<MovieDto> mvList = mvdao.selectMovieList("mvopen");
 		System.out.println(mvList);
 		
 		mav.addObject("mvList", mvList);

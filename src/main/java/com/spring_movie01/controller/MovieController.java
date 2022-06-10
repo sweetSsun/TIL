@@ -25,12 +25,7 @@ public class MovieController {
 		String thList = mvsvc.getThList(mvcode);
 		return thList;
 	}
-	@RequestMapping(value="/getCgvMovieList")
-	public ModelAndView getCgvMovieList() throws IOException {
-		System.out.println("영화 등록 요청");
-		ModelAndView mav = mvsvc.getCgvMovieList();
-		return mav;
-	}
+
 
 	@RequestMapping(value="/movieList")
 	public ModelAndView movieList() {

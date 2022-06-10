@@ -13,6 +13,9 @@
     <title>관리자-영화목록</title>
 
   	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
+  	
+  	<!-- Custom styles for this page -->
+    <link href="${pageContext.request.contextPath }/resources/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   
 </head>
 
@@ -51,25 +54,31 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr class="bg-gray-700 text-white">
+                                        	<th style="width:65px;">영화코드</th>
                                             <th>제목</th>
-                                            <th>예매율</th>
-                                            <th>추천수</th>
+                                            <th>장르</th>
+                                            <th style="width:65px;">관람등급</th>
                                             <th>개봉일</th>
-                                            <th></th>
+                                            <th style="width:50px;"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                     	<c:forEach items="${mvList }" var="mv">
 	                                        <tr>
-	                                            <td><a href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }" class="btn p-0 font-weight-bold">${mv.mvname }</a></td>
-	                                            <td class="font-weight-bold">${mv.rerate } %</td>
-	                                            <td class="font-weight-bold">
-	                                            	<i class='fa-regular fa-thumbs-up text-primary'></i> ${mv.recommend1 }
-                                					<i class='fa-regular fa-thumbs-down text-danger'></i> ${mv.recommend0 }
-                                				</td>
-	                                            <td class="font-weight-bold">${mv.mvopen }</td>
-	                                            <th>
-	                                            	<button class="btn btn-primary btn-icon-split px-1" onclick="">정보수정</button>
+	                                            <td class="align-middle">${mv.mvcode }</td>
+	                                            <td class="align-middle"><a href="${pageContext.request.contextPath }/movieView?mvcode=${mv.mvcode }" class="btn p-0">${mv.mvname }</a></td>
+	                                            <td class="align-middle">${mv.mvgenre }</td>
+	                                            <td class="align-middle">${mv.mvage }</td>
+	                                            <td class="align-middle">${mv.mvopen }</td>
+	                                            <th class="align-middle" id="mvstateBtn" style="text-align:center;">
+	                                            	<c:choose>
+	                                            		<c:when test="${mv.mvstate == 0 }">
+			                                            	<button class="btn btn-danger btn-icon-split px-1" onclick="changeMvstate(this, '${mv.mvcode }')">비활성화</button>
+	                                            		</c:when>
+	                                            		<c:otherwise>
+			                                            	<button class="btn btn-primary btn-icon-split px-1" onclick="changeMvstate(this, '${mv.mvcode }')">활성화</button>
+	                                            		</c:otherwise>
+	                                            	</c:choose>
 	                                            </th>
 	                                        </tr>
                                     	</c:forEach>
@@ -137,6 +146,30 @@
     	}
     </script>
 
+	<script type="text/javascript">
+		function changeMvstate(btnObj, mvcode){
+			var btnText = $(btnObj).text();
+			if (btnText == "비활성화") {
+				var mvstate = 1;
+			} else {
+				var mvstate = 0;
+			}
+			console.log("변경할 mvcode : " + mvcode);
+			console.log("변경할 mvstate : " + mvstate);
+			$.ajax({
+				type:"post",
+				data:{"mvcode":mvcode, "mvstate":mvstate},
+				url: "${pageContext.request.contextPath }/changeMvstate",
+				success: function(result){
+					if (result == 1) {
+						$(btnObj).removeClass("btn-danger").addClass("btn-primary").text("활성화");
+					} else {
+						$(btnObj).removeClass("btn-primary").addClass("btn-danger").text("비활성화");
+					}
+				}
+			});
+		}
+	</script>
 </body>
 
 </html>

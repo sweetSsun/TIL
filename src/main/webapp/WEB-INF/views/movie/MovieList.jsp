@@ -49,6 +49,7 @@
 					<div class="col-xl-11 col-lg-7 mr-auto ml-auto">
 					<div class="row">
 					<c:forEach items="${mvList }" var="mv">
+						<c:if test="${mv.mvstate == 0 }">
 						<div class="col-xl-3 col-md-6 mb-4">
                             <div class="card h-100 py-2">
                             	<div class="card-header">
@@ -79,6 +80,7 @@
                                 </div>
                             </div>
                         </div>
+                        </c:if>
 					</c:forEach>
 					</div>
 					</div>

@@ -15,6 +15,7 @@ public class MovieDto {
 	private String mvopen;		//개봉일
 	
 	private String mvposter;	//영화포스터
+	private int mvstate;		//활성화 상태
 	
 	private int recount; 		//예매횟수
 	private int sumrecount;		//전체영화예매수

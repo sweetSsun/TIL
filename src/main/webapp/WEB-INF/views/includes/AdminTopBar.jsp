@@ -57,7 +57,7 @@
 		<c:when test="${sessionScope.loginId != null }">
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
-                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                <a class="nav-link dropdown-toggle" href="reservationList?loginId=${sessionScope.loginId }" id="alertsDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-bell fa-fw"></i>
                     <!-- Counter - Alerts -->
@@ -67,12 +67,49 @@
                 </a>
                 <!-- Dropdown - Alerts -->
                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                    aria-labelledby="alertsDropdown" id="bellDropdown" style="width:23rem!important;">
-                   
+                    aria-labelledby="alertsDropdown" id="bellDropdown">
+                    <h6 class="dropdown-header">
+                        Alerts Center
+                    </h6>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-primary">
+                                <i class="fas fa-file-alt text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">December 12, 2019</div>
+                            <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                        </div>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-success">
+                                <i class="fas fa-donate text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">December 7, 2019</div>
+                            $290.29 has been deposited into your account!
+                        </div>
+                    </a>
+                    <a class="dropdown-item d-flex align-items-center" href="#">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-warning">
+                                <i class="fas fa-exclamation-triangle text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">December 2, 2019</div>
+                            Spending Alert: We've noticed unusually high spending for your account.
+                        </div>
+                    </a>
+                    <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                 </div>
             </li>
 
-<%--             <!-- Nav Item - Messages -->
+
+            <!-- Nav Item - Messages -->
             <li class="nav-item dropdown no-arrow mx-1">
                 <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -136,7 +173,7 @@
                     </a>
                     <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                 </div>
-            </li> --%>
+            </li>
 
             <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -259,12 +296,13 @@
     
         <!-- Bootstrap core JavaScript-->
    <script src="${pageContext.request.contextPath }/resources/vendor/jquery/jquery.min.js"></script>
+   <script src="${pageContext.request.contextPath }/resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     
    <script type="text/javascript">
 		$(document).ready(function() {
 			$("#alertsDropdown").click(function(){
 				console.log("클릭 실행");
-				var loginId = "${sessionScope.loginId}";
+				var loginId = ${sessionScope.loginId}
 				
 				$.ajax({
 					type: "post",
@@ -272,29 +310,15 @@
 					url: "recentReservation",
 					dataType: "json",
 					success: function(rvList){
-						console.log("연결 성공");
-						console.log(rvList);
-						var output = "<h6 class='dropdown-header'>관람예정 예매목록</h6>";
-						for(var i = 0; i < rvList.length; i++){
-							output += "<a class='dropdown-item d-flex align-items-center' href='reservationInfo?recode="+rvList[i].recode+"'>";
-							output += "<div class='mr-3'>";
-							output += "<div class='icon-circle bg-primary'>";
-							output += "<i class='fas fa-bell fa-fw text-white'></i>";
-							output += "</div></div>";
-							output += "<div>";
-							output += "<div>";
-							output += " <span class='small text-gray-700'>"+rvList[i].rescdate+"</span>";
-							output += " <span class='small text-gray-700'>"+rvList[i].thname+"</span>";
-							output += " <span class='small text-gray-700'>"+rvList[i].rescroom+"</span>";
-							output += " </div>";
-							output += "<span class='font-weight-bold'>"+rvList[i].mvname+"</span>";
-							output += " </div> </a>";
-						}
-						$("#bellDropdown").text("");
-						$("#bellDropdown").html(output);
+						
 					}
+					
 				});
-			});
-		});
+				
+				
+				$("#bellDropdown").text("");
+				var output;
+			})
+		})
     </script>
                 

@@ -141,5 +141,12 @@ public class MovieController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/recentReservation")
+	public @ResponseBody String recentReservation(String loginId) {
+		System.out.println("관람 가능 예매목록 요청");
+		String recentRvList = mvsvc.getRecentReserve(loginId);
+		return recentRvList;
+	}
+	
 
 }

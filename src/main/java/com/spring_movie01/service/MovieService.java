@@ -257,8 +257,12 @@ public class MovieService {
 		int insertResult = mvdao.insertReservation(redto);
 		// 예매 정보 SELECT
 		ReservationDto ReInfo = mvdao.reservationInfo(recode);
-		
 		ra.addFlashAttribute("ReInfo", ReInfo);
+
+		// 관람예정 예매정보 업데이트
+		int recendRecount = (int) session.getAttribute("recentReCount");
+		session.setAttribute("recentReCount", recendRecount+1);
+		
 //		mav.setViewName("redirect:/reservationInfo?recode=" + recode);
 		mav.setViewName("redirect:/");
 		return mav;
@@ -405,6 +409,14 @@ public class MovieService {
 		mav.addObject("searchScMvList", searchScMvList);
 		mav.setViewName("movie/SearchMovieList");
 		return mav;
+	}
+
+	public String getRecentReserve(String loginId) {
+		System.out.println("MovieService.getRecentReserve() 호출");
+		Gson gson = new Gson();
+		ArrayList<ReservationDto> recentRvList = mvdao.getRecentReserve(loginId);
+		String recentRvList_json = gson.toJson(recentRvList);
+		return recentRvList_json;
 	}
 	
 	

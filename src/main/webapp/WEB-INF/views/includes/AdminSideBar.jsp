@@ -1,9 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!-- SideBar.jsp -->
+<!-- AdminSideBar.jsp -->
 
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  	<style>
+  		.bg-gradient-admin{
+  			background-image: linear-gradient(180deg,#292e4e 10%,#a52a2a 100%);
+  		}
+  	</style>
+
+        <ul class="navbar-nav bg-gradient-admin sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="${pageContext.request.contextPath }/">
@@ -36,14 +42,14 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-folder"></i>
-                    <span>영화메뉴</span>
+                    <span>영화관리</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">영화</h6>
-                        <a class="collapse-item" href="movieList">영화차트</a>
-                        <a class="collapse-item" href="movieReservationPage">영화예매</a>
-                      	<a class="collapse-item" href="reservationList?loginId=${sessionScope.loginId }">예매내역</a>
+                        <a class="collapse-item" href="adminMovieList">영화</a>
+                        <a class="collapse-item" href="#">극장</a>
+                        <a class="collapse-item" href="getCgvMovieList">스케줄</a>
                     </div>
                 </div>
             </li>
@@ -53,24 +59,14 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>회원메뉴</span>
+                    <span>회원관리</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">회원</h6>
-                        <c:choose>
-                        <c:when test="${sessionScope.loginId == null}">
-	                        <a class="collapse-item" href="memberJoinForm">회원가입</a>
-	                        <a class="collapse-item" href="memberLoginForm">로그인</a>
-	                        <a class="collapse-item" href="#">비밀번호 찾기</a>
-                        </c:when>
-                        <c:otherwise>
-	                        <a class="collapse-item" href="memberInfoForm">내정보</a>
-	                        <a class="collapse-item" href="#" data-toggle="modal" data-target="#logoutModal">로그아웃</a>
-	                        <a class="collapse-item" href="memberWithdrow">회원탈퇴</a>
-                        </c:otherwise>
-                        </c:choose>
+	                        <a class="collapse-item" href="#">회원목록</a>
+	                        <a class="collapse-item" href="#">메뉴2</a>
                     </div>
                 </div>
             </li>
@@ -104,7 +100,6 @@
                 </div>
             </li>
 
-			<c:if test="${sessionScope.loginId == null}">
             <!-- Nav Item - User -->
             <li class="nav-item">
                 <a class="nav-link" href="${pageContext.request.contextPath }/">
@@ -118,7 +113,6 @@
 	                <i class="fas fa-fw fa-wrench"></i>
                     <span>관리자 페이지</span></a>
             	</li>
-            </c:if>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

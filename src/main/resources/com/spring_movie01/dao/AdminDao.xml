@@ -11,6 +11,10 @@
 		WHERE MVCODE=#{mvcode}
 	</update>
 
-
+	<update id="updateTheaterInfo">
+		UPDATE THEATERS
+		SET THNAME=#{thname}, THADDR=#{thaddr}, THTEL=#{thtel}
+		WHERE THCODE=#{thcode}
+	</update>
 
 </mapper> 

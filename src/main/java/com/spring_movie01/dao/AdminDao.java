@@ -1,11 +1,15 @@
 package com.spring_movie01.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.TheaterDto;
 
 public interface AdminDao {
 
@@ -26,5 +30,13 @@ public interface AdminDao {
 	int getMvstate(String mvcode);
 
 	int updateMovieInfo(MovieDto mvInfo);
+
+	@Select("SELECT * FROM THEATERS ORDER BY THCODE")
+	ArrayList<TheaterDto> getTheaterList();
+
+	@Update("UPDATE THEATERS SET THSTATE=#{thstate} WHERE THCODE=#{thcode}")
+	int changeThstate(@Param("thcode") String thcode, @Param("thstate") int thstate);
+
+	int updateTheaterInfo(TheaterDto thInfo);
 
 }

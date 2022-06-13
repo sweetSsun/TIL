@@ -225,6 +225,16 @@
 				reserveData[key] = val;
 			}
 			
+			var recommend = $("input[type='radio']:checked").val();
+			if (recommend == 0){
+				$("#rvInfo_rvrecommend").html("<i class='fa-regular fa-thumbs-up'></i>좋아요");
+			} else {
+				$("#rvInfo_rvrecommend").html("<i class='fa-regular fa-thumbs-down'></i>별로예요");
+			}
+    		$("#rvInfo_rvcomment").attr("readonly","readonly");
+			$(".toggleBtn").addClass("d-none");
+			$("#modiPageBtn").removeClass("d-none");
+			
 			$.ajax({
 				type: "post",
 				url: "getReview",
@@ -243,8 +253,8 @@
 					
 					$("#rvInfo_modalLabel").text(result.rvrecode + " 관람평");
 					// 모달창 관람평 수정이 왜이러는걸까요
-					$("#rvInfo_rvcomment").text("");
-					$("#rvInfo_rvcomment").text(result.rvcomment);
+					$("#rvInfo_rvcomment").val("");
+					$("#rvInfo_rvcomment").val(result.rvcomment);
 					if (result.rvrecommend == 1){
 						$("#rvInfo_rvrecommend").html("<i class='fa-regular fa-thumbs-up'></i>좋아요");
 					} else {
@@ -256,9 +266,9 @@
 		}
 		
 		function modifyReview(){
+			var output = "";
 			var recommend = $("#rvInfo_rvrecommend").text();
 			console.log("추천 : " + recommend);
-			var output = "";
 			if (recommend=="좋아요"){
 				output += "<input type='radio' name='rvrecommend' id='recommend1' value='1' checked='checked'><label for='recommend1'><i class='fa-regular fa-thumbs-up'></i>좋아요&nbsp;</label><input type='radio' name='rvrecommend' id='recommend2' value='0'><label for='recommend2'><i class='fa-regular fa-thumbs-down'></i>별로예요</label>";
 			} else {
@@ -266,11 +276,21 @@
 			}
 
 			$("#rvInfo_rvcomment").removeAttr("readonly");
-			$("#modiPageBtn").toggleClass("d-none");
-			$("#modiBtn").toggleClass("d-none");
+			$(".toggleBtn").toggleClass("d-none");
 			$("#rvInfo_rvrecommend").text("");
 			$("#rvInfo_rvrecommend").html(output);
 		}
+		
+    	function modiClose(){
+			var recommend = $("input[type='radio']:checked").val();
+			if (recommend == 0){
+				$("#rvInfo_rvrecommend").html("<i class='fa-regular fa-thumbs-up'></i>좋아요");
+			} else {
+				$("#rvInfo_rvrecommend").html("<i class='fa-regular fa-thumbs-down'></i>별로예요");
+			}
+    		$("#rvInfo_rvcomment").attr("readonly","readonly");
+			$(".toggleBtn").toggleClass("d-none");
+    	}
 	</script>    
 	
 	 <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -357,7 +377,6 @@
 	                                  <div id="rvInfo_reamount"></div>
 	                                  <br>
 	                                  <div id="rvInfo_rvrecommend" style="font-weight:normal; font-size:medium;"></div>
-	                                  <!-- 관람평 수정 시에 추천/비추천도 다시 선택할 수 있도록 만들어보기 -->
 	                                  <textarea rows="3" readonly name="rvcomment" id="rvInfo_rvcomment" class="form-control"></textarea>
                                     </div>
                                 </div>
@@ -368,8 +387,9 @@
 	                <input type="hidden" name="rvmid" id="rvInfo_rvmid" value="${sessionScope.loginId }">
 	                <input type="hidden" name="rvmvcode" id="rvInfo_rvmvcode">
 	                <div class="modal-footer">
-	                	<input type="button" class="btn btn-primary" id="modiPageBtn" value="관람평 수정" onclick="modifyReview()">
-	                	<input type="submit" class="btn btn-primary d-none"  id="modiBtn" value="수정완료">
+	                	<input type="button" class="toggleBtn btn btn-primary" id="modiPageBtn" value="관람평 수정" onclick="modifyReview()">
+	               		<input type="button" class="toggleBtn btn btn-secondary d-none" onclick="modiClose()" value="취소">
+	                	<input type="submit" class="toggleBtn btn btn-primary d-none"  id="modiBtn" value="수정완료">
 	                </div>
                 </form>
             </div>

@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.spring_movie01.dao.AdminDao;
 import com.spring_movie01.dao.MovieDao;
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.TheaterDto;
 
 @Service
 public class AdminService {
@@ -131,8 +132,8 @@ public class AdminService {
 		return selectMvstate;
 	}
 
-	public ModelAndView AdminMovieView(String mvcode) {
-		System.out.println("AdminService.AdminMovieView() 호출");
+	public ModelAndView adminMovieView(String mvcode) {
+		System.out.println("AdminService.adminMovieView() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("영화코드 : " + mvcode);
 		// 영화정보
@@ -147,8 +148,8 @@ public class AdminService {
 		return mav;
 	}
 
-	public ModelAndView AdminMovieModi(MovieDto mvInfo) {
-		System.out.println("AdminService.AdminMovieView() 호출");
+	public ModelAndView adminMovieModi(MovieDto mvInfo) {
+		System.out.println("AdminService.adminMovieView() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("수정할 영화 정보 : " + mvInfo);
 		int updateResult = adao.updateMovieInfo(mvInfo);
@@ -156,6 +157,31 @@ public class AdminService {
 		
 		mav.setViewName("redirect:/adminMovieView?mvcode="+mvInfo.getMvcode());
 		return mav;
+	}
+
+	public ModelAndView adminTheaterList() {
+		System.out.println("AdminService.adminTheaterList() 호출");
+		ModelAndView mav = new ModelAndView();
+		ArrayList<TheaterDto> thList = adao.getTheaterList();
+		System.out.println("극장목록 : " + thList);
+		mav.addObject("thList", thList);
+		mav.setViewName("admin/AdminTheaterList");
+		return mav;
+	}
+
+	public int changeThstate(String thcode, int thstate) {
+		System.out.println("AdminService.changeThstate() 호출");
+		System.out.println("변경할 영화코드 : " + thcode);
+		System.out.println("변경할 활성 상태 : " + thstate);
+		int updateThstate = adao.changeThstate(thcode, thstate);
+		return updateThstate;
+	}
+
+	public int adminTheaterModi(TheaterDto thInfo) {
+		System.out.println("AdminService.adminTheaterModi() 호출");
+		System.out.println("수정할 극장정보 : " + thInfo);
+		int updateResult = adao.updateTheaterInfo(thInfo);
+		return updateResult;
 	}
 	
 	

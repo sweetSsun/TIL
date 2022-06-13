@@ -73,6 +73,7 @@
 		SELECT THCODE, THNAME
 		FROM THEATERS
 		WHERE THCODE IN (SELECT SCTHCODE FROM SCHEDULES WHERE SCMVCODE=#{mvcode} AND SCDATE > SYSDATE)
+				AND THSTATE=0
 	</select>
 	
 	<select id="getScDay" resultType="com.spring_movie01.dto.SchedulesDto">

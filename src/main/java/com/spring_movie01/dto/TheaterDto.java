@@ -9,4 +9,5 @@ public class TheaterDto {
 	private String thname;
 	private String thaddr;
 	private String thtel;
+	private int thstate;
 }

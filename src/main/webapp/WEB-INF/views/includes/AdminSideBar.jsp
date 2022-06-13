@@ -26,7 +26,8 @@
             <li class="nav-item active">
                 <a class="nav-link" href="${pageContext.request.contextPath }/adminMain">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>관리자메인으로</span></a>
+                    <span>관리자메인으로</span>
+                </a>
             </li>
 
             <!-- Divider -->
@@ -48,7 +49,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">영화</h6>
                         <a class="collapse-item" href="adminMovieList">영화</a>
-                        <a class="collapse-item" href="#">극장</a>
+                        <a class="collapse-item" href="adminTheaterList">극장</a>
                         <a class="collapse-item" href="#">스케줄</a>
                         <a class="collapse-item" href="getCgvMovieList">영화 등록</a>
                     </div>

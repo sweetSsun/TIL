@@ -25,4 +25,6 @@ public interface AdminDao {
 	@Select("SELECT MVSTATE FROM MOVIES WHERE MVCODE=#{mvcode}")
 	int getMvstate(String mvcode);
 
+	int updateMovieInfo(MovieDto mvInfo);
+
 }

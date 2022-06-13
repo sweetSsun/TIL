@@ -24,9 +24,9 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="${pageContext.request.contextPath }/">
+                <a class="nav-link" href="${pageContext.request.contextPath }/adminMain">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>메인으로</span></a>
+                    <span>관리자메인으로</span></a>
             </li>
 
             <!-- Divider -->

@@ -130,6 +130,33 @@ public class AdminService {
 		int selectMvstate = adao.getMvstate(mvcode);
 		return selectMvstate;
 	}
+
+	public ModelAndView AdminMovieView(String mvcode) {
+		System.out.println("AdminService.AdminMovieView() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println("영화코드 : " + mvcode);
+		// 영화정보
+		MovieDto movieInfo = mvdao.selectMovieInfo(mvcode);
+		// 예매율 저장
+		int sumRecount = movieInfo.getSumrecount();
+		double rerate = (double) movieInfo.getRecount() / sumRecount * 100;
+		rerate = Math.round(rerate*100)/100.0;
+		movieInfo.setRerate(rerate);
+		mav.addObject("movieInfo", movieInfo);
+		mav.setViewName("movie/AdminMovieView");
+		return mav;
+	}
+
+	public ModelAndView AdminMovieModi(MovieDto mvInfo) {
+		System.out.println("AdminService.AdminMovieView() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println("수정할 영화 정보 : " + mvInfo);
+		int updateResult = adao.updateMovieInfo(mvInfo);
+		System.out.println("업데이트 결과 : " + updateResult);
+		
+		mav.setViewName("redirect:/adminMovieView?mvcode="+mvInfo.getMvcode());
+		return mav;
+	}
 	
 	
 	

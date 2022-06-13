@@ -4,8 +4,11 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,10 @@ public class HomeController {
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	
+	@Autowired
+	private HttpSession session;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
@@ -34,13 +41,19 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
+		if(session.getAttribute("adminPw") != null) {
+			session.removeAttribute("adminPw");
+		}
 		return "Main";
 	}
 	
 	@RequestMapping(value="/adminMain", method = RequestMethod.GET)
 	public String adminMain(String inputPw, RedirectAttributes ra) {
 		String pw = "1234";
-		if(pw.equals(inputPw)) {
+		if (session.getAttribute("adminPw") != null) {
+			return "AdminMain";
+		} else if(pw.equals(inputPw)) {
+			session.setAttribute("adminPw", pw);
 			return "AdminMain";
 		} else {
 			ra.addFlashAttribute("msg", "관리자 비밀번호가 일치하지 않습니다.");

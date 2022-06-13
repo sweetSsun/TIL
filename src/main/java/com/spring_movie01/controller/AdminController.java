@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring_movie01.dto.MovieDto;
 import com.spring_movie01.service.AdminService;
 
 @Controller
@@ -38,5 +39,22 @@ public class AdminController {
 		System.out.println("변경할 활성 상태 : " + mvstate);
 		int selectMvstate = asvc.changeMvstate(mvcode, mvstate);
 		return selectMvstate;
+	}
+	
+	// 코드, 이름, 포스터 제외한 항목들 수정
+	@RequestMapping(value="/adminMovieView")
+	public ModelAndView AdminMovieView(String mvcode) {
+		System.out.println("관리자 영화 수정페이지");
+		ModelAndView mav = asvc.AdminMovieView(mvcode);
+		
+		return mav;
+	}
+	
+	
+	@RequestMapping(value="/adminMovieModi")
+	public ModelAndView AdminMovieModi(MovieDto mvInfo) {
+		System.out.println("영화정보 수정요청");
+		ModelAndView mav = asvc.AdminMovieModi(mvInfo);
+		return mav;
 	}
 }

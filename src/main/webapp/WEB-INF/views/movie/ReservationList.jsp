@@ -242,6 +242,8 @@
 					$("#rvInfo_rvmvcode").val(reserveData.mvcode);
 					
 					$("#rvInfo_modalLabel").text(result.rvrecode + " 관람평");
+					// 모달창 관람평 수정이 왜이러는걸까요
+					$("#rvInfo_rvcomment").text("");
 					$("#rvInfo_rvcomment").text(result.rvcomment);
 					if (result.rvrecommend == 1){
 						$("#rvInfo_rvrecommend").html("<i class='fa-regular fa-thumbs-up'></i>좋아요");

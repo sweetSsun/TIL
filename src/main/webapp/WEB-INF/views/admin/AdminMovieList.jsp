@@ -146,35 +146,54 @@
                            	<div class="col-7">
                                 <div class="no-gutters align-items-center">
                                     <div class="h6 font-weight-bold text-gray-800">
-	                                  <div id="mvModi_mvcode"></div>
-	                                  <br>
-	                                  <div id="mvModi_mvname"></div>
-	                                  <br>
-	                                  <div id="mvModi_mvactor"></div>
-	                                  <br>
-	                                  <div class="row">
-		                                  <div class="col-6" id="mvModi_mvgenre"></div>
-		                                  <div class="col-6" id="mvModi_mvopen"></div>
-	                                  </div>
-	                                  <br>
-	                                  <div class="row">
-		                                  <div class="col-6" id="mvModi_mvage"></div>
-		                                  <div class="col-6" id="mvModi_mvtime"></div>
-	                                  </div>
+                                    	<div class="row">
+	                                  		<div class="col-6">
+			                                  	<label class="small">영화코드</label>
+			                                  	<input class="form-control" id="mvModi_mvcode" name="thcode" type="text" readonly="readonly">
+	                                  		</div>
+	                                  		<div class="col-6">
+			                                  	<label class="small">제목</label>
+			                                  	<input class="form-control" id="mvModi_mvname" name="thcode" type="text" readonly="readonly">
+	                                  		</div>
+                                    	</div>
+	                                  	<div>                                	
+		                                  	<label class="small">감독</label>
+		                                  	<input class="form-control" id="mvModi_mvpd" name="thcode" type="text" readonly="readonly">
+	                                  	</div>
+	                                  	<div>                                	
+		                                  	<label class="small">배우</label>
+		                                  	<input class="form-control" id="mvModi_mvactor" name="thcode" type="text" readonly="readonly">
+	                                  	</div>
+	                                  	<div class="row">
+	                                  		<div class="col-6">
+			                                  	<label class="small">장르</label>
+			                                  	<input class="form-control" id="mvModi_mvgenre" name="thcode" type="text" readonly="readonly">
+	                                  		</div>
+	                                  		<div class="col-6">
+			                                  	<label class="small">개봉일</label>
+			                                  	<input class="form-control" id="mvModi_mvopen" name="thcode" type="text" readonly="readonly">
+	                                  		</div>
+                                    	</div>
+	                                  	<div class="row">
+	                                  		<div class="col-6">
+			                                  	<label class="small">관람등급</label>
+			                                  	<input class="form-control" id="mvModi_mvage" name="thcode" type="text" readonly="readonly">
+	                                  		</div>
+	                                  		<div class="col-6">
+			                                  	<label class="small">시간</label>
+			                                  	<input class="form-control" id="mvModi_mvtime" name="thcode" type="text" readonly="readonly">
+	                                  		</div>
+                                    	</div>
 	                                </div>
                                 </div>
                             </div>
                         </div>
 	                </div>
 	                <div class="modal-footer">
-	                	<input type="button" class="btn btn-primary" id="modiPageBtn" value="관람평 수정" onclick="modifyReview()">
-	                	<input type="submit" class="btn btn-primary d-none"  id="modiBtn" value="수정완료">
+                       	<button type="button" class="toggleBtn btn btn-sm btn-danger" onclick="modiOpen()">정보수정</button>
+                        <button type="button" class="toggleBtn btn btn-sm btn-secondary d-none" onclick="modiClose()">취소</button> 
+                        <button type="submit" class="toggleBtn btn btn-sm btn-danger d-none">수정하기</button> 
 	                </div>
-                    <div class="mt-1" style="text-align: right;" id="modiBtn">
-                       	<button type="button" class="btn btn-sm btn-danger" onclick="modiOpen()">정보수정</button>
-                        <button type="button" class="btn btn-sm btn-secondary d-none" onclick="modiClose()">취소</button> 
-                        <button type="submit" class="btn btn-sm btn-danger d-none">수정하기</button> 
-                    </div>
                 </form>
             </div>
         </div>
@@ -234,7 +253,27 @@
 	
 	<script type="text/javascript">
 		function movieView(mvInfo){
-			$("#mvInfoModal").modal('show');
+			console.log("movieView() 실행");
+			var row_mv = mvInfo.split("(")[1].split(")")[0].split(", mv");
+			console.log(row_mv);
+
+			var movieData = {};
+			for(var i = 0; i < row_mv.length; i++){
+				var key = row_mv[i].split('=')[0];
+				var val = row_mv[i].split('=')[1];
+				movieData[key] = val;
+			}
+			$("#mvModi_mvposter").attr("src", movieData.poster);
+			$("#mvModi_mvcode").val(movieData.mvcode);
+			$("#mvModi_mvname").val(movieData.name);
+			$("#mvModi_mvpd").val(movieData.pd);
+			$("#mvModi_mvactor").val(movieData.actor);
+			$("#mvModi_mvgenre").val(movieData.genre);
+			$("#mvModi_mvage").val(movieData.age);
+			$("#mvModi_mvtime").val(movieData.time);
+			$("#mvModi_mvopen").val(movieData.open);
+			
+			$("#mvModiModal").modal('show');
 		}
 	</script>	
 	
@@ -242,13 +281,13 @@
 		var modiInput = $(".inputDiv").children("input");
     
     	function modiOpen(){
-    		var mvcode = "${movieInfo.mvcode}";
-    		console.log("정보수정할 영화코드 : " + mvcode);
-			console.log(modiInput.length);
-			for(var i = 0; i < modiInput.length; i++){
-				modiInput.eq(i).removeAttr("readonly").attr("type", "text");
-			}
-			$("#modiBtn").children("button").toggleClass("d-none");
+    		$("#mvModi_mvpd").removeAttr("readonly");
+			$("#mvModi_mvactor").removeAttr("readonly");
+			$("#mvModi_mvgenre").removeAttr("readonly");
+			$("#mvModi_mvage").removeAttr("readonly");
+			$("#mvModi_mvtime").removeAttr("readonly");
+			$("#mvModi_mvopen").removeAttr("readonly");
+			$(".toggleBtn").toggleClass("d-none");
     	}
     	
     	function modiClose(){

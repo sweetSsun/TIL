@@ -121,7 +121,7 @@ public class AdminService {
 		
 		mav.addObject("mvList", mvList);
 		// 2. 영화목록 페이지
-		mav.setViewName("movie/AdminMovieList");
+		mav.setViewName("admin/AdminMovieList");
 		return mav;
 	}
 
@@ -144,7 +144,7 @@ public class AdminService {
 		rerate = Math.round(rerate*100)/100.0;
 		movieInfo.setRerate(rerate);
 		mav.addObject("movieInfo", movieInfo);
-		mav.setViewName("movie/AdminMovieView");
+		mav.setViewName("admin/AdminMovieView");
 		return mav;
 	}
 

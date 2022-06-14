@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
 
 public interface AdminDao {
@@ -39,4 +40,13 @@ public interface AdminDao {
 
 	int updateTheaterInfo(TheaterDto thInfo);
 
+	@Select("SELECT * FROM MOVIES WHERE MVSTATE=0")
+	ArrayList<MovieDto> getMvList();
+
+	int confirmScdate(SchedulesDto schedule);
+
+	int insertSchedule(SchedulesDto schedule);
+
+
+	
 }

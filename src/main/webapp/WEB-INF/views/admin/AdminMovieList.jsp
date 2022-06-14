@@ -66,7 +66,7 @@
                                     	<c:forEach items="${mvList }" var="mv">
 	                                        <tr>
 	                                            <td class="align-middle">${mv.mvcode }</td>
-	                                            <td class="align-middle"><a href="${pageContext.request.contextPath }/adminMovieView?mvcode=${mv.mvcode }" class="btn p-0">${mv.mvname }</a></td>
+	                                            <td class="align-middle"><a href="${pageContext.request.contextPath }/adminMovieView?mvcode=${mv.mvcode }" class="btn p-0" style="display:inline;">${mv.mvname }</a></td>
 	                                            <td class="align-middle">${mv.mvgenre }</td>
 	                                            <td class="align-middle">${mv.mvage }</td>
 	                                            <td class="align-middle">${mv.mvopen }</td>
@@ -133,7 +133,6 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <form action="adminMovieModiModal" method="post">
 	                <div class="modal-body ">
 	                	<div class="row">
 	                		<div class="col-5">
@@ -191,10 +190,9 @@
 	                </div>
 	                <div class="modal-footer">
                        	<button type="button" class="toggleBtn btn btn-sm btn-danger" onclick="modiOpen()">정보수정</button>
-                        <button type="button" class="toggleBtn btn btn-sm btn-secondary d-none" onclick="modiClose()">취소</button> 
-                        <button type="submit" class="toggleBtn btn btn-sm btn-danger d-none">수정하기</button> 
+                        <button type="button" class="toggleBtn btn btn-sm btn-secondary d-none" onclick="modiClose(true)">취소</button> 
+                        <button type="button" class="toggleBtn btn btn-sm btn-danger d-none" onclick="movieModiModal()">수정하기</button> 
 	                </div>
-                </form>
             </div>
         </div>
     </div>
@@ -252,6 +250,9 @@
 	</script>
 	
 	<script type="text/javascript">
+	
+		var mvInfoVal = "";
+	
 		function movieView(mvInfo){
 			console.log("movieView() 실행");
 			var row_mv = mvInfo.split("(")[1].split(")")[0].split(", mv");
@@ -263,6 +264,10 @@
 				var val = row_mv[i].split('=')[1];
 				movieData[key] = val;
 			}
+			// 기존 데이터를 전역변수에 저장 (수정 시도하다 취소할 경우, 기존 데이터값으로 되돌리기 위함)
+			mvInfoVal = movieData;
+			console.log(mvInfoVal);
+
 			$("#mvModi_mvposter").attr("src", movieData.poster);
 			$("#mvModi_mvcode").val(movieData.mvcode);
 			$("#mvModi_mvname").val(movieData.name);
@@ -278,7 +283,38 @@
 	</script>	
 	
     <script type="text/javascript">
-		var modiInput = $(".inputDiv").children("input");
+		// 기존 데이터를 저장할 전역변수 (수정 시도하다 취소할 경우, 기존 데이터값으로 되돌리기 위함)
+
+    
+    	function movieModiModal(){
+    		console.log("모달_영화정보 수정 요청");
+    		
+    		var mvcode = $("#mvModi_mvcode").val();
+    		var mvpd = $("#mvModi_mvpd").val();
+    		var mvactor = $("#mvModi_mvactor").val();
+    		var mvgenre = $("#mvModi_mvgenre").val();
+    		var mvage = $("#mvModi_mvage").val();
+    		var mvtime = $("#mvModi_mvtime").val();
+    		var mvopen = $("#mvModi_mvopen").val();
+    		
+    		$.ajax({
+    			type:"post",
+    			data:{"mvcode":mvcode, "mvpd":mvpd, "mvactor":mvactor, "mvgenre":mvgenre, "mvage":mvage, "mvtime":mvtime, "mvopen":mvopen},
+    			url:"adminMovieModiModal",
+    			success: function(result){
+    				console.log(result);
+    				mvInfoVal.mvpd = mvpd;
+    				mvInfoVal.mvactor = mvactor;
+    				mvInfoVal.mvgenre = mvgenre;
+    				mvInfoVal.mvage = mvage;
+    				mvInfoVal.mvtime = mvtime;
+    				mvInfoVal.mvopen = mvopen;
+    				modiClose(false);
+    				alert("정보가 수정되었습니다.");
+    			}
+    		});
+    	}
+    
     
     	function modiOpen(){
     		$("#mvModi_mvpd").removeAttr("readonly");
@@ -290,12 +326,27 @@
 			$(".toggleBtn").toggleClass("d-none");
     	}
     	
-    	function modiClose(){
-			for(var i = 0; i < modiInput.length; i++){
-				modiInput.eq(i).removeAttr("type").attr("readonly", "readonly");
+    	function modiClose(bool){
+    		$("#mvModi_mvpd").attr("readonly","readonly");
+			$("#mvModi_mvactor").attr("readonly","readonly");
+			$("#mvModi_mvgenre").attr("readonly","readonly");
+			$("#mvModi_mvage").attr("readonly","readonly");
+			$("#mvModi_mvtime").attr("readonly","readonly");
+			$("#mvModi_mvopen").attr("readonly","readonly");
+			$(".toggleBtn").toggleClass("d-none");
+			
+			if(bool){
+				previousMvInfo();
 			}
-			$("#modiBtn").children("button").toggleClass("d-none");
-    		
+    	}
+    	
+    	function previousMvInfo(){
+    		$("#mvModi_mvpd").val(mvInfoVal.pd);
+			$("#mvModi_mvactor").val(mvInfoVal.actor);
+			$("#mvModi_mvgenre").val(mvInfoVal.genre);
+			$("#mvModi_mvage").val(mvInfoVal.age);
+			$("#mvModi_mvtime").val(mvInfoVal.time);
+			$("#mvModi_mvopen").val(mvInfoVal.open);
     	}
     </script>
 </body>

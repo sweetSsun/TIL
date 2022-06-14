@@ -153,7 +153,7 @@
                         </div>
 	                </div>
 	                <div class="modal-footer">
-                       	<button type="button" class="toggleBtn btn btn-sm btn-danger" onclick="modiOpen()">정보수정</button>
+                       	<button type="button" class="toggleBtn btn btn-sm btn-danger" onclick="modiOpen()" id="openBtn">정보수정</button>
                         <button type="button" class="toggleBtn btn btn-sm btn-secondary d-none" onclick="modiClose()">취소</button> 
                         <button type="submit" class="toggleBtn btn btn-sm btn-danger d-none" onclick="thModi()">수정하기</button> 
 	                </div>
@@ -214,6 +214,9 @@
 	</script>
 	
 	<script type="text/javascript">
+		// 수정하다 말고 취소버튼 누르는 경우, 다시 원래값으로 데이터를 되돌리기 위하 데이터를 저장해두는 변수
+		var thInfoVal = "";
+	
 		function theaterView(thInfo){
 			console.log(thInfo);
 			var row = thInfo.replaceAll(", ",",").split("(")[1].split(")")[0].split(",");
@@ -225,10 +228,14 @@
 				var val = row[i].split('=')[1];
 				theaterData[key] = val;
 			}
-			
+			// 정보수정을 누른 상태로 모달창을 닫은 경우, 버튼과 인풋창의 상태를 원래대로 되돌리는 과정			
     		$("#thModi_thname").attr("readonly", "readonly");
     		$("#thModi_thaddr").attr("readonly", "readonly");
     		$("#thModi_thtel").attr("readonly", "readonly");
+    		$(".toggleBtn").addClass("d-none");
+    		$("#openBtn").removeClass("d-none");
+    		thInfoVal = theaterData;
+    		console.log(thInfoVal);
 		
 			$("#thModi_modalLabel").text("극장 상세정보");
 			$("#thModi_thcode").val(theaterData.thcode);
@@ -253,11 +260,17 @@
     	}
     	
     	function modiClose(){
+    		// 정보수정을 누른 상태로 취소버튼을 누르는 경우, 버튼과 인풋창의 상태를 원래대로 되돌리는 과정		
     		$("#thModi_thname").attr("readonly","readonly");
     		$("#thModi_thaddr").attr("readonly","readonly");
     		$("#thModi_thtel").attr("readonly","readonly");
-    		var btn = $(".toggleBtn");
-    		btn.toggleClass("d-none");
+    		$(".toggleBtn").addClass("d-none");
+    		$("#openBtn").removeClass("d-none");
+    		
+    		// 수정하다 말고 취소버튼 누르는 경우, 다시 원래값으로 데이터를 초기화하기 위한 과정
+			$("#thModi_thname").val(thInfoVal.thname);
+			$("#thModi_thaddr").val(thInfoVal.thaddr);
+			$("#thModi_thtel").val(thInfoVal.thtel);
     	}
     	
     	function thModi(){

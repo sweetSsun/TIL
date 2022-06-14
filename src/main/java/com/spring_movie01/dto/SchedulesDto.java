@@ -14,4 +14,5 @@ public class SchedulesDto {
 	private String scthcode;
 	private String scmvcode;
 	
+	private String confirmTime;
 }

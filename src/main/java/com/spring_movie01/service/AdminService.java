@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.spring_movie01.dao.AdminDao;
 import com.spring_movie01.dao.MovieDao;
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
 
 @Service
@@ -159,6 +161,14 @@ public class AdminService {
 		return mav;
 	}
 
+	public int adminMovieModiModal(MovieDto mvInfo) {
+		System.out.println("AdminService.adminMovieModiModal() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println("수정할 영화 정보 : " + mvInfo);
+		int updateResult = adao.updateMovieInfo(mvInfo);
+		return updateResult;
+	}
+	
 	public ModelAndView adminTheaterList() {
 		System.out.println("AdminService.adminTheaterList() 호출");
 		ModelAndView mav = new ModelAndView();
@@ -183,6 +193,42 @@ public class AdminService {
 		int updateResult = adao.updateTheaterInfo(thInfo);
 		return updateResult;
 	}
+
+	public ModelAndView adminSchedulesList() {
+		System.out.println("AdminService.adminSchedulesList() 호출");
+		ModelAndView mav = new ModelAndView();
+		ArrayList<MovieDto> mvList = adao.getMvList();
+		mav.addObject("mvList", mvList);
+		ArrayList<TheaterDto> thList = adao.getTheaterList();
+		mav.addObject("thList", thList);
+		
+		mav.setViewName("admin/AdminSchedules");
+		return mav;
+	}
+
+	public ModelAndView adminSchedulesRegister(SchedulesDto schedule, RedirectAttributes ra) {
+		System.out.println("AdminService.adminSchedulesRegister() 호출");
+		System.out.println("등록 요청 스케줄 : " + schedule);
+		ModelAndView mav = new ModelAndView();
+		
+		// 극장, 상영관, 시간이 겹치지 않는지 확인
+		int selectResult = adao.confirmScdate(schedule);
+		if (selectResult == 0) {
+			int insertResult = adao.insertSchedule(schedule);
+			if(insertResult == 1) {
+				ra.addFlashAttribute("msg", "스케줄이 등록되었습니다.");
+			} else {
+				ra.addFlashAttribute("msg", "스케줄 등록에 실패했습니다.");
+			}
+		} else {
+			ra.addFlashAttribute("msg", "해당 상영관의 상영 시간이 중복됩니다.");
+		}
+		
+		
+		mav.setViewName("redirect:/adminSchedulesList");
+		return mav;
+	}
+
 	
 	
 	

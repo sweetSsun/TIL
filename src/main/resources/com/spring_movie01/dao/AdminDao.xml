@@ -16,5 +16,18 @@
 		SET THNAME=#{thname}, THADDR=#{thaddr}, THTEL=#{thtel}
 		WHERE THCODE=#{thcode}
 	</update>
+	
+	<select id="confirmScdate" resultType="int">
+		SELECT COUNT(*)
+		FROM SCHEDULES
+		WHERE SCTHCODE=#{scthcode} AND SCROOM=#{scroom} 
+		    AND SCDATE BETWEEN TO_DATE(#{confirmTime},'YYYY/MM/DD HH24:MI') AND TO_DATE(#{scdate},'YYYY/MM/DD HH24:MI')
+	</select>
+	
+	
+	<insert id="insertSchedule">
+		INSERT INTO SCHEDULES(SCROOM, SCDATE, SCTHCODE, SCMVCODE)
+		VALUES(#{scroom}, TO_DATE(#{scdate}, 'YYYY-MM-DD HH24:MI'), #{scthcode}, #{scmvcode})
+	</insert>
 
 </mapper> 

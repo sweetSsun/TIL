@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring_movie01.dto.MovieDto;
+import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
 import com.spring_movie01.service.AdminService;
 
@@ -44,7 +45,7 @@ public class AdminController {
 	
 	@RequestMapping(value="/adminMovieView")
 	public ModelAndView adminMovieView(String mvcode) {
-		System.out.println("관리자 영화 수정페이지");
+		System.out.println("관리자 영화수정 페이지 이동 요청");
 		ModelAndView mav = asvc.adminMovieView(mvcode);
 		
 		return mav;
@@ -52,20 +53,21 @@ public class AdminController {
 	
 	@RequestMapping(value="/adminMovieModi")
 	public ModelAndView adminMovieModi(MovieDto mvInfo) {
-		System.out.println("영화정보 수정요청");
+		System.out.println("영화정보 수정 요청");
 		ModelAndView mav = asvc.adminMovieModi(mvInfo);
 		return mav;
 	}
 	
 	@RequestMapping(value="/adminMovieModiModal")
-	public @ResponseBody String adminMovieModiModal(MovieDto mvInfo) {
-		System.out.println("모달_영화정보 수정요청");
-		return "";
+	public @ResponseBody int adminMovieModiModal(MovieDto mvInfo) {
+		System.out.println("모달_영화정보 수정 요청");
+		int updateResult = asvc.adminMovieModiModal(mvInfo);
+		return updateResult;
 	}
 	
 	@RequestMapping(value="/adminTheaterList")
 	public ModelAndView adminTheaterList() {
-		System.out.println("관리자 극장정보페이지 이동 요청");
+		System.out.println("관리자 극장정보 페이지 이동 요청");
 		ModelAndView mav = asvc.adminTheaterList();
 		return mav;
 	}
@@ -82,5 +84,19 @@ public class AdminController {
 		System.out.println("모달_극장정보 수정요청");
 		int updateResult = asvc.adminTheaterModi(thInfo);
 		return updateResult;
+	}
+	
+	@RequestMapping(value="/adminSchedulesList")
+	public ModelAndView adminSchedulesRegister() {
+		System.out.println("관리자 스케줄 등록 페이지 이동 요청");
+		ModelAndView mav = asvc.adminSchedulesList();
+		return mav;
+	}
+	
+	@RequestMapping(value="/adminSchedulesRegister")
+	public ModelAndView adminSchedulesRegister(SchedulesDto schedule, RedirectAttributes ra) {
+		System.out.println("스케줄 등록 요청");
+		ModelAndView mav = asvc.adminSchedulesRegister(schedule, ra);
+		return mav;
 	}
 }

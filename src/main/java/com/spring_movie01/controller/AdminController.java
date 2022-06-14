@@ -87,9 +87,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/adminSchedulesList")
-	public ModelAndView adminSchedulesRegister() {
+	public ModelAndView adminSchedulesRegister(boolean array) {
 		System.out.println("관리자 스케줄 등록 페이지 이동 요청");
-		ModelAndView mav = asvc.adminSchedulesList();
+		ModelAndView mav = asvc.adminSchedulesList(array);
 		return mav;
 	}
 	
@@ -97,6 +97,13 @@ public class AdminController {
 	public ModelAndView adminSchedulesRegister(SchedulesDto schedule, RedirectAttributes ra) {
 		System.out.println("스케줄 등록 요청");
 		ModelAndView mav = asvc.adminSchedulesRegister(schedule, ra);
+		return mav;
+	}
+	
+	@RequestMapping(value="/adminSchedulesRegister_Array")
+	public ModelAndView adminSchedulesRegister_Array(SchedulesDto schedule, RedirectAttributes ra) {
+		System.out.println("스케줄 등록 요청");
+		ModelAndView mav = asvc.adminSchedulesRegister_Array(schedule, ra);
 		return mav;
 	}
 }

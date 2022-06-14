@@ -51,6 +51,7 @@
                         <a class="collapse-item" href="adminMovieList">영화</a>
                         <a class="collapse-item" href="adminTheaterList">극장</a>
                         <a class="collapse-item" href="adminSchedulesList">스케줄</a>
+                        <a class="collapse-item" href="adminSchedulesList?array=true">스케줄_Array</a>
                         <a class="collapse-item" href="getCgvMovieList">영화 등록</a>
                     </div>
                 </div>

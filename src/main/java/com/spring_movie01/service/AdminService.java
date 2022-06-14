@@ -194,15 +194,18 @@ public class AdminService {
 		return updateResult;
 	}
 
-	public ModelAndView adminSchedulesList() {
+	public ModelAndView adminSchedulesList(boolean array) {
 		System.out.println("AdminService.adminSchedulesList() 호출");
 		ModelAndView mav = new ModelAndView();
 		ArrayList<MovieDto> mvList = adao.getMvList();
 		mav.addObject("mvList", mvList);
 		ArrayList<TheaterDto> thList = adao.getTheaterList();
 		mav.addObject("thList", thList);
-		
-		mav.setViewName("admin/AdminSchedules");
+		if (array) {
+			mav.setViewName("admin/AdminSchedules_Array");
+		} else {
+			mav.setViewName("admin/AdminSchedules");
+		}
 		return mav;
 	}
 
@@ -227,6 +230,21 @@ public class AdminService {
 		
 		mav.setViewName("redirect:/adminSchedulesList");
 		return mav;
+	}
+
+	public ModelAndView adminSchedulesRegister_Array(SchedulesDto schedule, RedirectAttributes ra) {
+		System.out.println("AdminService.adminSchedulesRegister_Array() 호출");
+		ModelAndView mav = new ModelAndView();
+		// 여기 수정!! scdate가 두개씩 넘어오고 있고, scroomTime 마구마구 중복되고 있음
+		for(int i = 0; i < schedule.getScroomTime().length; i ++) {
+			String[] scroomTime_split = schedule.getScroomTime()[i].split(" ");
+			schedule.setScroom(scroomTime_split[0]);
+			schedule.setScdate(schedule.getScdate() + " " + scroomTime_split[1]);
+			System.out.println("등록 요청 스케줄 : " + schedule);
+//			int insertResult = adao.insertSchedule(schedule);
+		}
+		mav.setViewName("redirect:/adminSchedulesList?array=true");
+		return null;
 	}
 
 	

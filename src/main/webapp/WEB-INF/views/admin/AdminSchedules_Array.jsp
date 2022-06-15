@@ -143,6 +143,7 @@
                                 <div class="card-body listArea pl-1">
                                		<!-- 상영관 및 시간 목록 출력 -->
                                    	<div class="pl-1 text-md text-gray-800 labelBtn" id="scroomTimeList">
+                                   	
                                    		
                                    	</div>
                                 </div>
@@ -266,7 +267,6 @@
 		}
 
 		function getScroomTime(){
-			// ajax 추가해서 데이터값 받아오기~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 			var scroomList = ['1관', '2관', '3관', '4관', '5관', '6관', '7관'];
 			var sctimeList = ['09:00', '11:30', '14:00', '16:30', '19:00', '21:30'];
 			
@@ -282,12 +282,15 @@
 					var output = "";
 					
 					for(var roomIdx = 0; roomIdx < scroomList.length; roomIdx++){
-						var result_sctime = [];
+						var result_arr = [];
 						for(var i = 0; i < result.length; i++){
 							if(result[i].scroom == scroomList[roomIdx]){
-								result_sctime.push(result[i].sctime); 
+								result_arr.push( { sctime : result[i].sctime, mvname : result[i].mvname } ); 
 							}
 						}
+						
+						console.log(result_arr);
+						
 						if(roomIdx != 0) {
 		   					output += "<hr class='my-1'>";
 		   				}
@@ -295,10 +298,13 @@
 						for(var timeIdx = 0; timeIdx < sctimeList.length; timeIdx++){
 							var scroomTime = scroomList[roomIdx] + " " + sctimeList[timeIdx];
 							
-							console.log(result_sctime.includes(sctimeList[timeIdx]));
+							var includeIdx = result_arr.findIndex(i=>i.sctime == sctimeList[timeIdx]);
 							
-							if (result_sctime.includes(sctimeList[timeIdx])) {
-								output += "<label class='btn btn-sm font-weight-bold my-1 mx-1' style='cursor:auto; backbround-color:#cbcbcb;'>"+sctimeList[timeIdx]+"</label>";
+							console.log(includeIdx);
+							if (includeIdx >= 0) {
+								// 해당 시간에 어떤 영화가 등록되어 있는지 확인할 수 있도록 (title 속성 이용)
+								output += "<div title='"+result_arr[includeIdx].mvname+"' class='btn btn-sm font-weight-bold my-1 mx-1' style='cursor:auto; background-color:#cbcbcb; border: 1px solid #cbcbcb; height:28px; width:56;'>"+sctimeList[timeIdx]+"</div>";
+							//	output += "<label class='btn btn-sm font-weight-bold my-1 mx-1' style='cursor:auto; backbround-color:#cbcbcb;'>"+sctimeList[timeIdx]+"</label>";
 							} else {
 								output += "<input type='checkbox' id='"+scroomTime+"' name='scroomTime' value='"+scroomTime+"'><label for='"+scroomTime+"' class='btn btn-sm font-weight-bold my-1 mx-1'>"+sctimeList[timeIdx]+"</label>";
 							}

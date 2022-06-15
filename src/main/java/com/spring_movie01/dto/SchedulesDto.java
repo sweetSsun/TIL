@@ -16,4 +16,5 @@ public class SchedulesDto {
 	
 	private String confirmTime;
 	private String[] scroomTime;
+	private String mvname;
 }

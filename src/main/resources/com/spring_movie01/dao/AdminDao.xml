@@ -35,9 +35,9 @@
 	</insert>
 
 	<select id="getScroomTime" resultType="com.spring_movie01.dto.SchedulesDto">
-		SELECT SCROOM, TO_CHAR(SCDATE,'HH24:MI') AS SCTIME
-		FROM SCHEDULES
-		WHERE SCTHCODE=#{scthcode} AND TO_CHAR(SCDATE,'YYYY-MM-DD')=#{scday}
+		SELECT SC.SCROOM, TO_CHAR(SC.SCDATE,'HH24:MI') AS SCTIME, MV.MVNAME
+		FROM SCHEDULES SC, MOVIES MV
+		WHERE SCTHCODE=#{scthcode} AND TO_CHAR(SCDATE,'YYYY-MM-DD')=#{scday} AND SC.SCMVCODE=MV.MVCODE
 		ORDER BY SCROOM
 	</select>
 </mapper> 

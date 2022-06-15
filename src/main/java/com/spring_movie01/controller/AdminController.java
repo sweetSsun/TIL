@@ -103,6 +103,7 @@ public class AdminController {
 	@RequestMapping(value="/adminSchedulesRegister_Array")
 	public ModelAndView adminSchedulesRegister_Array(SchedulesDto schedule, RedirectAttributes ra) {
 		System.out.println("스케줄 등록 요청");
+		System.out.println(schedule);
 		ModelAndView mav = asvc.adminSchedulesRegister_Array(schedule, ra);
 		return mav;
 	}

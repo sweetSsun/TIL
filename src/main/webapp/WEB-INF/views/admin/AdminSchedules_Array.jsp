@@ -16,6 +16,7 @@
   	<%@ include file="/WEB-INF/views/includes/commonCss.jsp" %>
   	
   	<style type="text/css">
+  	
 	  	input[type=checkbox]{
 	  	 	 display: none;
 	  	 	 top: 1.5px;
@@ -25,8 +26,8 @@
     		background-color: #fff;
     		color: #333;
     		cursor: pointer;
- 			height: 25px;
- 		    width: 70px;
+ 			height: 28px;
+ 		    width: 55px;
  		    border: 1px solid #8c8c8d;
  		    text-align: center;
  		    border-radius: 5px;
@@ -118,12 +119,12 @@
                                    	<div class="pl-1 text-md text-gray-800">
 		                               	<div class="btn font-weight-bold " id="" 
 		                               		style="text-align:left; display:block;">
-		                               		<input type="date" name="scdate" onchange="scdaySelect(this)">	
+		                               		<input type="date" onchange="scdaySelect(this)">	
 		                               	</div>
                                    	</div>
                                 </div>
                             </div>
-						
+						</div>
 					</div>
 					
 					<!-- 날짜, 시간 선택 -->
@@ -161,12 +162,12 @@
 						</div>			
 					</div>		
 					
+							</form>
 					<!--  Content Row -->
 
 					<!--  Content Row -->
 
                 </div>
-							</form>
                 <!-- /.container-fluid -->
 
             </div>
@@ -278,7 +279,7 @@
 					output += "<div class='font-weight-bold text-gray-800 ml-2 my-1'>" + scroomList[i] + "</div>"
 					for(var j = 0; j < sctimeList.length; j++){
 						var scroomTime = scroomList[i] + " " + sctimeList[j];
-						output += "<input type='checkbox' id='"+scroomTime+"' name='scroomTime' value='"+scroomTime+"'><label for='"+scroomTime+"' class='btn font-weight-bold'>"+sctimeList[j]+"</label>";
+						output += "<input type='checkbox' id='"+scroomTime+"' name='scroomTime' value='"+scroomTime+"'><label for='"+scroomTime+"' class='btn btn-sm font-weight-bold my-1 mx-1'>"+sctimeList[j]+"</label>";
 					}
 				}
 			}

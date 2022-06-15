@@ -20,8 +20,6 @@ public interface AdminDao {
 	@Select("SELECT NVL(MAX(MVCODE),'MV001') FROM MOVIES")
 	String getMaxMvcode();
 	
-	@Insert("INSERT INTO MOVIES(MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,MVOPEN,MVPOSTER)"
-			+ " VALUES (#{mvcode},#{mvname},#{mvpd},#{mvactor},#{mvgenre},#{mvage},#{mvtime},TO_DATE(#{mvopen},'YYYY.MM.DD'),#{mvposter})")
 	void insertMovieInfo(MovieDto mdto);
 
 	@Update("UPDATE MOVIES SET MVSTATE=${mvstate} WHERE MVCODE=#{mvcode}")

@@ -104,6 +104,7 @@ public class AdminService {
 				cgvMvList.get(i).setMvcode(mvcode);
 				
 				// 2. 영화정보 insert
+				System.out.println(cgvMvList.get(i));
 				adao.insertMovieInfo(cgvMvList.get(i));
 				insertCount++;
 			}
@@ -235,16 +236,21 @@ public class AdminService {
 	public ModelAndView adminSchedulesRegister_Array(SchedulesDto schedule, RedirectAttributes ra) {
 		System.out.println("AdminService.adminSchedulesRegister_Array() 호출");
 		ModelAndView mav = new ModelAndView();
-		// 여기 수정!! scdate가 두개씩 넘어오고 있고, scroomTime 마구마구 중복되고 있음
+		schedule.setScday(schedule.getScdate());
+		int count = 0;
 		for(int i = 0; i < schedule.getScroomTime().length; i ++) {
 			String[] scroomTime_split = schedule.getScroomTime()[i].split(" ");
 			schedule.setScroom(scroomTime_split[0]);
-			schedule.setScdate(schedule.getScdate() + " " + scroomTime_split[1]);
+			schedule.setScdate(schedule.getScday() + " " + scroomTime_split[1]);
 			System.out.println("등록 요청 스케줄 : " + schedule);
-//			int insertResult = adao.insertSchedule(schedule);
+			int insertResult = adao.insertSchedule(schedule);
+			if(insertResult > 0) {
+				count++;
+			}
 		}
+		ra.addFlashAttribute("msg", count+"개의 상영스케줄이 등록되었습니다.");
 		mav.setViewName("redirect:/adminSchedulesList?array=true");
-		return null;
+		return mav;
 	}
 
 	

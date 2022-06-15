@@ -232,6 +232,19 @@ public class AdminService {
 		mav.setViewName("redirect:/adminSchedulesList");
 		return mav;
 	}
+	
+	public String selectScroomTime(String scthcode, String scday) {
+		System.out.println("AdminService.selectScroomTime() 호출");
+		System.out.println("scthcode: " + scthcode);
+		System.out.println("scday: " + scday);
+		
+		ArrayList<SchedulesDto> selResult = adao.getScroomTime(scthcode, scday);
+		System.out.println(selResult);
+		
+		Gson gson = new Gson();
+		String selResult_json = gson.toJson(selResult);
+		return selResult_json;
+	}
 
 	public ModelAndView adminSchedulesRegister_Array(SchedulesDto schedule, RedirectAttributes ra) {
 		System.out.println("AdminService.adminSchedulesRegister_Array() 호출");
@@ -252,6 +265,7 @@ public class AdminService {
 		mav.setViewName("redirect:/adminSchedulesList?array=true");
 		return mav;
 	}
+
 
 	
 	

@@ -29,10 +29,15 @@
 		    AND SCDATE BETWEEN TO_DATE(#{confirmTime},'YYYY/MM/DD HH24:MI') AND TO_DATE(#{scdate},'YYYY/MM/DD HH24:MI')
 	</select>
 	
-	
 	<insert id="insertSchedule">
 		INSERT INTO SCHEDULES(SCROOM, SCDATE, SCTHCODE, SCMVCODE)
 		VALUES(#{scroom}, TO_DATE(#{scdate}, 'YYYY-MM-DD HH24:MI'), #{scthcode}, #{scmvcode})
 	</insert>
 
+	<select id="getScroomTime" resultType="com.spring_movie01.dto.SchedulesDto">
+		SELECT SCROOM, TO_CHAR(SCDATE,'HH24:MI') AS SCTIME
+		FROM SCHEDULES
+		WHERE SCTHCODE=#{scthcode} AND TO_CHAR(SCDATE,'YYYY-MM-DD')=#{scday}
+		ORDER BY SCROOM
+	</select>
 </mapper> 

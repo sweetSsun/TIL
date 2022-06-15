@@ -18,10 +18,10 @@
   	<style type="text/css">
   	
 	  	input[type=checkbox]{
-	  	 	 display: none;
-	  	 	 top: 1.5px;
+	  	 	display: none;
  		    overflow: visible;
 		}
+		
   		input[type=checkbox]+label{
     		background-color: #fff;
     		color: #333;
@@ -40,6 +40,11 @@
 			min-height: 300px;
 			max-height: 300px;
 			overflow: auto;
+		}
+		.scLabel{
+			cursor: auto;
+			background-color: #cbcbcb;
+			border: 1px solid #fff;
 		}
   	</style>
   
@@ -85,7 +90,8 @@
 	                               <div class="card-body listArea pl-1" id="mvList">
 	                                  	<div class="pl-1 text-md text-gray-800">
 	       	                            <c:forEach items="${mvList }" var="movie" >
-		                               		<div class="btn font-weight-bold " id="${movie.mvcode }" onclick="mvSelect(this, '${movie.mvcode}')"
+		                               		<div title="${movie.mvname }" class="btn font-weight-bold " id="${movie.mvcode }"
+		                               			onclick="mvSelect(this, '${movie.mvcode}')"
 		                                  		style="text-align:left; display:block;">${movie.mvname }</div>
 	           	                        </c:forEach>
 	                                  	</div>
@@ -129,7 +135,7 @@
 					
 					<!-- 날짜, 시간 선택 -->
 					<div class="row text-gray-100">
-						<div class="col-6 pr-0 pl-0">
+						<div class="col-8 pr-0 pl-0">
 							<div class="card shadow mb-4">
                                 <div class="card-header py-3 bg-gray-900">
                                     <h6 class="m-0 font-weight-bold text-white">상영관 및 시간</h6>
@@ -143,7 +149,7 @@
                             </div>
 						</div>
 
-                        <div class="col-6 pr-0 pl-0">
+                        <div class="col-4 pr-0 pl-0">
 							<div class="card shadow mb-4">
                                 <div class="card-header py-3 bg-gray-900">
                                     <h6 class="m-0 font-weight-bold text-white">선택 확인</h6>
@@ -215,16 +221,13 @@
 
     <script type="text/javascript">
     
-    	var scmvcode = "";
-    	var scthcode = "";
-    	var scday = "";
+    	var selScmvcode = "";
+    	var selScthcode = "";
+    	var selScday = "";
     	
     	var confirmScmvcode = false;
     	var confirmScthcode = false;
     	var confirmScday = false;
-    	
-    	var confirmSctime = false;
-
     	
     	function mvSelect(selObj, scmvcode){
 			// 선택 영화 CSS 변경
@@ -234,7 +237,7 @@
 			$("#selMvCode").val(scmvcode);
 			// onsubmit Confirm			
 			confirmScmvcode = true;
-			scmvcode = scmvcode;
+			selScmvcode = scmvcode;
 			
 			getScroomTime();
 		}
@@ -247,15 +250,15 @@
 			$("#selThCode").val(scthcode);
 			// onsubmit Confirm			
 			confirmScthcode = true;
-			scthcode = scthcode;
+			selScthcode = scthcode;
 			
 			getScroomTime();
 		}
 		
 		function scdaySelect(selObj){
 			// 선택 상영일 input 태그에 입력
-			scday = $(selObj).val();
-			$("#selScDate").val(scday);
+			selScday = $(selObj).val();
+			$("#selScDate").val(selScday);
 			// onsubmit Confirm			
 			confirmScday = true;
 			
@@ -267,24 +270,48 @@
 			var scroomList = ['1관', '2관', '3관', '4관', '5관', '6관', '7관'];
 			var sctimeList = ['09:00', '11:30', '14:00', '16:30', '19:00', '21:30'];
 			
-			var output = "";
-			var scroom = "";
 			
 			if(confirmScmvcode && confirmScthcode && confirmScday){
-				
-				for(var i = 0; i < scroomList.length; i++){
-					if(i != 0) {
-	   					output += "<hr class='my-1'>";
-	   				}
-					output += "<div class='font-weight-bold text-gray-800 ml-2 my-1'>" + scroomList[i] + "</div>"
-					for(var j = 0; j < sctimeList.length; j++){
-						var scroomTime = scroomList[i] + " " + sctimeList[j];
-						output += "<input type='checkbox' id='"+scroomTime+"' name='scroomTime' value='"+scroomTime+"'><label for='"+scroomTime+"' class='btn btn-sm font-weight-bold my-1 mx-1'>"+sctimeList[j]+"</label>";
+			$.ajax({
+				type: "post",
+				data: {"scthcode":selScthcode, "scday":selScday},
+				url: "selectScroomTime",
+				dataType: "json",
+				success: function(result){
+					console.log(result);
+					var output = "";
+					
+					for(var roomIdx = 0; roomIdx < scroomList.length; roomIdx++){
+						var result_sctime = [];
+						for(var i = 0; i < result.length; i++){
+							if(result[i].scroom == scroomList[roomIdx]){
+								result_sctime.push(result[i].sctime); 
+							}
+						}
+						if(roomIdx != 0) {
+		   					output += "<hr class='my-1'>";
+		   				}
+						output += "<div class='font-weight-bold text-gray-800 ml-2 my-1'>" + scroomList[roomIdx] + "</div>"
+						for(var timeIdx = 0; timeIdx < sctimeList.length; timeIdx++){
+							var scroomTime = scroomList[roomIdx] + " " + sctimeList[timeIdx];
+							
+							console.log(result_sctime.includes(sctimeList[timeIdx]));
+							
+							if (result_sctime.includes(sctimeList[timeIdx])) {
+								output += "<label class='btn btn-sm font-weight-bold my-1 mx-1' style='cursor:auto; backbround-color:#cbcbcb;'>"+sctimeList[timeIdx]+"</label>";
+							} else {
+								output += "<input type='checkbox' id='"+scroomTime+"' name='scroomTime' value='"+scroomTime+"'><label for='"+scroomTime+"' class='btn btn-sm font-weight-bold my-1 mx-1'>"+sctimeList[timeIdx]+"</label>";
+							}
+						}
 					}
+					
+					$("#scroomTimeList").text("");
+					$("#scroomTimeList").html(output);
 				}
+			});
+			
+				
 			}
-			$("#scroomTimeList").text("");
-			$("#scroomTimeList").html(output);
 			
 		}
 		

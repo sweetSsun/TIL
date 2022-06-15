@@ -45,6 +45,8 @@ public interface AdminDao {
 
 	int insertSchedule(SchedulesDto schedule);
 
+	ArrayList<SchedulesDto> getScroomTime(@Param("scthcode") String scthcode, @Param("scday") String scday);
+
 
 	
 }

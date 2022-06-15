@@ -100,6 +100,13 @@ public class AdminController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/selectScroomTime")
+	public @ResponseBody String selectScroomTime(String scthcode, String scday) {
+		System.out.println("중복 스케줄 조회 요청");
+		String selResult = asvc.selectScroomTime(scthcode, scday);
+		return selResult;
+	}
+	
 	@RequestMapping(value="/adminSchedulesRegister_Array")
 	public ModelAndView adminSchedulesRegister_Array(SchedulesDto schedule, RedirectAttributes ra) {
 		System.out.println("스케줄 등록 요청");

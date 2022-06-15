@@ -143,7 +143,7 @@
                                    	<div class="pl-1 text-md text-gray-800">
 		                               	<div class="btn font-weight-bold " id="" 
 		                               		style="text-align:left; display:block;">
-		                               		<input type="date" name="scdate" onchange="scdaySelect(this)">	
+		                               		<input type="date" name="scdate" onchange="scdaySelect(this)" id="dateInput">	
 		                               	</div>
                                    	</div>
                                 </div>
@@ -222,6 +222,13 @@
     	if(checkMsg.length > 0){
     		alert(checkMsg);
     	}
+    </script>
+    
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		var today = new Date().toISOString().slice(0,10);
+    		$("#dateInput").val(today).attr("min", today);
+    	});
     </script>
 
     <script type="text/javascript">

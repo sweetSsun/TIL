@@ -26,8 +26,6 @@
     		background-color: #fff;
     		color: #333;
     		cursor: pointer;
- 			height: 28px;
- 		    width: 55px;
  		    border: 1px solid #8c8c8d;
  		    text-align: center;
  		    border-radius: 5px;
@@ -270,57 +268,48 @@
 			var scroomList = ['1관', '2관', '3관', '4관', '5관', '6관', '7관'];
 			var sctimeList = ['09:00', '11:30', '14:00', '16:30', '19:00', '21:30'];
 			
-			
 			if(confirmScmvcode && confirmScthcode && confirmScday){
-			$.ajax({
-				type: "post",
-				data: {"scthcode":selScthcode, "scday":selScday},
-				url: "selectScroomTime",
-				dataType: "json",
-				success: function(result){
-					console.log(result);
-					var output = "";
-					
-					for(var roomIdx = 0; roomIdx < scroomList.length; roomIdx++){
-						var result_arr = [];
-						for(var i = 0; i < result.length; i++){
-							if(result[i].scroom == scroomList[roomIdx]){
-								result_arr.push( { sctime : result[i].sctime, mvname : result[i].mvname } ); 
+				$.ajax({
+					type: "post",
+					data: {"scthcode":selScthcode, "scday":selScday},
+					url: "selectScroomTime",
+					dataType: "json",
+					success: function(result){
+						console.log(result);
+						var output = "";
+						
+						for(var roomIdx = 0; roomIdx < scroomList.length; roomIdx++){
+							var result_arr = [];
+							for(var i = 0; i < result.length; i++){
+								if(result[i].scroom == scroomList[roomIdx]){
+									result_arr.push( { sctime : result[i].sctime, mvname : result[i].mvname } ); 
+								}
+							}
+							console.log(result_arr);
+							
+							if(roomIdx != 0) {
+			   					output += "<hr class='my-1'>";
+			   				}
+							output += "<div class='font-weight-bold text-gray-800 ml-2 my-1'>" + scroomList[roomIdx] + "</div>"
+							for(var timeIdx = 0; timeIdx < sctimeList.length; timeIdx++){
+								var scroomTime = scroomList[roomIdx] + " " + sctimeList[timeIdx];
+								
+								var includeIdx = result_arr.findIndex(i=>i.sctime == sctimeList[timeIdx]);
+								if (includeIdx >= 0) {
+									output += "<button title='"+result_arr[includeIdx].mvname+"' disabled class='btn btn-sm font-weight-bold my-1 mx-1' style='background-color:#cbcbcb; border: 1px solid #cbcbcb;'>"+sctimeList[timeIdx]+"</button>";
+								} else {
+									output += "<input type='checkbox' id='"+scroomTime+"' name='scroomTime' value='"+scroomTime+"'><label for='"+scroomTime+"' class='btn btn-sm font-weight-bold my-1 mx-1'>"+sctimeList[timeIdx]+"</label>";
+								}
 							}
 						}
 						
-						console.log(result_arr);
-						
-						if(roomIdx != 0) {
-		   					output += "<hr class='my-1'>";
-		   				}
-						output += "<div class='font-weight-bold text-gray-800 ml-2 my-1'>" + scroomList[roomIdx] + "</div>"
-						for(var timeIdx = 0; timeIdx < sctimeList.length; timeIdx++){
-							var scroomTime = scroomList[roomIdx] + " " + sctimeList[timeIdx];
-							
-							var includeIdx = result_arr.findIndex(i=>i.sctime == sctimeList[timeIdx]);
-							
-							console.log(includeIdx);
-							if (includeIdx >= 0) {
-								// 해당 시간에 어떤 영화가 등록되어 있는지 확인할 수 있도록 (title 속성 이용)
-								output += "<div title='"+result_arr[includeIdx].mvname+"' class='btn btn-sm font-weight-bold my-1 mx-1' style='cursor:auto; background-color:#cbcbcb; border: 1px solid #cbcbcb; height:28px; width:56;'>"+sctimeList[timeIdx]+"</div>";
-							//	output += "<label class='btn btn-sm font-weight-bold my-1 mx-1' style='cursor:auto; backbround-color:#cbcbcb;'>"+sctimeList[timeIdx]+"</label>";
-							} else {
-								output += "<input type='checkbox' id='"+scroomTime+"' name='scroomTime' value='"+scroomTime+"'><label for='"+scroomTime+"' class='btn btn-sm font-weight-bold my-1 mx-1'>"+sctimeList[timeIdx]+"</label>";
-							}
-						}
+						$("#scroomTimeList").text("");
+						$("#scroomTimeList").html(output);
 					}
-					
-					$("#scroomTimeList").text("");
-					$("#scroomTimeList").html(output);
-				}
-			});
-			
-				
+				});
 			}
 			
 		}
-		
 		
 		function scheduleConfirm(){
 			if (!confirmScmvcode){

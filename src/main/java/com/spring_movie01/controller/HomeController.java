@@ -60,4 +60,9 @@ public class HomeController {
 			return "redirect:/";
 		}
 	}
+	
+	@RequestMapping(value="/testPage")
+	public String testPage() {
+		return "TestPage";
+	}
 }

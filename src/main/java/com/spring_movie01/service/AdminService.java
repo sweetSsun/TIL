@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.gson.Gson;
 import com.spring_movie01.dao.AdminDao;
 import com.spring_movie01.dao.MovieDao;
+import com.spring_movie01.dto.MemberDto;
 import com.spring_movie01.dto.MovieDto;
 import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
@@ -266,7 +267,25 @@ public class AdminService {
 		return mav;
 	}
 
+	public ModelAndView memberList() {
+		System.out.println("AdminService.memberList() 호출");
+		ModelAndView mav = new ModelAndView();
+		ArrayList<MemberDto> memberList = adao.getMemberList();
+		System.out.println(memberList);
+		
+		mav.addObject("memberList", memberList);
+		mav.setViewName("admin/AdminMemberList");
+		return mav;
+	}
 
+	public int adminMemberModi(MemberDto upMember) {
+		System.out.println("AdminService.adminMemberModi() 호출");
+		System.out.println("upMember : " + upMember);
+		int updateResult = adao.updateMember(upMember);
+		return updateResult;
+	}
+
+	
 	
 	
 	

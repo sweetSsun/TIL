@@ -94,6 +94,9 @@ public class MemberService {
 			if (loginmember.getMstate() == 1) {
 				ra.addFlashAttribute("msg",	"탈퇴한 계정입니다.");
 				mav.setViewName("redirect:/memberLoginForm");
+			} else if (loginmember.getMstate() == 3) {
+				ra.addFlashAttribute("msg", "이용정지된 계정입니다.");
+				mav.setViewName("redirect:/memberLoginForm");
 			} else {
 				// 기한이 남은 예매정보 조회
 				ArrayList<ReservationDto> recentReList = mvdao.getRecentReserve(mid);

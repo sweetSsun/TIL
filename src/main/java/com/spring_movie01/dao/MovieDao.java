@@ -61,4 +61,5 @@ public interface MovieDao {
 
 	ArrayList<MovieDto> getSearchMvList(@Param("searchText") String searchText, @Param("checkWhere") String checkWhere);
 	
+	
 }

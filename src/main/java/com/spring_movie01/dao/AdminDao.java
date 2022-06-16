@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring_movie01.dto.MemberDto;
 import com.spring_movie01.dto.MovieDto;
 import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
@@ -46,6 +47,10 @@ public interface AdminDao {
 	int insertSchedule(SchedulesDto schedule);
 
 	ArrayList<SchedulesDto> getScroomTime(@Param("scthcode") String scthcode, @Param("scday") String scday);
+
+	ArrayList<MemberDto> getMemberList();
+
+	int updateMember(MemberDto upMember);
 
 
 	

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring_movie01.dto.MemberDto;
 import com.spring_movie01.dto.MovieDto;
 import com.spring_movie01.dto.SchedulesDto;
 import com.spring_movie01.dto.TheaterDto;
@@ -114,4 +115,20 @@ public class AdminController {
 		ModelAndView mav = asvc.adminSchedulesRegister_Array(schedule, ra);
 		return mav;
 	}
+	
+	@RequestMapping(value="/memberList")
+	public ModelAndView memberList() {
+		System.out.println("회원목록 페이지 이동 요청");
+		ModelAndView mav = asvc.memberList();
+		return mav;
+	}
+	
+	@RequestMapping(value="/adminMemberUpdate")
+	public @ResponseBody int adminMemberUpdate(MemberDto upMember) {
+		System.out.println("회원상태 수정 요청");
+		int updateResult = asvc.adminMemberModi(upMember);
+		return updateResult;
+	}
+	
+	
 }

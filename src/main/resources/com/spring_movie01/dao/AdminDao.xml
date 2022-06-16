@@ -40,4 +40,15 @@
 		WHERE SCTHCODE=#{scthcode} AND TO_CHAR(SCDATE,'YYYY-MM-DD')=#{scday} AND SC.SCMVCODE=MV.MVCODE
 		ORDER BY SCROOM
 	</select>
+	
+	<select id="getMemberList" resultType="com.spring_movie01.dto.MemberDto">
+		SELECT MID, MNAME, TO_CHAR(MBIRTH, 'YYYY/MM/DD') AS MBIRTH, MEMAIL, MADDRESS, MPROFILE, MSTATE
+		FROM MEMBERS
+	</select>
+	
+	<update id="updateMember">
+		UPDATE MEMBERS SET MSTATE=${mstate}
+		WHERE MID=#{mid}
+	</update>
+	
 </mapper> 

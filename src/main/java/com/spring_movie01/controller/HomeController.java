@@ -65,4 +65,10 @@ public class HomeController {
 	public String testPage() {
 		return "TestPage";
 	}
+	
+	@RequestMapping(value="/chatPage")
+	public String chatPage() {
+		return "ChatPage";
+	}
+	
 }

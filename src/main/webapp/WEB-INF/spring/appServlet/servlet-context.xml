@@ -47,5 +47,15 @@
      <beans:bean id="testWsk" class="com.spring_movie01.testWebSocket.TestWebSocket"/>
 	
 	
+	<websocket:handlers>
+        <websocket:mapping path="/chatWskMessage" handler="chatWsk"/>
+        <websocket:handshake-interceptors>
+        	<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
+        </websocket:handshake-interceptors>
+        
+        <websocket:sockjs></websocket:sockjs>
+    </websocket:handlers>
+    
+     <beans:bean id="chatWsk" class="com.spring_movie01.testWebSocket.ChatWebSocket"/>
 	
 </beans:beans>

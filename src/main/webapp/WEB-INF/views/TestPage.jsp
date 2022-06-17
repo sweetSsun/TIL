@@ -43,7 +43,9 @@
                     </div>
                     
 					<!--  Content Row -->
-					<input type="text" id="msgTest">
+					<input type="text" id="username" placeholder="보내는 사람">
+					<br>
+					<input type="text" id="comment" placeholder="내용">
 					<button onclick="msgSendTest()">테스트 버튼</button>
 					<div id = "receiveMsg">
 					
@@ -101,8 +103,16 @@
 	    };
 	
 	    sock.onmessage = function(e) {
-	        console.log('message', e.data);
-	        var output = "<p>"+e.data+"</p>";
+	       // console.log('message', e.data);
+	        
+	        var receiveData = JSON.parse(e.data);
+	        console.log(receiveData);
+	        
+	       // var output = "<p>"+e.data+"</p>";
+	        
+	        var output = "<p>"+receiveData.msgUserId+"</p>";
+	        output += "<p>"+receiveData.msgComment+"</p>";
+	        
 	       // $("#receiveMsg").html(output);
 	        $("#receiveMsg").append(output);
 	        				// 선택한 요소의 마지막 부분에 인자값을 추가
@@ -115,8 +125,19 @@
     
     <script type="text/javascript">
     	function msgSendTest(){
-    		var testMsg = $("#msgTest").val();
-    		sock.send(testMsg);
+    		var username = $("#username").val();
+    		var comment = $("#comment").val();
+    		$("#comment").val("");
+    		var msgData = {
+    			msgUserId : username,
+    			msgComment : comment
+    		};
+			//console.log(msgData);
+			console.log(JSON.stringify(msgData));
+			// JSON 형태의 string으로 변환하여 전송
+			
+    		//sock.send(msgData);
+    		sock.send(JSON.stringify(msgData));
     		// send: handleTextMessage 호출. 클라이언트가 서버로 데이터 전송
     	}
     </script>

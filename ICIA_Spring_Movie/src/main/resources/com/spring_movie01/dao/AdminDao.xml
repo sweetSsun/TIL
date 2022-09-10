@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring_movie01.dao.AdminDao">
+
+	<insert id="insertMovieInfo">
+		INSERT INTO MOVIES(MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,MVOPEN,MVPOSTER)
+		VALUES (#{mvcode},#{mvname},#{mvpd},#{mvactor},#{mvgenre},#{mvage},#{mvtime},TO_DATE(#{mvopen},'YYYY.MM.DD'),#{mvposter})
+	</insert>
+	
+	<update id="updateMovieInfo">
+		UPDATE MOVIES
+		SET MVPD=#{mvpd}, MVACTOR=#{mvactor}, MVGENRE=#{mvgenre}, MVAGE=#{mvage}, MVTIME=#{mvtime}, MVOPEN=TO_DATE(#{mvopen},'YYYY/MM/DD')
+		WHERE MVCODE=#{mvcode}
+	</update>
+
+	<update id="updateTheaterInfo">
+		UPDATE THEATERS
+		SET THNAME=#{thname}, THADDR=#{thaddr}, THTEL=#{thtel}
+		WHERE THCODE=#{thcode}
+	</update>
+	
+	<select id="confirmScdate" resultType="int">
+		SELECT COUNT(*)
+		FROM SCHEDULES
+		WHERE SCTHCODE=#{scthcode} AND SCROOM=#{scroom} 
+		    AND SCDATE BETWEEN TO_DATE(#{confirmTime},'YYYY/MM/DD HH24:MI') AND TO_DATE(#{scdate},'YYYY/MM/DD HH24:MI')
+	</select>
+	
+	<insert id="insertSchedule">
+		INSERT INTO SCHEDULES(SCROOM, SCDATE, SCTHCODE, SCMVCODE)
+		VALUES(#{scroom}, TO_DATE(#{scdate}, 'YYYY-MM-DD HH24:MI'), #{scthcode}, #{scmvcode})
+	</insert>
+
+	<select id="getScroomTime" resultType="com.spring_movie01.dto.SchedulesDto">
+		SELECT SC.SCROOM, TO_CHAR(SC.SCDATE,'HH24:MI') AS SCTIME, MV.MVNAME
+		FROM SCHEDULES SC, MOVIES MV
+		WHERE SCTHCODE=#{scthcode} AND TO_CHAR(SCDATE,'YYYY-MM-DD')=#{scday} AND SC.SCMVCODE=MV.MVCODE
+		ORDER BY SCROOM
+	</select>
+	
+	<select id="getMemberList" resultType="com.spring_movie01.dto.MemberDto">
+		SELECT MID, MNAME, TO_CHAR(MBIRTH, 'YYYY/MM/DD') AS MBIRTH, MEMAIL, MADDRESS, MPROFILE, MSTATE
+		FROM MEMBERS
+	</select>
+	
+	<update id="updateMember">
+		UPDATE MEMBERS SET MSTATE=${mstate}
+		WHERE MID=#{mid}
+	</update>
+	
+</mapper> 

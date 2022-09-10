@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.spring_movie01.dao.MovieDao"> 
+				<!-- Dao가 있는 패키지.Dao명 -->
+  	<select id="selectMovieList" resultType="com.spring_movie01.dto.MovieDto">
+  		<!-- id : Dao가 호출되는 메소드명 / resultType : resultSet에 담기는 것을 어느 객체로 담을지-->
+<!--    		SELECT MVCODE, MVNAME, MVPD, MVACTOR, MVGENRE, MVAGE, MVTIME, TO_CHAR(MVOPEN,'YYYY.MM.DD') AS MVOPEN, MVPOSTER, NVL(RECOUNT, 0) AS RECOUNT
+		FROM MOVIES MV LEFT OUTER JOIN (SELECT SCMVCODE,COUNT(SCMVCODE) AS RECOUNT
+                        				FROM RESERVATION RE, SCHEDULES SC
+                      					WHERE RE.RESCTHCODE = SC.SCTHCODE AND RE.RESCROOM=SC.SCROOM AND RE.RESCDATE=SC.SCDATE
+                      					GROUP BY SCMVCODE) RE
+						ON MV.MVCODE=RE.SCMVCODE
+		ORDER BY RECOUNT DESC -->
+   		SELECT MVCODE, MVNAME, MVPD, MVACTOR, MVGENRE, MVAGE, MVTIME, TO_CHAR(MVOPEN,'YYYY.MM.DD') AS MVOPEN, MVPOSTER, MVSTATE,
+        	NVL(RECOUNT, 0) AS RECOUNT, SUM.SUMRECOUNT, NVL(RV.RECOMMEND, 0) AS RECOMMEND1
+		FROM MOVIES MV LEFT OUTER JOIN (SELECT SCMVCODE,COUNT(SCMVCODE) AS RECOUNT
+		                                          FROM RESERVATION RE, SCHEDULES SC
+		                                          WHERE RE.RESCTHCODE = SC.SCTHCODE AND RE.RESCROOM=SC.SCROOM AND RE.RESCDATE=SC.SCDATE
+		                                          GROUP BY SCMVCODE) RE
+		                        ON MV.MVCODE=RE.SCMVCODE
+		                        LEFT OUTER JOIN (SELECT RVMVCODE, COUNT(*) AS RECOMMEND
+		                                         FROM REVIEW
+		                                         WHERE RVRECOMMEND=1
+		                                         GROUP BY RVMVCODE) RV
+		                        ON MV.MVCODE=RV.RVMVCODE,
+		     (SELECT COUNT(*) AS SUMRECOUNT FROM RESERVATION) SUM
+		ORDER BY ${range} DESC
+ 	 </select>
+
+	<select id="selectMovieInfo" resultType="com.spring_movie01.dto.MovieDto">
+<!-- 		SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,TO_CHAR(MVOPEN,'YYYY.MM.DD') AS MVOPEN,MVPOSTER
+		FROM MOVIES
+		WHERE MVCODE=#{mvcode} -->
+		
+<!-- 		SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,TO_CHAR(MVOPEN,'YYYY.MM.DD') AS MVOPEN,MVPOSTER,NVL(RV.RECOMMEND, 0) AS RECOMMEND
+		FROM MOVIES MV LEFT OUTER JOIN (SELECT RVMVCODE, COUNT(*) AS RECOMMEND
+                                        FROM REVIEW
+                                        WHERE RVRECOMMEND=1
+                                        GROUP BY RVMVCODE) RV
+             		   ON MV.MVCODE=RV.RVMVCODE 
+		WHERE MVCODE=#{mvcode} -->
+		
+		SELECT MVCODE,MVNAME,MVPD,MVACTOR,MVGENRE,MVAGE,MVTIME,TO_CHAR(MVOPEN,'YYYY.MM.DD') AS MVOPEN,MVPOSTER,NVL(RECOUNT, 0) AS RECOUNT, SUM.SUMRECOUNT
+		FROM MOVIES MV LEFT OUTER JOIN (SELECT SCMVCODE,COUNT(SCMVCODE) AS RECOUNT
+		                        				FROM RESERVATION RE, SCHEDULES SC
+		                      					WHERE RE.RESCTHCODE = SC.SCTHCODE AND RE.RESCROOM=SC.SCROOM AND RE.RESCDATE=SC.SCDATE
+		                      					GROUP BY SCMVCODE) RE
+								ON MV.MVCODE=RE.SCMVCODE,
+					 (SELECT COUNT(*) AS SUMRECOUNT FROM RESERVATION) SUM
+		WHERE MVCODE=#{mvcode}
+	</select>
+	
+	<select id="getTotalReview" resultType="com.spring_movie01.dto.ReviewDto">
+		SELECT RVRECODE, RVRECOMMEND
+		FROM REVIEW
+		WHERE RVMVCODE=#{mvcode}
+		
+		<!-- SELECT RVRECODE,RVMID,RVMVCODE,RVCOMMENT,TO_CHAR(RVDATE,'YYYY.MM.DD HH24:MI'),RVRECOMMEND,M.MPROFILE
+		FROM REVIEW RV, MEMBERS M
+		WHERE RV.RVMID=M.MID AND RVMVCODE=#{mvcode} -->
+	</select>
+	
+	<select id="selectReserveMvList" resultType="com.spring_movie01.dto.MovieDto">
+		SELECT *
+		FROM MOVIES
+		WHERE MVCODE IN (SELECT SCMVCODE FROM SCHEDULES WHERE SCDATE > SYSDATE) AND MVSTATE=0
+	</select>
+	
+	<select id="selectReservThList" resultType="com.spring_movie01.dto.TheaterDto">
+		SELECT THCODE, THNAME
+		FROM THEATERS
+		WHERE THCODE IN (SELECT SCTHCODE FROM SCHEDULES WHERE SCMVCODE=#{mvcode} AND SCDATE > SYSDATE)
+				AND THSTATE=0
+	</select>
+	
+	<select id="getScDay" resultType="com.spring_movie01.dto.SchedulesDto">
+		SELECT TO_CHAR(SCDATE,'YYYY.MM.DD') AS SCDAY
+		FROM SCHEDULES
+		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode} AND SCDATE > SYSDATE
+		GROUP BY TO_CHAR(SCDATE,'YYYY.MM.DD')
+		ORDER BY SCDAY
+	</select>
+	
+	<select id="getScTime" resultType="com.spring_movie01.dto.SchedulesDto">
+		SELECT TO_CHAR(SCDATE,'HH24:MI') AS SCTIME,SCROOM
+		FROM SCHEDULES
+		WHERE SCMVCODE=#{mvcode} AND SCTHCODE=#{thcode} AND TO_CHAR(SCDATE,'YYYY.MM.DD')=#{scday}
+			AND SCDATE > SYSDATE
+		ORDER BY SCROOM
+	</select>
+	
+	<insert id="insertReservation">
+		INSERT INTO RESERVATION(RECODE, REMID, RESCTHCODE, RESCROOM, RESCDATE, REAMOUNT)
+		VALUES(#{recode}, #{remid}, #{rescthcode}, #{rescroom}, TO_DATE(#{rescdate},'YYYY.MM.DD HH24:MI'), #{reamount})
+	</insert>
+	
+	<select id="getRecentReserve" resultType="com.spring_movie01.dto.ReservationDto">
+		SELECT TH.THNAME, RE.RESCROOM, TO_CHAR(RE.RESCDATE,'YYYY.MM.DD HH24:MI') AS RESCDATE, RE.REAMOUNT, RE.RECODE, MV.MVNAME
+		FROM THEATERS TH, RESERVATION RE, SCHEDULES SC, MOVIES MV
+		WHERE SC.SCTHCODE=RE.RESCTHCODE AND SC.SCROOM=RE.RESCROOM AND SC.SCDATE=RE.RESCDATE
+              AND MV.MVCODE = SC.SCMVCODE
+			  AND TH.THCODE=RE.RESCTHCODE AND REMID=#{mid}
+  			  AND RESCDATE > SYSDATE
+  		ORDER BY RESCDATE
+	</select>
+
+	<select id="reservationInfo" resultType="com.spring_movie01.dto.ReservationDto">
+		SELECT RE.RECODE, MV.MVCODE, MV.MVPOSTER, MV.MVNAME, TH.THNAME, RE.RESCROOM, TO_CHAR(RE.RESCDATE,'YYYY.MM.DD HH24:MI') AS RESCDATE, RE.REAMOUNT
+		FROM MOVIES MV, THEATERS TH, SCHEDULES SC, RESERVATION RE
+		WHERE MV.MVCODE = SC.SCMVCODE
+		    AND TH.THCODE = SC.SCTHCODE
+		    AND SC.SCTHCODE=RE.RESCTHCODE AND SC.SCROOM=RE.RESCROOM AND SC.SCDATE=RE.RESCDATE
+		    AND RECODE=#{recode}
+	</select>
+	
+	<select id="reservationList" resultType="com.spring_movie01.dto.ReservationDto">
+	SELECT RE.RECODE, RE.RVRECODE, MV.MVCODE, MV.MVPOSTER, MV.MVNAME, TH.THNAME, RE.RESCROOM, TO_CHAR(RE.RESCDATE,'YYYY.MM.DD HH24:MI') AS RESCDATE, RE.REAMOUNT
+	FROM MOVIES MV, THEATERS TH, SCHEDULES SC, 
+   		 		(SELECT RE.*, RV.RVRECODE 
+   				 FROM RESERVATION RE LEFT OUTER JOIN REVIEW RV ON RE.RECODE = RV.RVRECODE) RE
+	WHERE MV.MVCODE = SC.SCMVCODE
+	    AND TH.THCODE = SC.SCTHCODE
+	    AND SC.SCTHCODE=RE.RESCTHCODE AND SC.SCROOM=RE.RESCROOM AND SC.SCDATE=RE.RESCDATE
+	    AND REMID=#{loginId}
+	ORDER BY RESCDATE DESC
+	</select>
+	
+	<select id="getReviewPagingList" resultType="com.spring_movie01.dto.ReviewDto">
+		SELECT RN,RVRECODE,RVMID,RVMVCODE,RVCOMMENT,TO_CHAR(RVDATE,'YYYY.MM.DD HH24:MI') AS RVDATE,RVRECOMMEND,M.MPROFILE,M.MSTATE
+		FROM MEMBERS M, (SELECT ROWNUM RN, RV.*
+		        FROM REVIEW RV
+		        WHERE RVMVCODE=#{mvcode}) RV
+		WHERE M.MID=RV.RVMID AND RV.RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="getSearchMvList" resultType="com.spring_movie01.dto.MovieDto" >
+		SELECT MVCODE, MVNAME, MVPD, MVACTOR, MVGENRE, MVAGE, MVTIME, TO_CHAR(MVOPEN, 'YYYY.MM.DD') AS MVOPEN, MVPOSTER
+		<if test="checkWhere == 'movie'">
+			FROM MOVIES
+			WHERE MVNAME LIKE '%'||#{searchText}||'%' 
+		</if>
+		<if test="checkWhere == 'schedule'">
+			, NVL(RECOUNT, 0) AS RECOUNT, SUM.SUMRECOUNT
+			FROM MOVIES MV LEFT OUTER JOIN (SELECT SCMVCODE,COUNT(SCMVCODE) AS RECOUNT
+					                        FROM RESERVATION RE, SCHEDULES SC
+					                      	WHERE RE.RESCTHCODE = SC.SCTHCODE AND RE.RESCROOM=SC.SCROOM AND RE.RESCDATE=SC.SCDATE
+					                      	GROUP BY SCMVCODE) RE
+							ON MV.MVCODE=RE.SCMVCODE,
+				(SELECT COUNT(*) AS SUMRECOUNT FROM RESERVATION) SUM
+			WHERE MVNAME LIKE '%'||#{searchText}||'%' 
+			    AND MVCODE IN (SELECT SCMVCODE FROM SCHEDULES WHERE SCDATE > SYSDATE)
+		</if>
+		ORDER BY MVNAME
+	</select>
+	
+</mapper>

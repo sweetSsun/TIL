@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Nanum+Pen+Script&display=swap');
+
+ㄹ#coral{
+    color: lightcoral
+}
+.colorTeal{
+    color: teal;
+}
+.font40{
+    font-size: 40px;
+}
+.fontBold{
+    font-weight: bold;
+}
+.fontweight200{
+    font-weight: 200;
+}
+.fontDongle{
+    /* 폰트 변경 - 기본 폰트 말고 원하는 폰트를 link로 사용할 수도 있음 */
+    font-family: 'Dongle', sans-serif;
+    /* 첫 번째 : 기본폰트, 두 번째 : 대체폰트 */
+}
+.fontNanum{
+    font-family: 'Nanum Pen Script', cursive;
+}

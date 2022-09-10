@@ -1,0 +1,42 @@
+<!-- day02_ListMenu.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        li {
+            border: 1px solid black;
+            display: inline-block; li태그의 속성을 변경해주는 것
+                /* inline : 글자가 차지하는 부분만큼만 영역으로 차지 (길이, 패딩, 블록 설정 불가능) */
+                /* inline-block : inline과 같으면서 블록 형태를 가지는 속성 (길이, 패딩, 블록 설정 가능) */
+            width: 100px; /* 블록의 가로길이 지정 */
+            padding: 5px; /* 안쪽 여백 */
+            text-align: center; /* 글자 정렬 */
+        }
+        li:hover { /* 커서가 올라가면 */
+            background-color: cadetblue;
+            color: oldlace; /* 글씨 색 */
+            font-size: 25px; /* 글씨 크기 */
+            font-weight: bold; /* 글씨 굵기 */
+        }
+    </style>
+</head>
+<body>
+    <h2>리스트 태그로 메뉴 만들기</h2>
+
+    <ul>
+        <li> <a href="">영화</a></li> <!-- li태그는 p태그처럼 한 줄(블럭 형태)을 영역으로 차지 -->
+        <li>극장</li>
+        <li>예매하기</li>
+        <li>예매내역</li>
+        <li>예매취소</li>
+        <li>영화검색</li>
+    </ul>
+
+
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!-- day04_box_sizing.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box1{
+            box-sizing: content-box;
+            /* 컨텐츠가 나오는 영역을 절대사이즈로 만들어주는 속성 */
+            width: 300px;
+            height: 200px;
+            background-color: bisque;
+            border: 5px solid black;
+        }
+        .boxa{
+            box-sizing: border-box;
+            /* 패딩, 보더, 컨텐츠를 모두 포함해서
+             절대사이즈(박스의 전체 크기)로 만들어주는 속성 */
+            width: 100px;
+            height: 100px;
+            background-color: indianred;
+            border: 3px solid goldenrod;
+            padding: 5px;
+            float: left;
+        }
+
+        .box2{
+            width: 300px;
+            height: 200px;
+            background-color: rgb(245, 212, 212);
+            border: 5px solid black;
+            font-size: 0;
+        }
+        .boxb{
+            box-sizing: border-box;
+            width: 100px;
+            height: 100px;
+            background-color: goldenrod;
+            border: 3px solid indianred;
+            display: inline-block; 
+            /* float이 아니라 display를 이용해 inline 요소로 만들어 박스 배치 */
+            /* 그러나 inline 요소가 되면 text의 영향을 받는다!
+             >> 부모태그인 div의 폰트 사이즈에 영향을 받아 margin도 아닌 알 수 없는 여백이 생김
+             >> 부모태그를 폰트사이즈 0으로 만들면 알 수 없는 여백이 제거됨 >> 글씨 써도 안보임 */
+            /* 따라서 inline 요소로 배치할 수는 있지만, float으로 해야함 */
+        }
+    </style>
+</head>
+<body>
+    <div class="box1">
+        <div class="boxa"></div>
+        <div class="boxa"></div>
+        <div class="boxa"></div>
+    </div>
+    <br><br><br><br><br>
+    <div class="box2">
+        <div class="boxb"></div>
+        <div class="boxb"></div>
+        <div class="boxb"></div>
+    </div>
+
+</body>
+</html>

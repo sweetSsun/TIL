@@ -1,0 +1,56 @@
+<!-- day03_selector2.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .colorBlue {
+            color: blue;
+        }
+        .colorGreen {
+            color: green;
+        }
+        .font50 {
+            font-size: 50px;
+        }
+        .fontBold {
+            font-weight: bold;
+        }
+        </style>
+        <link rel="stylesheet" href="test.css">
+    <!-- 부트스트랩 사용시 기능이 대부분 class 단위로 정의되어있음 -->
+
+</head>
+
+<body>
+    <!-- 동일한 부분의 style을 적용할 경우 -->
+    <h1 class="colorBlue" style="color: red;">1.무슨색일까요</h1>
+    <!-- 1. class와 style :: class가 우선적용되었다가 해당 태그의 style이 적용됨 -->
+    <h1 class="colorGreen colorBlue">2.무슨색일까요</h1>
+    <!-- 2. 이중 class :: CSS 순서대로 적용되어서 위에 있는 class 적용 후 아래의 class가 최종 적용 -->
+    <p class="fontBold">3.어떤 굵기일까요</p>
+    <!-- 3. 동일한 이름의 CSS/style 호출 :: link와 style태그의 위치에 따라 아래 부분에 있는 태그가 최종 적용 -->
+
+    <h1 class="colorBlue">Eclipse</h1>
+    <h2 class="font50">Vscode</h2>
+    <h3 class="colorBlue">Spring</h3>
+    <h4 class="colorGreen">Oracle</h4>
+    <h5 class="colorGreen font50">Sql developer</h5>
+    <!-- class는 동시에 두 개의 class를 적용할 수도 있음 -->
+
+    <p>
+        데이터베이스 내의 임의의 다른 테이블과
+        <span style="color: mediumpurple;">PRIMARY KEY</span>
+        또는 FOREIGN KEY로서의 관계가 여전히 존재하는 경우 PRIMARY KEY가 존재하는 테이블을 마음대로 제거 및 비활성화 할 수 없다.
+        <!-- span 태그는 별다른 기능 없이 inline 요소만 지니고 있음
+        일정 부분만 지정하고 싶을 때 사용 -->
+    </p>
+
+
+</body>
+
+</html>

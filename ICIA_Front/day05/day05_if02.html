@@ -1,0 +1,90 @@
+<!-- day05_if02.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, th, td{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td{
+            padding: 10px;
+        }
+        .resultText{
+            font-size: 10px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th colspan="2">로그인</th>
+        </tr>
+        <tr>
+            <th>아이디</th>
+            <td>
+                <input type="text" id="inputId">
+                <br>
+                <span id = "idCheck" class="resultText"></span>
+            </td>
+            
+        </tr>
+        <tr>
+            <th>비밀번호</th>
+            <td>
+                <input type="text" id="inputPw">
+                <br>
+                <span id = "pwCheck" class="resultText"></span>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2"> 
+                <button onclick = "loginCheck()">로그인</button> 
+            </th>
+        </tr>
+    </table>
+</body>
+<script>
+    function loginCheck(){        
+        var userId = document.getElementById("inputId").value;
+        var userPw = document.getElementById("inputPw").value;
+        console.log("userId : " + userId);
+        console.log("userPw : " + userPw);
+        
+        var loginId = "admin";
+        var loginPw = "1234";
+        console.log(loginId == userId); // 문자열 비교시 equals 안쓰고 == 쓰면 됨
+        console.log(loginPw == userPw);
+        console.log( (loginId == userId) && (loginPw == userPw));
+        
+        // ID, PW를 입력했는지 확인하기 위한 코드
+        if (userId == "") {
+            document.getElementById("idCheck").innerText = "아이디를 입력해주세요.";
+            document.getElementById("inputId").focus();
+            return;
+        } else {
+            document.getElementById("idCheck").innerText = "";
+        }
+
+        if (userPw == "") {
+            document.getElementById("pwCheck").innerText = "비밀번호를 입력해주세요.";
+            document.getElementById("inputPw").focus();
+            return;
+        } else {
+            document.getElementById("pwCheck").innerText = "";
+        }
+        
+        // 로그인 여부 확인창
+        if (loginId == userId && loginPw == userPw){
+            alert("로그인 되었습니다.");
+        } else {
+            alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
+    }
+</script>
+</html>

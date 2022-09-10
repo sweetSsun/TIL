@@ -1,0 +1,43 @@
+<!-- day04_float02.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            height: 50px;
+        }
+        .box1{
+            background-color: rgb(252, 184, 162);
+            float: left;
+        }
+        .box2{
+            background-color: rgb(198, 187, 220);
+            float: left;
+        }
+        .box3{
+            clear: right;
+            /* both : 양 쪽 모두 지운다 / right : 오른쪽만 / left : 왼쪽만 */
+            background-color: rgba(182, 231, 160, 0.715);
+            display: inline-block; 
+        }
+        .box4{
+            background-color: rgb(146, 197, 223);
+            float: right;
+        }
+
+        /* 1,2,4 띄우고 3 안띄우면 4는 왜 맨 위로 못올라가는가 
+           >> 3이 1층에 깔려있기 때문에 4가 배치됐을 때 막혀서 띄워질 수 없음*/
+    </style>
+</head>
+<body>
+    <h2>float02</h2>
+    <div class="box1"> box1 </div>
+    <div class="box2"> box2 </div>
+    <div class="box3"> box3 </div>
+    <div class="box4"> box4 </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!-- loginPage.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="joinForm.css">
+</head>
+
+<body>
+    <div class="header">
+        <h1>메인페이지 제목</h1>
+    </div>
+    <div class="navigation">
+        <ul>
+            <li><a href="MainPage.html">메인페이지</a></li>
+            <li style="float: right"><a href="joinFormPage.html">회원가입</a></li>
+            <li style="float: right"><a href="loginFormPage.html">로그인</a></li>
+        </ul>
+    </div>
+    <div class="contents">
+        <h2>LoginFormPage - 컨텐츠 영역</h2>
+        <form action="Login" method="post">
+        <div class="content">
+            <h2>로그인 Form</h2>
+            <table>
+                <tr>
+                    <th colspan="2">로그인</th>
+                </tr>
+                <tr>
+                    <th>아이디</th>
+                    <td><input type="text" name="userId" id="inputId"></td>
+                </tr>
+                <tr>
+                    <th>비밀번호</th>
+                    <td><input type="text" name="userPw" id="inputPw"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center;">
+                        <input type="button" class="subBtn1" id="subBtn1" value="로그인">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    </div>
+    <div class="footer">
+        <h2>하단 영역</h2>       
+    </div>
+</body>
+
+<script src="../jquery-3.6.0.js"></script>
+<script>
+    $(document).ready(function(){
+
+        $("#subBtn1").click(function(){
+            console.log("#subBtn1 클릭!");
+            var inputId = $("#inputId").val();
+            var inputPw = $("#inputPw").val();
+            console.log("inputId : " + inputId + " // inputPw : " + inputPw);
+
+            var loginId = "ICIA";
+            var loginPw = "1234";
+
+            if (inputId == loginId && inputPw == loginPw) {
+                alert("로그인 되었습니다.");
+                // 브라우저에 속한 객체 (location, history)
+                location.href = "MainPage.html";
+                // location : 참조할 주소로 이동 
+                // history.back();
+                // history : 브라우저 뒤로 가기 (back 인자에 숫자를 입력해주면, 그 페이지 숫자만큼 뒤로가기)
+            } else {
+                alert("아이디 또는 비밀번호가 일치하지 않습니다.");
+            }
+        });
+    });
+</script>
+
+</html>

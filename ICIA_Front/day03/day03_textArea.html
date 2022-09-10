@@ -1,0 +1,44 @@
+<!-- day03_textArea.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="table.css">
+</head>
+<body>
+    <h2>글 작성 페이지</h2>
+    <form action="textArea" method="get">
+        <table>
+            <tr>
+                <th>글 제목</th>
+                <td> <input type="text" placeholder="제목을 입력해주세요."></td>
+                <!-- placeholder : 기본값으로 들어가지 않고 입력 전에 배경으로 깔리는 text -->
+            </tr>
+            <tr>
+                <th>글 내용</th>
+                <td>
+                    <textarea name="boardContent" cols="30" rows="10">내용을 입력해주세요.
+                    </textarea>
+                    <!-- textarea : 많은 분량의 텍스트를 입력받을 때 사용
+                        사용자가 작성하는 내용 그대로 (공백이나 엔터 등) 전송됨 -->
+                    <!-- cols :  가로줄의 크기 / rows : 세로줄의 크기 -->
+                    <!-- textarea는 기본값을 설정할 때 value로 설정하지 않고 textarea 태그 내에 작성 -->
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2"> <input type="submit" value="글 작성"> </th>
+            </tr>
+        </table>
+    </form>
+    <!-- 
+        개행문자
+        JAVA :: \n
+        HTML :: <br>
+        치환해주는 과정 필요
+     -->
+
+</body>
+</html>

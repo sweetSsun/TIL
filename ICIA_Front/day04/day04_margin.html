@@ -1,0 +1,57 @@
+<!-- day04_margin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            border: 2px solid black;
+            width: 200px;
+            height: 100px;
+        }
+        .box1{
+            background-color: skyblue;
+            margin: 30px; /* top, right, bottom, left 모두 적용 */
+        }
+        .box2{
+            background-color: khaki;
+            margin: 50px 80px; /* 1)top/bottom, 2)right/left */
+        }
+        .box3{
+            background-color: beige;
+            margin: 20px 40px 60px; /* 1)top, 2)right/left, 3)bottom  */
+        }
+        .box4{
+            background-color: yellowgreen;
+            margin: 10px 30px 50px 70px; /* 1)top, 2)right, 3)bottom, 4)left */ 
+        }
+        .box5{
+            background-color: rgb(218, 202, 255);
+            margin-top: 20px;
+            margin-bottom: 40px;
+            margin-left: 60px;
+            margin-right: 30px;
+            text-align: center; /* 텍스트만 정렬 */
+        }
+        .box6{
+            margin: 0px auto; 
+            /* right/left 여백을 auto : 일정 수치가 아니라 같은 값으로 설정됨 */
+            /* div 전체 정렬 - margin으로 */
+        }
+        /* 블럭끼리의 여백은 겹쳐짐.
+           box1과 box2의 여백은 50px 만큼 떨어지는 것 */
+        </style>
+</head>
+<body>
+    <h2>margin</h2>
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <div class="box3"></div>
+    <div class="box4"></div>
+    <div class="box5"><p>텍스트</p></div>
+    <div class="box6"><p>텍스트</p></div>
+</body>
+</html>

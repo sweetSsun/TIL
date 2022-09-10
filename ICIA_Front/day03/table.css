@@ -1,0 +1,5 @@
+table, th, td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px 5px; /* 첫번째값은 위아래, 두번째값은 양옆의 여백을 의미*/
+}

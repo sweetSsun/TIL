@@ -1,0 +1,47 @@
+<!-- day07_attr.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../jquery-3.6.0.js"></script>
+</head>
+<body>
+    <h2>ready 안에 function</h2>
+    <button id="btn1"> src 속성변경 </button>
+    <button id="testBtn">addEventListener</button>
+    <br><br>
+    <img id="img1" src="../image/곰.jpg" width="300px">
+</body>
+<script>
+    // function 안에 function이 들어가면 작동하지 X >> 문서를 다 읽... 이해안감..
+    // ready(function(){}) 안의 이벤트 function은 왜 작동되는가
+
+    $(document).ready(function() {
+        
+        var test = document.getElementById("testBtn");
+        test.addEventListener("click", srcChange);
+        function srcChange(){
+            document.getElementById("img1").src = "../image/동물친구들.png";
+        };
+
+        
+        $("#btn1").click(function() {
+            console.log("btn1 클릭!");
+            var imgName = $("#img1").attr("src")
+            console.log(imgName);
+            $("#img1").attr("src", "../image/토끼.jpg"); 
+            
+            /* 매개변수 갯수에 따라 값을 반환할지, 변경할지 기능이 달라짐
+            - 속성만 명시하면 해당 속성값을 반환
+            - 속성과 속성값을 명시하면 해당 속성을 변경
+            */ 
+        }); 
+        
+    });
+
+    
+</script>
+</html>

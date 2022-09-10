@@ -1,0 +1,85 @@
+<!-- day02_table02.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="day02_table.css">
+</head>
+<body>
+    <h2>table - colspan</h2>
+    <!-- colspan : 열 병합(셀 병합) - 가로줄을 병합, "" 안에 병합할 열 갯수 -->
+    <table>
+        <tr>
+            <td colspan="3">회원정보 - Members</td>
+        </tr>
+        <tr>
+            <th>아이디</th>
+            <th>비밀번호</th>
+            <th>이름</th>
+        </tr>
+        <tr>
+            <td>AAA</td>
+            <td>1111</td>
+            <td>aaa</td>
+        </tr>
+        <tr>
+            <td>BBB</td>
+            <td>2222</td>
+            <td>bbb</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <table>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td colspan="2">3</td>
+            
+        </tr>
+        <tr>
+            <td colspan="3">5</td>
+            <td>8</td>
+        </tr>
+        <tr>
+            <td>9</td>
+            <td>10</td>
+            <td>11</td>
+            <td>12</td>
+        </tr>
+    </table>
+
+    <hr>
+    <h2>table - rowspan</h2>
+    <!-- rowspan : 행 병합 - 세로줄을 병합, "" 안에 병합할 행 갯수-->
+    <table>
+        <tr>
+            <td rowspan="2">1</td>
+            <td><img src="cat.jpg" alt="고양이" width="100px"></td>
+            <td rowspan="2">3</td>
+            <td rowspan="3">4</td>
+            <td>5</td>
+        </tr>
+        <tr>
+            <!-- <td>6</td> -->
+            <td>7</td>
+            <!-- <td>8</td> -->
+            <!-- <td>9</td> -->
+            <td rowspan="2">10</td>
+        </tr>
+        <tr>
+            <td>11</td>
+            <td>12</td>
+            <td>13</td>
+            <!-- <td>14</td> -->
+            <!-- <td>15</td> -->
+        </tr>
+    </table>
+
+
+</body>
+</html>

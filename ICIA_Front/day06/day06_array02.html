@@ -1,0 +1,68 @@
+<!-- day06_array02.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Array</h2>
+</body>
+<script>
+    var member = [];
+    member[0] = "aaa";
+    member[1] = "1234";
+    member[2] = "ABC";
+    member[3] = 30;
+    member[4] = "010-2523-2342";
+    member[5] = "서울";
+    for(var i = 0; i < member.length; i++) {
+        console.log("member[" + i + "] : " + member[i]);
+    }
+    
+    var popVal = member.pop();
+    console.log("popVal : " + popVal);
+    console.log("pop() 실행 후");
+    for(var i = 0; i < member.length; i++) {
+        console.log("member[" + i + "] : " + member[i]);
+    }
+    // pop : 배열의 마지막에 있는 인덱스 값을 추출
+    // var popVal = member[5]; 와는 다른 기능. 단순히 저장이 아니라 값을 꺼내오는 것.
+    // 변수에 담지 않고 단독으로 pop만 호출하여 배열의 마지막 값을 삭제하는 기능으로 사용할 수도
+    
+    member.push("a");
+    member.push("b");
+    console.log("push() 실행 후");
+    for(var i = 0; i < member.length; i++) {
+        console.log("member[" + i + "] : " + member[i]);
+    }
+    // push : 배열의 마지막 인덱스에 이어서 새로운 값을 입력
+    
+    var shiftVal = member.shift();
+    console.log("shiftVal : " + shiftVal);
+    console.log("shift() 실행 후");
+    for(var i = 0; i < member.length; i++) {
+        console.log("member[" + i + "] : " + member[i]);
+    }
+    // shift : 배열의 첫 번째에 있는 인덱스 값을 추출
+    
+    member.sort();
+    console.log("sort() 실행 후");
+    for(var i = 0; i < member.length; i++) {
+        console.log("member[" + i + "] : " + member[i]);
+    }
+    // sort : 배열의 값을 오름차순으로 정렬
+    
+    member.reverse();
+    console.log("reverse() 실행 후");
+    for(var i = 0; i < member.length; i++) {
+        console.log("member[" + i + "] : " + member[i]);
+    }
+    // reverse : 배열의 인덱스를 반대로 뒤집는 것
+    // [0] 인덱스를 마지막 인덱스로, 마지막 인덱스를 [0] 인덱스로
+    // sort 후 reverse 하면 내림차순 정렬의 효과
+
+</script>
+</html>

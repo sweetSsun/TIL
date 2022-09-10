@@ -1,0 +1,73 @@
+<!-- day04_padding.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            border: 2px solid black;
+            width: 200px;
+            height: 100px;
+            /* width, height로 지정되는 부분은 컨텐츠를 작성할 수 있는 영역 */
+            margin-bottom: 20px;
+        }
+        .box1{
+            background-color: beige;
+            padding: 10px;
+        }
+        .box2{
+            background-color: aquamarine;
+            padding: 20px 60px
+        }
+        .box3{
+            background-color: azure;
+            padding: 10px 30px 60px;
+        }
+        .box4{
+            background-color: gold;
+            padding: 40px 10px 60px 80px;
+        }
+        .box5{
+            background-color: thistle;
+            overflow: auto; /* 지정된 사이즈보다 컨텐츠가 더 많을 경우 처리법 */
+        }
+    </style>
+</head>
+<body>
+    <h2>padding</h2>
+    <!-- 컨텐츠와 경계선의 여백 (안쪽여백) -->
+    <div class="box1">
+        border: 2px solid black;
+        width: 200px;
+        height: 100px;
+        margin-bottom: 20px;
+    </div>
+    <div class="box2">
+        border: 2px solid black;
+        width: 200px;
+        height: 100px;
+        margin-bottom: 20px;
+    </div>
+    <div class="box3">
+        border: 2px solid black;
+        width: 200px;
+        height: 100px;
+        margin-bottom: 20px;
+    </div>
+    <div class="box4">
+        border: 2px solid black;
+        width: 200px;
+        height: 100px;
+        margin-bottom: 20px;
+    </div>
+    <div class="box5">
+        -튜플 : 릴레이션을 구성하는 각각의 행을 말하며 튜플의 수를 카디널리티(기수)라고 합니다.
+        -릴레이션 : 관계모델에서 테이블을 릴레이션이라고 부릅니다.
+        -도메인 : 하나의 애트리뷰트(속성)이 가질 수 있는 원자 값들의 집합
+        -엔티티 : =개체
+    </div>
+</body>
+</html>

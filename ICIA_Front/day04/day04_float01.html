@@ -1,0 +1,65 @@
+<!-- day04_float01.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            width: 300px;
+            height: 100px;
+        }
+        .box1{
+            background-color: rgb(218, 192, 131);
+            color:aliceblue;
+            float: right;
+            /* float이 적용되면 속성이 블록형태로 변경됨 */
+        }
+        .box2{
+            background-color: rgb(140, 187, 210);
+            color:aliceblue;
+            float: right;
+        }
+        .box3{
+            background-color: thistle;
+            color:aliceblue;
+            /* float: right; */
+        }
+        .box4{
+            clear: both; 
+            /* 위에서 설정된 요소들을 무시하고 (float 된 컨텐츠와 별개로) 겹쳐지지 않도록 속성을 부여 */
+            background-color: rgb(204, 113, 113);
+            color:aliceblue;
+        }
+        .menu{
+            width: 100%;
+            background-color: antiquewhite;
+            padding: 10px;
+        }
+        li{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h2> float </h2>
+    <div class="box1"> <h2>box1</h2> </div>
+    <div class="box2"> <h2>box2</h2> </div>
+    <div class="box3"> <h2>box3</h2> </div>
+    <!-- 공중에 뜨는 순서는 부여된 순서에 따라 먼저 자리를 잡게됨
+        box1이 공중에서 우측에 먼저 자리 잡았기 때문에 >> box2는 box1의 옆 >> box3는 box2의 옆 -->
+    <div class="box4"> <h2>box4</h2> </div>
+    
+    <hr>
+    <div class="menu">
+        <ul>
+            <li>메인화면</li>
+            <li style="float: right">로그인</li>
+            <li style="float: right">회원가입</li>
+        </ul>
+    </div>
+    
+</body>
+</html>

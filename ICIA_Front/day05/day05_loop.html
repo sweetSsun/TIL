@@ -1,0 +1,50 @@
+<!-- day05_loop.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, tr, td{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h2>반복문</h2>
+    단 입력 : <input type="text" id="dan">
+    <br>
+    <button onclick="gugudan()">버튼</button>
+    <div id = "result"></div>
+
+    <hr>
+    <table id="result2">
+    </table>
+
+
+</body>
+<script>
+    console.log("for문");
+
+    function gugudan(){
+        console.log("gugudan() 호출");
+        var dan = document.getElementById("dan").value;
+        var result = "<h2>" + dan + "단</h2>";
+        for (var k = 1; k <= 9; k++){
+            result = result + dan + " * " + k + " = " + (dan * k) + "<br>";
+        }
+        document.getElementById("result").innerHTML = result;
+        
+        // 테이블 형식
+        var result2 = "<tr><th>" + dan + "단</th></tr>"
+        for (var k = 1; k <= 9; k++){
+            result2 = result2 + "<tr><td>" + dan + " * " + k + " = " + (dan * k) + "</tr></td>";
+        }        
+        document.getElementById("result2").innerHTML = result2;
+    }
+
+</script>
+</html>

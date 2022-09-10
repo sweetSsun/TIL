@@ -1,0 +1,168 @@
+<!-- day03_inputType.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>input Type</h2>
+    <form action="url" method="get">
+        <!-- JAVA :: 서블릿 클래스 >> 로그인하는 메소드(매개변수 받음) 구현
+             HTML :: action에 적은 url을 통해 서블릿 클래스를 호출 -->
+        <fieldset>
+            <!-- 구역을 나눔 -->
+            <legend>필수정보</legend> <!-- fieldset의 제목 -->
+            아이디 : <input type="text" disabled> <!-- disabled : 비활성화 -->
+        </fieldset>
+        <hr>
+        <!-- input 태그에 입력한 데이터값은 name이라는 변수, value라는 속성에 담김 -->
+        <fieldset>
+            <legend>input type="text & input type="password"</legend>
+            아이디 : <input type="text" name="userId"><br>
+            비밀번호 : <input type="password" name="userPw"><br>
+            <!-- password 타입은 입력값을 가려줌 -->
+            <input type="submit" value="로그인">
+        </fieldset>
+    </form>
+
+    <fieldset>
+        <legend>type = "date"</legend>
+        생년월일 : <input type="date">
+    </fieldset>
+    <fieldset>
+        <legend>type = "number"</legend>
+        숫자입력 : <input type="number" value="1" min="0" max="5" step="3">
+        <!-- number : 숫자값만 입력받음. 화살표를 통해 증감 가능 -->
+        <!-- value : 초기값 설정
+             min, max : 최소,최대값을 설정
+             step : 옆 화살표를 눌렀을 때 증감하는 단위 -->
+    </fieldset>
+
+    <form action="testUrl" method="get">
+        <fieldset>
+            <legend>type = "radio</legend>
+            <input type="radio" name="menu" value="americano"> 아메리카노
+            <input type="radio" name="menu" value="latte"> 카페라떼
+            <input type="radio" name="menu" value="vanilla"> 바닐라라떼
+            <input type="radio" name="coffee" value="macchiatto"> 캬라멜 마끼아또
+            <!-- radio : 사용자가 선택지 내에서 한 가지 옵션 선택 -->
+            <!-- name : 같은 name끼리는 하나의 그룹 (그룹 중에서 하나만 선택 가능)
+                 value : 해당 항목을 선택했을 때 넘겨줄 속성을 지정
+                        (value가 없으면 사용자가 선택하더라도 아무것도 전송되지 않게 됨) -->
+
+            <br>
+           
+            <input type="submit">
+            <!-- http://192.168.0.215:5500/day03/testUrl?menu=latte&testVal=뿌엥 -->
+        </fieldset>
+    </form>
+
+    <form action="testMenu" method="get">
+        <fieldset>
+            <legend>type = "checkbox"</legend>
+            과목선택<br>
+            <input type="checkbox" name="subject" value="JAVA">자바
+            <input type="checkbox" name="subject" value="Oracle">오라클
+            <input type="checkbox" name="subject" value="HTML">HTML
+            <!-- checkbox : 사용자가 선택지 내에서 여러 가지 선택 -->
+            <!-- 하나의 name으로 여러 데이터가 전송됨 >> 저장방법 : 배열, 번호 매기기... -->
+            <br>
+            <input type="submit">
+            <!-- http://192.168.0.215:5500/day03/testMenu?subject=JAVA&subject=Oracle -->
+        </fieldset>
+    </form>
+
+    <fieldset>
+        <legend id="legend1">type = "color"</legend>
+        색상 선택<br>
+        <input type="color" id="color1" onchange="testColor(this.value)">
+        <!-- this.value : input 태그의 값을 매개변수로 보내줌 -->
+    </fieldset>
+
+    <form>
+        <fieldset>
+            <legend>type = "reset"</legend>
+            아이디 : <input type="text" name="userId"><br>
+            비밀번호 : <input type="password" name="userPw"><br>
+            <input type="reset" value="다시 작성">
+            <!-- 입력값을 초기화하는 버튼 -->
+        </fieldset>
+    </form>
+    
+    <form action="test" method="post" enctype="multipart/form-data">
+        <!-- 파일은 multipart/form-date 라는 형식으로 전송하게 됨
+             일반 텍스트와는 형태가 다르기 때문에 (get, post와 같은 메소드 방식과 다름) -->
+        <fieldset>
+            <legend>type = "file"</legend>
+            파일 선택 : <input type="file" name="fileTest1" onchange="fileTest(this.value)">
+            <!-- 보안설정이 되어있음 :: 실제 업로드 경로를 보여주지 않고 fake path 거짓경로를 설정하여 파일 업로드
+                                    fake path로 되어있어 미리보기 기능은 HTML 내부에서만 하는건 불가능-->
+            <br><br>
+            <input type="reset" value="다시 작성">
+            <input type="submit">
+            <br><br>
+            <input type="image" src="../사슴.jfif" alt="사슴" width="100px">
+            <!-- submit 기능이 있는 image (submit 버튼을 이미지로 표현한 것)
+                로봇이 아닙니다 >> 이걸로 하나보다.... -->
+        </fieldset>
+    </form>
+
+
+    <hr>
+    <form action="selectTest" method="get">
+    <fieldset>
+        <legend>select</legend>
+        이메일 : <input type="text" name="emailId">
+             @ <input type="text" name="emailDomain" id="eDomain">
+        <!-- 직접 작성할 수 있는 text박스를 만들어주고 선택지 중에서 선택할 수 있도록 -->
+        <select onchange="domainSelect(this.value)">
+            <!-- 선택했을 경우 해당 value를 emailDomain에 담아주기 위한 function이 작동되어야 함 -->
+            <option value="">직접입력</option>
+            <option value="naver.com">네이버</option>
+            <option value="daum.net">다음</option>
+            <option value="gmail.com">구글</option>
+        </select>
+        <!-- select : option으로 선택한 값이 emailDomain에 담겨 전송됨 (name이 없으면 선택해도 값이 전송되지 X) -->
+        <!-- option 태그에 value가 설정되어있지 않으면 option 태그 사이에 있는 text가 value값으로 넘어감 -->
+        <br>
+        <input type="submit">
+    </fieldset>
+    </form>
+
+</body>
+
+<script>
+    function domainSelect(selectVal){
+        console.log(selectVal);
+        document.getElementById("eDomain").value = selectVal;
+    }
+
+
+    function fileTest(testVal){
+        console.log(testVal);
+    }
+
+
+    function testColor(colorValue1) {
+        // 1. 매개변수로 받은 것
+        // 매개변수로 받은 것을 colorValue1라는 변수에 담아 testColor 펑션이 호출됨
+        console.log("testColor() 호출");
+        console.log("colorValue1 : " + colorValue1);
+
+        // 2. 문서에 담아 문서를 불러온 것
+        var colorVal = document.getElementById("color1").value;
+        // document.getElementById("color1") :: 현재 문서에 있는 Id속성이 color1인 요소 (input 태그)
+        // var :: 기본 변수타입. script에서는 변수 타입을 설정하지 않음.
+        // ~colorVal = ~.value :: 앞의 데이터(input 태그)를 값으로 담아 colorVal라는 변수에 저장
+        console.log(colorVal);
+        document.getElementById("legend1").style.color = colorVal;
+        // Id 속성이 legend1인 요소의 style color를 colorVal로 변경
+    }
+</script>
+
+</html>

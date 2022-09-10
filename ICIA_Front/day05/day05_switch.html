@@ -1,0 +1,82 @@
+<!-- day05_switch.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>switch</h2>
+    <button onclick="changeImg('카페')">카페</button>
+    <button onclick="changeImg('책상')">책상</button> 
+    <button onclick="changeImg('풍경')">풍경</button>
+    <br><br>
+    <img id="img1" src="KakaoTalk_20220421_075052844_07.jpg" alt="풍경" width="300px">
+
+    <hr>
+    <hr>
+    <button onclick="changeImg2()">이미지 변경</button><br><br>
+    <img class="imgList" src="KakaoTalk_20220421_075052844.jpg" alt="카페" width="300px">
+    <img class="imgList" src="KakaoTalk_20220421_075052844.jpg" alt="" width="250px">
+    <img class="imgList" src="KakaoTalk_20220421_075052844.jpg" alt="" width="200px">
+
+</body>
+<script>
+    console.log("switch문");
+    
+    function changeImg2(){
+        console.log("changeImg2() 호출");
+        // getElementById :: Id 속성은 단수 (중복되지 않는 값)
+        // getElementsBy ClassName, Name, TagName, TagNameNS :: 복수 (중복선택 가능)
+        //    >> 값이 한 개더라도 Elements라고 받아왔기 때문에 배열 형태로 저장됨 List[0]
+        var imgTagList = document.getElementsByTagName("img"); // 태그명을 리스트로
+        var imgClassList = document.getElementsByClassName("imgList"); // 클래스를 리스트로
+        console.log(imgTagList.length);
+        console.log(imgClassList.length);
+        
+        for(var i = 0; i < imgClassList.length; i++) {
+            imgClassList[i].src = "KakaoTalk_20220421_075052844_06.jpg";
+        }
+
+    }
+
+    function changeImg(imgName){
+        console.log("changeImg(imgName) 호출");
+        console.log("imgName : " + imgName);
+        var srcVal = "";
+        switch(imgName){
+            case '카페':
+                console.log(1);
+                srcVal = "KakaoTalk_20220421_075052844.jpg";
+                break;       
+            case '책상':
+                console.log(2);
+                srcVal = "KakaoTalk_20220421_075052844_06.jpg";
+                break;
+            case '풍경':
+                console.log(3);
+                srcVal = "KakaoTalk_20220421_075052844_07.jpg";
+                break;
+        }
+        console.log("srcVal : " + srcVal);
+        document.getElementById("img1").src = srcVal;
+    }
+
+    var num = "abc"; // 데이터타입을 정하지 않아도 되기 때문에 string도 가능
+    switch(num){
+        case 1:
+            console.log("num은 1입니다.");
+            break;
+        case 2:
+            console.log("num은 2입니다.");
+            break;        
+        case "abc":
+            console.log("num은 abc입니다.")
+            break;
+        default:
+            console.log("case에 없습니다.")
+    }
+</script>
+</html>

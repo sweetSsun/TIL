@@ -13,6 +13,13 @@ public class Main {
 		numbers.addLast(10);
 		numbers.addLast(20);
 		numbers.addLast(30);
+//		System.out.println(numbers.node(0));
+		numbers.add(1, 15);
+		
+		// 삭제
+		
+		System.out.println(numbers.removeLast());
+		System.out.println(numbers);
 	}
 
 }

@@ -17,28 +17,37 @@ public class JpaMain {
 
         try{
 //            // 등록
-//            Member member = new Member();
-//            member.setId(2L);
-//            member.setName("HelloB");
-//            em.persist(member);
+//            /* 비영속 */
+            Member member = new Member();
+            member.setId(2L);
+            member.setUsername("B");
+            member.setRoleType(RoleType.USER);
+
+//            /* 영속 */
+            em.persist(member);
 
 //            // 조회
 //            Member findMember = em.find(Member.class, 1L);
 //            System.out.println("findMember = " + findMember.getId());
 //            System.out.println("findMember = " + findMember.getName());
+//            /* 1차 캐시에서 조회되는 것 */
+//            Member findMember2 = em.find(Member.class, 1L);
+//            System.out.println("result = " + (findMember == findMember2));
 
 //            // 수정
 //            Member findMember = em.find(Member.class, 1L);
 //            findMember.setName("HelloJPA");
 
             //JPQL
-            List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5)
-                    .setMaxResults(10)
-                    .getResultList();
-            for(Member member : result){
-                System.out.println("member.name = " + member.getName());
-            }
+//            List<Member> result = em.createQuery("select m from Member as m", Member.class)
+////                    .setFirstResult(5)
+////                    .setMaxResults(10)
+//                    .getResultList();
+//            for(Member member : result){
+//                System.out.println("member.name = " + member.getName());
+//            }
+
+
 
             tx.commit();
         } catch (Exception e){

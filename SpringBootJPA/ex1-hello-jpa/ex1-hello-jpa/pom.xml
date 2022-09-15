@@ -22,7 +22,6 @@
             <version>5.3.10.Final</version>
         </dependency>
         <!-- H2 데이터베이스 -->
-        <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

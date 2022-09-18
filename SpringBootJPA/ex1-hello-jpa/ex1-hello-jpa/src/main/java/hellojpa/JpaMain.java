@@ -19,9 +19,8 @@ public class JpaMain {
 //            // 등록
 //            /* 비영속 */
             Member member = new Member();
-            member.setId(2L);
-            member.setUsername("B");
-            member.setRoleType(RoleType.USER);
+//            member.setId("ID_A");
+            member.setUsername("C");
 
 //            /* 영속 */
             em.persist(member);

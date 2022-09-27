@@ -1,5 +1,7 @@
 package hellojpa;
 
+import inheritance.Movie;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -18,12 +20,12 @@ public class JpaMain {
         try{
 //            // 등록
 //            /* 비영속 */
-            Member member = new Member();
+//            Member member = new Member();
 //            member.setId("ID_A");
-            member.setUsername("C");
+//            member.setUsername("C");
 
 //            /* 영속 */
-            em.persist(member);
+//            em.persist(member);
 
 //            // 조회
 //            Member findMember = em.find(Member.class, 1L);
@@ -46,7 +48,19 @@ public class JpaMain {
 //                System.out.println("member.name = " + member.getName());
 //            }
 
+            Movie movie = new Movie();
+            movie.setDirector("AAA");
+            movie.setActor("BBB");
+            movie.setName("바람과함께사라지다");
+            movie.setPrice(10000);
 
+            em.persist(movie);
+
+            em.flush();
+            em.clear();
+
+            Movie findMove = em.find(Movie.class, movie.getId());
+            System.out.println("fineMove : " + findMove);
 
             tx.commit();
         } catch (Exception e){

@@ -20,8 +20,7 @@ public class JpaMain {
         tx.begin();
 
         try{
-            Order order = em.find(Order.class, 1L);
-            order.addOrderItem(new OrderItem());
+
 
             tx.commit();
         } catch (Exception e){

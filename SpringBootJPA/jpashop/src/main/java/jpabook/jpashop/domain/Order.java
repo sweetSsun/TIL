@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table (name = "ORDERS") // ORDER BY 명령어 때문에 ORDER가 안되는 DB가 있음
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue

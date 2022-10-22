@@ -16,38 +16,22 @@ public class JpaMain {
         tx.begin();
 
         try{
-            // 팀 저장
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-            // 멤버 저장
-            Member member = new Member();
-            member.setName("member1");
-            //            member.setTeamId(team.getId());
-            member.changeTeam(team);
-            em.persist(member);
+            Member member1 = new Member();
+            member1.setName("member1");
+            em.persist(member1);
 
-//            em.flush();
-//            em.clear();
-            // 조회
-            Team findTeam = em.find(Team.class, team.getId());
+            Member member2 = new Member();
+            member2.setName("member2");
+            em.persist(member2);
 
-            for(Member m : findTeam.getMembers()){
-                System.out.println("m = " + m.getName());
-            }
+            em.flush();
+            em.clear();
 
-            /* 테이블 기준 매핑
-//            Long findTeamId = findMember.getTeamId();
-//            Team fineTeam = em.find(Team.class, findTeamId);
-            */
-            /* 객체 지향 매핑
-            Team findTeam = findMember.getTeam();
-            System.out.println("findTeam = " + findTeam.getName());
+            Member m1 = em.find(Member.class, member1.getId());
+            Member m2 = em.getReference(Member.class, member2.getId());
 
-            // 멤버가 새로운 팀에 합류
-            Team newTeam = em.find(Team.class, 100L); // 100번 팀이 있다고 가정
-            findMember.setTeam(newTeam);
-            */
+            logic(m1, m2);
+
             tx.commit();
         } catch (Exception e){
             tx.rollback();
@@ -55,5 +39,11 @@ public class JpaMain {
             em.close();
         }
         emf.close();
+
+    }
+
+    private static void logic(Member m1, Member m2){
+        System.out.println("m1 instanceof Member : " + (m1 instanceof Member));
+        System.out.println("m2 instanceof Member : " + (m2 instanceof Member));
     }
 }

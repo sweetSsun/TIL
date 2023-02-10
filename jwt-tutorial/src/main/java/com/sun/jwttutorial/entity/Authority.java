@@ -5,7 +5,7 @@ import lombok.*;
 
 @Entity
 @Table(name = "authority")
-@Getter @Setter
+@Getter @Builder
 @AllArgsConstructor @NoArgsConstructor
 public class Authority {
 

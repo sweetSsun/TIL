@@ -3,6 +3,8 @@ package com.sun.jwttutorial.service;
 import com.sun.jwttutorial.dto.UserDto;
 import com.sun.jwttutorial.entity.Authority;
 import com.sun.jwttutorial.entity.User;
+import com.sun.jwttutorial.exception.DuplicateMemberException;
+import com.sun.jwttutorial.handler.NotFoundMemberException;
 import com.sun.jwttutorial.repository.UserRepository;
 import com.sun.jwttutorial.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,9 +25,9 @@ public class UserService {
     }
 
     @Transactional
-    public User signup(UserDto userDto) {
+    public UserDto signup(UserDto userDto) {
         if (userRepository.findOneWithAuthoritiesByUsername(userDto.getUsername()).orElse(null) != null) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+            throw new DuplicateMemberException("이미 가입되어 있는 유저입니다.");
         }
 
         Authority authority = Authority.builder()
@@ -40,17 +42,22 @@ public class UserService {
                 .activated(true)
                 .build();
 
-        return userRepository.save(user);
+        return UserDto.from(userRepository.save(user));
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getUserWithAuthorities(String username) {
-        return userRepository.findOneWithAuthoritiesByUsername(username);
+    public UserDto getUserWithAuthorities(String username) {
+        return UserDto.from(
+                userRepository.findOneWithAuthoritiesByUsername(username)
+                        .orElseThrow(() -> new NotFoundMemberException("존재하지 않는 유저입니다.")));
     }
 
     @Transactional(readOnly = true)
-    public Optional<User> getMyUserWithAuthorities() {
-        return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername);
+    public UserDto getMyUserWithAuthorities() {
+        return UserDto.from(
+                SecurityUtil.getCurrentUsername()
+                        .flatMap(userRepository::findOneWithAuthoritiesByUsername)
+                        .orElse(null));
     }
 
 }

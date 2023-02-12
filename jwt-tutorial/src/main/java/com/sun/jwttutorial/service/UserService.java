@@ -4,6 +4,7 @@ import com.sun.jwttutorial.dto.UserDto;
 import com.sun.jwttutorial.entity.Authority;
 import com.sun.jwttutorial.entity.User;
 import com.sun.jwttutorial.exception.DuplicateMemberException;
+import com.sun.jwttutorial.handler.NotFoundMemberException;
 import com.sun.jwttutorial.repository.UserRepository;
 import com.sun.jwttutorial.util.SecurityUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,12 +47,17 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDto getUserWithAuthorities(String username) {
-        return UserDto.from(userRepository.findOneWithAuthoritiesByUsername(username).orElse(null));
+        return UserDto.from(
+                userRepository.findOneWithAuthoritiesByUsername(username)
+                        .orElseThrow(() -> new NotFoundMemberException("존재하지 않는 유저입니다.")));
     }
 
     @Transactional(readOnly = true)
     public UserDto getMyUserWithAuthorities() {
-        return UserDto.from(SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthoritiesByUsername).orElse(null));
+        return UserDto.from(
+                SecurityUtil.getCurrentUsername()
+                        .flatMap(userRepository::findOneWithAuthoritiesByUsername)
+                        .orElse(null));
     }
 
 }

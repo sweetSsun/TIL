@@ -28,6 +28,10 @@ public class SecurityConfig {
                 .loginPage("/loginForm")
                 .loginProcessingUrl("/login") // "/login" 주소가 호출되면 시큐리티가 낚아채 대신 로그인을 진행 (/login mapping을 하지 않아도 시큐리티가 만들어둔 로그인페이지로 이동)
                 .defaultSuccessUrl("/")
+
+                .and()
+                .oauth2Login()
+                .loginPage("/loginForm")
         ;
 
         return http.build();

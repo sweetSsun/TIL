@@ -3,6 +3,7 @@ package com.cos.security1.config.oauth;
 import com.cos.security1.config.auth.PrincipalDetails;
 import com.cos.security1.config.oauth.provider.FacebookUserInfo;
 import com.cos.security1.config.oauth.provider.GoogleUserInfo;
+import com.cos.security1.config.oauth.provider.NaverUserInfo;
 import com.cos.security1.config.oauth.provider.OAuth2UserInfo;
 import com.cos.security1.model.User;
 import com.cos.security1.repository.UserRepository;
@@ -15,6 +16,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 
 @Service
@@ -40,15 +43,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         // usrRequest 정보 -> loadUser 함수 호출 : 회원 프로필 요청/응답
         logger.info("[PrincipalOauth2UserService][loadUser] getAttributes : {}", oAuth2User.getAttributes());
 
-        OAuth2UserInfo oAuth2UserInfo = null;
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        switch (registrationId) {
-            case "google":
-                oAuth2UserInfo = new GoogleUserInfo(oAuth2User.getAttributes());
-                break;
-            case "facebook":
-                oAuth2UserInfo = new FacebookUserInfo(oAuth2User.getAttributes());
-        }
+        OAuth2UserInfo oAuth2UserInfo = getOAuth2UserInfo(userRequest);
 
         String provider = oAuth2UserInfo.getProvider();
         String providerId = oAuth2UserInfo.getProviderId();
@@ -72,15 +67,21 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         return new PrincipalDetails(userEntity, oAuth2User.getAttributes());
     }
-    /**
-     * super.loadUser(userRequest).getAttributes() =
-     * {sub=103774520920990623404
-     * , name=김지선
-     * , given_name=지선
-     * , family_name=김
-     * , picture=https://lh3.googleusercontent.com/a/AEdFTp7Gr9CLZakg_HHzy_mCcskZSAsbKwRt2F8N-GqOVQ=s96-c
-     * , email=nalong77@gmail.com
-     * , email_verified=true
-     * , locale=ko}
-     */
+
+    private OAuth2UserInfo getOAuth2UserInfo(OAuth2UserRequest userRequest) {
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+        String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
+        switch (registrationId) {
+            case "google":
+                return new GoogleUserInfo(oAuth2User.getAttributes());
+            case "facebook":
+                return new FacebookUserInfo(oAuth2User.getAttributes());
+            case "naver":
+                return new NaverUserInfo((Map) oAuth2User.getAttributes().get("response"));
+        }
+
+        return null;
+    }
+
 }

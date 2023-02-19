@@ -1,14 +1,17 @@
 package com.cos.security1.controller;
 
+import com.cos.security1.config.auth.PrincipalDetails;
 import com.cos.security1.model.User;
-import com.cos.security1.repository.UserRepository;
 import com.cos.security1.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +26,30 @@ public class IndexController {
     @Autowired
     private UserService userService;
 
+    @GetMapping("/test/login")
+    public @ResponseBody String testLogin(Authentication authentication
+                                          , @AuthenticationPrincipal PrincipalDetails userDetails) {
+        System.out.println("/test/login ========================");
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("authentication : " + principalDetails.getUser());
+
+        System.out.println("userDetails : " + userDetails.getUser());
+
+        return "세션정보 확인";
+    }
+
+    @GetMapping("/test/oauth/login")
+    public @ResponseBody String testOauthLogin(Authentication authentication
+                                               , @AuthenticationPrincipal OAuth2User oAuth) {
+        System.out.println("/test/oauth/login ========================");
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        System.out.println("authentication : " + oAuth2User.getAttributes());
+
+        System.out.println("oauth2User : " + oAuth.getAttributes());
+
+        return "OAuth 세션정보 확인";
+    }
+
     @GetMapping({"", "/"})
     public String index() {
         // 스프링이 mustache를 권장
@@ -31,8 +58,10 @@ public class IndexController {
         return "index"; // src/main/resources/templates/index.mustache
     }
 
+    // OAuth, 일반 로그인 모두 PrincipalDetails로 받을 수 있게 됨
     @GetMapping("/user")
-    public @ResponseBody String user() {
+    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+        logger.info("[IndexController][user] user : {}", principalDetails.getUser());
         return "user";
     }
 

@@ -1,6 +1,5 @@
 package com.cos.jwt.config;
 
-import com.cos.jwt.filter.MyFilter3;
 import com.cos.jwt.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,7 +20,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class); // 직접 생성한 FilterConfig보다 SecurityFilterChain이 먼저 실행됨
+//        http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class); // 직접 생성한 FilterConfig보다 SecurityFilterChain이 먼저 실행됨
 
         http.csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
